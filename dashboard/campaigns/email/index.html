@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Campaigns | WFFE Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
+    <link rel="stylesheet" href="campaigns.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-couch"></i>
+                    <span>WFFE Connect</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Main</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/index.html">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="/dashboard/campaigns/email/index.html">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email Campaigns</span>
+                                <span class="badge">3</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/dashboard/campaigns/socialmedia/social.html">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Social Media</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-users"></i>
+                                <span>Customers</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Analytics</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/campaigns/email/analytics.html">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Performance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-search-dollar"></i>
+                                <span>ROI Tracker</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-poll"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Settings</div>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-cog"></i>
+                                <span>Account</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-question-circle"></i>
+                                <span>Help Center</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
+                    </div>
+                    <div class="user-info">
+                        <div class="name">Sarah Johnson</div>
+                        <div class="role">Marketing Manager</div>
+                    </div>
+                    <button class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Email Campaigns</h1>
+                    <div class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span>/</span>
+                        <a href="#">Campaigns</a>
+                        <span>/</span>
+                        <a href="#">Email</a>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <button class="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span><a href="/dashboard/campaigns/email/create.html">New Campaign</a></span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Campaigns Content -->
+            <div class="content-wrapper">
+                <!-- Campaign Filters -->
+                <div class="campaign-filters">
+                    <div class="filter-group">
+                        <label>Status:</label>
+                        <select class="filter-select">
+                            <option>All</option>
+                            <option>Draft</option>
+                            <option>Scheduled</option>
+                            <option>Sent</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Date Range:</label>
+                        <select class="filter-select">
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                            <option>This year</option>
+                            <option>Custom range</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Sort By:</label>
+                        <select class="filter-select">
+                            <option>Newest first</option>
+                            <option>Oldest first</option>
+                            <option>Highest open rate</option>
+                            <option>Highest click rate</option>
+                        </select>
+                    </div>
+                    
+                    <button class="filter-btn">
+                        <i class="fas fa-filter"></i>
+                        <span>Apply Filters</span>
+                    </button>
+                </div>
+                
+                <!-- Campaigns Table -->
+                <div class="campaigns-table-container">
+                    <table class="campaigns-table">
+                        <thead>
+                            <tr>
+                                <th>Campaign Name</th>
+                                <th>Status</th>
+                                <th>Recipients</th>
+                                <th>Open Rate</th>
+                                <th>Click Rate</th>
+                                <th>Revenue</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="campaign-name">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Summer Collection Launch</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge sent">Sent</span></td>
+                                <td>2,450</td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">24.5%</span>
+                                        <span class="trend up"><i class="fas fa-arrow-up"></i> 2.1%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">8.2%</span>
+                                        <span class="trend up"><i class="fas fa-arrow-up"></i> 1.3%</span>
+                                    </div>
+                                </td>
+                                <td>$2,450</td>
+                                <td>Jun 15, 2023</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn duplicate">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                        <button class="action-btn more">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="campaign-name">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Father's Day Special</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge sent">Sent</span></td>
+                                <td>2,120</td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">22.8%</span>
+                                        <span class="trend down"><i class="fas fa-arrow-down"></i> 1.7%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">7.5%</span>
+                                        <span class="trend down"><i class="fas fa-arrow-down"></i> 0.8%</span>
+                                    </div>
+                                </td>
+                                <td>$1,870</td>
+                                <td>Jun 10, 2023</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn duplicate">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                        <button class="action-btn more">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="campaign-name">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>New Arrivals - June</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge sent">Sent</span></td>
+                                <td>2,300</td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">22.1%</span>
+                                        <span class="trend up"><i class="fas fa-arrow-up"></i> 0.5%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">7.8%</span>
+                                        <span class="trend up"><i class="fas fa-arrow-up"></i> 0.9%</span>
+                                    </div>
+                                </td>
+                                <td>$1,920</td>
+                                <td>Jun 5, 2023</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn duplicate">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                        <button class="action-btn more">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="campaign-name">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Memorial Day Sale</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge sent">Sent</span></td>
+                                <td>2,150</td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">20.3%</span>
+                                        <span class="trend down"><i class="fas fa-arrow-down"></i> 2.2%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">6.9%</span>
+                                        <span class="trend down"><i class="fas fa-arrow-down"></i> 1.4%</span>
+                                    </div>
+                                </td>
+                                <td>$1,750</td>
+                                <td>May 25, 2023</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn duplicate">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                        <button class="action-btn more">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="campaign-name">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Mother's Day Collection</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge sent">Sent</span></td>
+                                <td>2,000</td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">25.7%</span>
+                                        <span class="trend up"><i class="fas fa-arrow-up"></i> 3.1%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">8.5%</span>
+                                        <span class="trend up"><i class="fas fa-arrow-up"></i> 1.6%</span>
+                                    </div>
+                                </td>
+                                <td>$2,150</td>
+                                <td>May 5, 2023</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn duplicate">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                        <button class="action-btn more">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="campaign-name">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Spring Refresh (Draft)</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge draft">Draft</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>Apr 28, 2023</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn edit">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button class="action-btn duplicate">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                        <button class="action-btn more">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button class="pagination-btn disabled">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="campaigns.js"></script>
+</body>
+</html>

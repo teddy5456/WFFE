@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Templates | WFFE Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
+    <link rel="stylesheet" href="campaigns.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-couch"></i>
+                    <span>WFFE Connect</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Main</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/index.html">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="/dashboard/campaigns/email/index.html">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email Campaigns</span>
+                                <span class="badge">3</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Social Media</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-users"></i>
+                                <span>Customers</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Analytics</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/campaigns/email/analytics.html">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Performance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-search-dollar"></i>
+                                <span>ROI Tracker</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-poll"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Settings</div>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-cog"></i>
+                                <span>Account</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-question-circle"></i>
+                                <span>Help Center</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
+                    </div>
+                    <div class="user-info">
+                        <div class="name">Sarah Johnson</div>
+                        <div class="role">Marketing Manager</div>
+                    </div>
+                    <button class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Email Templates</h1>
+                    <div class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span>/</span>
+                        <a href="#">Campaigns</a>
+                        <span>/</span>
+                        <a href="#">Email</a>
+                        <span>/</span>
+                        <a href="#">Templates</a>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <button class="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>New Template</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Templates Content -->
+            <div class="content-wrapper">
+                <div class="templates-container">
+                    <div class="templates-header">
+                        <div class="templates-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search templates...">
+                        </div>
+                        
+                        <div class="templates-filter">
+                            <select class="filter-select">
+                                <option>All Categories</option>
+                                <option>Promotional</option>
+                                <option>Transactional</option>
+                                <option>Newsletter</option>
+                                <option>Seasonal</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="templates-grid">
+                        <!-- Template 1 -->
+                        <div class="template-card">
+                            <div class="template-preview">
+                                <img src="https://via.placeholder.com/300x200?text=Promo+Template" alt="Promo Template">
+                                <div class="template-actions">
+                                    <button class="action-btn use-template">
+                                        <i class="fas fa-rocket"></i> Use This
+                                    </button>
+                                    <button class="action-btn preview-template">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>Summer Sale</h3>
+                                <p>Perfect for seasonal promotions and discounts</p>
+                                <div class="template-meta">
+                                    <span><i class="fas fa-tag"></i> Promotional</span>
+                                    <span><i class="fas fa-calendar"></i> Updated: Jun 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Template 2 -->
+                        <div class="template-card">
+                            <div class="template-preview">
+                                <img src="https://via.placeholder.com/300x200?text=Newsletter+Template" alt="Newsletter Template">
+                                <div class="template-actions">
+                                    <button class="action-btn use-template">
+                                        <i class="fas fa-rocket"></i> Use This
+                                    </button>
+                                    <button class="action-btn preview-template">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>Monthly Newsletter</h3>
+                                <p>Clean layout for regular updates and news</p>
+                                <div class="template-meta">
+                                    <span><i class="fas fa-tag"></i> Newsletter</span>
+                                    <span><i class="fas fa-calendar"></i> Updated: May 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Template 3 -->
+                        <div class="template-card">
+                            <div class="template-preview">
+                                <img src="https://via.placeholder.com/300x200?text=Welcome+Template" alt="Welcome Template">
+                                <div class="template-actions">
+                                    <button class="action-btn use-template">
+                                        <i class="fas fa-rocket"></i> Use This
+                                    </button>
+                                    <button class="action-btn preview-template">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>Welcome Series</h3>
+                                <p>Onboarding sequence for new customers</p>
+                                <div class="template-meta">
+                                    <span><i class="fas fa-tag"></i> Transactional</span>
+                                    <span><i class="fas fa-calendar"></i> Updated: Apr 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Template 4 -->
+                        <div class="template-card">
+                            <div class="template-preview">
+                                <img src="https://via.placeholder.com/300x200?text=Abandoned+Cart" alt="Abandoned Cart">
+                                <div class="template-actions">
+                                    <button class="action-btn use-template">
+                                        <i class="fas fa-rocket"></i> Use This
+                                    </button>
+                                    <button class="action-btn preview-template">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>Abandoned Cart</h3>
+                                <p>Recover lost sales with this proven template</p>
+                                <div class="template-meta">
+                                    <span><i class="fas fa-tag"></i> Transactional</span>
+                                    <span><i class="fas fa-calendar"></i> Updated: Mar 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Template 5 -->
+                        <div class="template-card">
+                            <div class="template-preview">
+                                <img src="https://via.placeholder.com/300x200?text=Holiday+Special" alt="Holiday Special">
+                                <div class="template-actions">
+                                    <button class="action-btn use-template">
+                                        <i class="fas fa-rocket"></i> Use This
+                                    </button>
+                                    <button class="action-btn preview-template">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>Holiday Special</h3>
+                                <p>Festive design for holiday campaigns</p>
+                                <div class="template-meta">
+                                    <span><i class="fas fa-tag"></i> Seasonal</span>
+                                    <span><i class="fas fa-calendar"></i> Updated: Dec 2022</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Template 6 -->
+                        <div class="template-card">
+                            <div class="template-preview">
+                                <img src="https://via.placeholder.com/300x200?text=Announcement" alt="Announcement">
+                                <div class="template-actions">
+                                    <button class="action-btn use-template">
+                                        <i class="fas fa-rocket"></i> Use This
+                                    </button>
+                                    <button class="action-btn preview-template">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="template-info">
+                                <h3>Product Announcement</h3>
+                                <p>Showcase new products or features</p>
+                                <div class="template-meta">
+                                    <span><i class="fas fa-tag"></i> Promotional</span>
+                                    <span><i class="fas fa-calendar"></i> Updated: Nov 2022</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button class="pagination-btn disabled">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="campaigns.js"></script>
+</body>
+</html>

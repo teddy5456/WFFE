@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Campaigns | WFFE Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
+    <link rel="stylesheet" href="/dashboard/campaigns/email/campaigns.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
+        
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-couch"></i>
+                    <span>WFFE Connect</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Main</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/index.html">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/dashboard/campaigns/email/index.html">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email Campaigns</span>
+                                <span class="badge">3</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="/dashboard/campaigns/socialmedia/social.html">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Social Media</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-users"></i>
+                                <span>Customers</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Analytics</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/campaigns/email/analytics.html">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Performance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-search-dollar"></i>
+                                <span>ROI Tracker</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-poll"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Settings</div>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-cog"></i>
+                                <span>Account</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-question-circle"></i>
+                                <span>Help Center</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
+                    </div>
+                    <div class="user-info">
+                        <div class="name">Sarah Johnson</div>
+                        <div class="role">Marketing Manager</div>
+                    </div>
+                    <button class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Social Media Campaigns</h1>
+                    <div class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span>/</span>
+                        <a href="#">Campaigns</a>
+                        <span>/</span>
+                        <a href="#">Social Media</a>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <button class="quick-action-btn" id="new-social-campaign">
+                        <i class="fas fa-plus"></i>
+                        <span>New Campaign</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Social Media Content -->
+            <div class="content-wrapper">
+                <!-- Platform Selector -->
+                <div class="platform-selector">
+                    <div class="platform-tab active" data-platform="all">
+                        <i class="fab fa-all"></i>
+                        <span>All Platforms</span>
+                    </div>
+                    <div class="platform-tab" data-platform="facebook">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook</span>
+                    </div>
+                    <div class="platform-tab" data-platform="instagram">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram</span>
+                    </div>
+                    <div class="platform-tab" data-platform="pinterest">
+                        <i class="fab fa-pinterest"></i>
+                        <span>Pinterest</span>
+                    </div>
+                </div>
+                
+                <!-- Campaign Stats Summary -->
+                <div class="social-stats-summary">
+                    <div class="stat-card">
+                        <div class="stat-value">1,240</div>
+                        <div class="stat-label">Total Posts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">24.5K</div>
+                        <div class="stat-label">Engagements</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8.2%</div>
+                        <div class="stat-label">Engagement Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$3,450</div>
+                        <div class="stat-label">Revenue Generated</div>
+                    </div>
+                </div>
+                
+                <!-- Campaign Table -->
+                <div class="campaigns-table-container">
+                    <table class="campaigns-table">
+                        <thead>
+                            <tr>
+                                <th>Campaign Name</th>
+                                <th>Platform</th>
+                                <th>Status</th>
+                                <th>Engagements</th>
+                                <th>Click Rate</th>
+                                <th>Schedule</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="campaign-name">
+                                        <i class="fas fa-hashtag"></i>
+                                        <span>Summer Sale Launch</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="platform-badge facebook">
+                                        <i class="fab fa-facebook"></i>
+                                        <span>Facebook</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="metric-with-trend">
+                                        <span class="value">2,450</span>
+                                        <span class="trend up"><i class="fas fa-arrow-up"></i> 12%</span>
+                                    </div>
+                                </td>
+                                <td>4.5%</td>
+                                <td>Jun 15, 2023</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn view">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn duplicate">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                        <button class="action-btn more">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Additional rows... -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- New Campaign Modal (Hidden by default) -->
+    <div class="modal" id="social-campaign-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Create New Social Campaign</h2>
+            <form id="social-campaign-form">
+                <div class="form-group">
+                    <label for="campaign-name">Campaign Name</label>
+                    <input type="text" id="campaign-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Select Platforms</label>
+                    <div class="platform-checkboxes">
+                        <label><input type="checkbox" name="platform" value="facebook"> Facebook</label>
+                        <label><input type="checkbox" name="platform" value="instagram"> Instagram</label>
+                        <label><input type="checkbox" name="platform" value="pinterest"> Pinterest</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="campaign-content">Content</label>
+                    <textarea id="campaign-content" rows="5"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="campaign-media">Upload Media</label>
+                    <input type="file" id="campaign-media" multiple accept="image/*,video/*">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-campaign">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Schedule Campaign</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="social.js"></script>
+</body>
+</html>

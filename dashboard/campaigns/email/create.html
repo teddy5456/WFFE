@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Email Campaign | WFFE Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
+    <link rel="stylesheet" href="campaigns.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for functionality */
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        .sidebar.collapsed .logo span,
+        .sidebar.collapsed .nav-title,
+        .sidebar.collapsed .nav-section ul li a span,
+        .sidebar.collapsed .user-info {
+            display: none;
+        }
+        .sidebar.collapsed .sidebar-nav {
+            padding: 20px 10px;
+        }
+        .sidebar.collapsed .sidebar-toggle i {
+            transform: rotate(180deg);
+        }
+        .sidebar.collapsed .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+        .sidebar-nav ul li {
+            position: relative;
+        }
+        .sidebar.collapsed .nav-section {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-couch"></i>
+                    <span>WFFE Connect</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Main</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/index.html">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="/dashboard/campaigns/email/index.html">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email Campaigns</span>
+                                <span class="badge">3</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/dashboard/campaigns/socialmedia/social.html">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Social Media</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-users"></i>
+                                <span>Customers</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Analytics</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/campaigns/email/analytics.html">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Performance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-search-dollar"></i>
+                                <span>ROI Tracker</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-poll"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Settings</div>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-cog"></i>
+                                <span>Account</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-question-circle"></i>
+                                <span>Help Center</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
+                    </div>
+                    <div class="user-info">
+                        <div class="name">Sarah Johnson</div>
+                        <div class="role">Marketing Manager</div>
+                    </div>
+                    <button class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Create Email Campaign</h1>
+                    <div class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span>/</span>
+                        <a href="#">Campaigns</a>
+                        <span>/</span>
+                        <a href="#">Email</a>
+                        <span>/</span>
+                        <a href="#">Create</a>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <button class="quick-action-btn save-draft" id="saveDraftBtn">
+                        <i class="fas fa-save"></i>
+                        <span>Save Draft</span>
+                    </button>
+                    <button class="quick-action-btn" id="useTemplateBtn">
+                        <i class="fas fa-template"></i>
+                        <span>Use Template</span>
+                    </button>
+                    <button class="quick-action-btn" id="sendCampaignBtn">
+                        <i class="fas fa-rocket"></i>
+                        <span>Send Campaign</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Campaign Creation Content -->
+            <div class="content-wrapper">
+                <div class="campaign-creation-container">
+                    <div class="creation-steps">
+                        <div class="step active" data-step="1">
+                            <div class="step-number">1</div>
+                            <div class="step-info">
+                                <div class="step-title">Setup</div>
+                                <div class="step-description">Basic campaign details</div>
+                            </div>
+                        </div>
+                        <div class="step" data-step="2">
+                            <div class="step-number">2</div>
+                            <div class="step-info">
+                                <div class="step-title">Content</div>
+                                <div class="step-description">Design your email</div>
+                            </div>
+                        </div>
+                        <div class="step" data-step="3">
+                            <div class="step-number">3</div>
+                            <div class="step-info">
+                                <div class="step-title">Recipients</div>
+                                <div class="step-description">Choose your audience</div>
+                            </div>
+                        </div>
+                        <div class="step" data-step="4">
+                            <div class="step-number">4</div>
+                            <div class="step-info">
+                                <div class="step-title">Schedule</div>
+                                <div class="step-description">Set send time</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="creation-form">
+                        <!-- Step 1: Setup -->
+                        <div class="form-step active" data-step="1">
+                            <div class="form-section">
+                                <h2 class="section-title">Campaign Details</h2>
+                                
+                                <div class="form-group">
+                                    <label for="campaign-name">Campaign Name</label>
+                                    <input type="text" id="campaign-name" placeholder="e.g. Summer Sale 2023" required>
+                                    <p class="form-hint">Give your campaign a descriptive name to identify it later</p>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="campaign-subject">Email Subject</label>
+                                    <input type="text" id="campaign-subject" placeholder="e.g. Don't miss our summer sale!" required>
+                                    <p class="form-hint">This is what recipients will see in their inbox</p>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="campaign-preview">Preview Text</label>
+                                    <input type="text" id="campaign-preview" placeholder="e.g. Get 20% off all summer collections...">
+                                    <p class="form-hint">Short text that appears after the subject line in most email clients</p>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="campaign-from">From Name</label>
+                                    <input type="text" id="campaign-from" value="WFFE Connect" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="campaign-reply">Reply-to Email</label>
+                                    <input type="email" id="campaign-reply" value="support@wffeconnect.com" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h2 class="section-title">Tracking & Analytics</h2>
+                                
+                                <div class="form-checkbox-group">
+                                    <input type="checkbox" id="track-opens" checked>
+                                    <label for="track-opens">Track opens</label>
+                                </div>
+                                
+                                <div class="form-checkbox-group">
+                                    <input type="checkbox" id="track-clicks" checked>
+                                    <label for="track-clicks">Track clicks</label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="campaign-tags">Tags</label>
+                                    <input type="text" id="campaign-tags" placeholder="Add tags to organize your campaigns">
+                                    <p class="form-hint">Separate tags with commas</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="cancelBtn">
+                                    <i class="fas fa-times"></i>
+                                    Cancel
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextStep1Btn">
+                                    Next: Design Email
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Content -->
+                        <div class="form-step" data-step="2">
+                            <div class="form-section">
+                                <h2 class="section-title">Email Content</h2>
+                                
+                                <div class="form-group">
+                                    <label>Email Template</label>
+                                    <div class="template-selector">
+                                        <div class="template-card selected">
+                                            <img src="https://via.placeholder.com/300x200?text=Basic+Template" alt="Basic Template">
+                                            <div class="template-name">Basic</div>
+                                        </div>
+                                        <div class="template-card">
+                                            <img src="https://via.placeholder.com/300x200?text=Promo+Template" alt="Promo Template">
+                                            <div class="template-name">Promotional</div>
+                                        </div>
+                                        <div class="template-card">
+                                            <img src="https://via.placeholder.com/300x200?text=Newsletter+Template" alt="Newsletter Template">
+                                            <div class="template-name">Newsletter</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email-content">Email Content</label>
+                                    <div class="email-editor-toolbar">
+                                        <button type="button" data-command="bold"><i class="fas fa-bold"></i></button>
+                                        <button type="button" data-command="italic"><i class="fas fa-italic"></i></button>
+                                        <button type="button" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+                                        <button type="button" data-command="insertImage"><i class="fas fa-image"></i></button>
+                                        <button type="button" data-command="createLink"><i class="fas fa-link"></i></button>
+                                    </div>
+                                    <div id="email-content" contenteditable="true" class="email-editor">
+                                        <p>Start typing your email content here...</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email-images">Upload Images</label>
+                                    <input type="file" id="email-images" accept="image/*" multiple>
+                                    <div class="image-preview" id="imagePreview"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="backStep2Btn">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Back
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextStep2Btn">
+                                    Next: Recipients
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Recipients -->
+                        <div class="form-step" data-step="3">
+                            <div class="form-section">
+                                <h2 class="section-title">Recipient List</h2>
+                                
+                                <div class="form-group">
+                                    <label>Select Recipient Group</label>
+                                    <div class="recipient-group-selector">
+                                        <div class="recipient-group-card selected">
+                                            <i class="fas fa-users"></i>
+                                            <div class="group-name">All Customers</div>
+                                            <div class="group-count">1,240 contacts</div>
+                                        </div>
+                                        <div class="recipient-group-card">
+                                            <i class="fas fa-star"></i>
+                                            <div class="group-name">VIP Customers</div>
+                                            <div class="group-count">320 contacts</div>
+                                        </div>
+                                        <div class="recipient-group-card">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <div class="group-name">Recent Buyers</div>
+                                            <div class="group-count">540 contacts</div>
+                                        </div>
+                                        <div class="recipient-group-card">
+                                            <i class="fas fa-plus"></i>
+                                            <div class="group-name">Create New Group</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="recipient-search">Search Contacts</label>
+                                    <div class="search-box">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="recipient-search" placeholder="Search contacts...">
+                                    </div>
+                                    <div class="recipient-list-container">
+                                        <div class="recipient-list-header">
+                                            <input type="checkbox" id="select-all">
+                                            <label for="select-all">Select All</label>
+                                            <span>1,240 contacts</span>
+                                        </div>
+                                        <div class="recipient-list">
+                                            <div class="recipient-item">
+                                                <input type="checkbox" id="recipient-1" checked>
+                                                <label for="recipient-1">
+                                                    <div class="recipient-avatar">
+                                                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User">
+                                                    </div>
+                                                    <div class="recipient-info">
+                                                        <div class="recipient-name">Maria Garcia</div>
+                                                        <div class="recipient-email">maria.garcia@example.com</div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <!-- More recipient items... -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="backStep3Btn">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Back
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextStep3Btn">
+                                    Next: Schedule
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Schedule -->
+                        <div class="form-step" data-step="4">
+                            <div class="form-section">
+                                <h2 class="section-title">Schedule Your Campaign</h2>
+                                
+                                <div class="form-group">
+                                    <label>Send Option</label>
+                                    <div class="send-options">
+                                        <div class="send-option-card selected" data-option="now">
+                                            <i class="fas fa-paper-plane"></i>
+                                            <div class="option-title">Send Immediately</div>
+                                            <div class="option-description">Campaign will be sent right away</div>
+                                        </div>
+                                        <div class="send-option-card" data-option="schedule">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <div class="option-title">Schedule for Later</div>
+                                            <div class="option-description">Set a specific date and time</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group schedule-datetime" style="display: none;">
+                                    <label for="schedule-date">Date & Time</label>
+                                    <div class="datetime-inputs">
+                                        <input type="date" id="schedule-date">
+                                        <input type="time" id="schedule-time">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="timezone">Timezone</label>
+                                    <select id="timezone">
+                                        <option value="GMT+3">East Africa Time (GMT+3)</option>
+                                        <option value="GMT+1">Central Africa Time (GMT+1)</option>
+                                        <option value="GMT+0">Greenwich Mean Time (GMT)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h2 class="section-title">Campaign Summary</h2>
+                                <div class="campaign-summary">
+                                    <div class="summary-item">
+                                        <span class="summary-label">Campaign Name:</span>
+                                        <span class="summary-value" id="summary-name">Summer Sale 2023</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span class="summary-label">Recipients:</span>
+                                        <span class="summary-value" id="summary-recipients">1,240 contacts</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span class="summary-label">Scheduled:</span>
+                                        <span class="summary-value" id="summary-schedule">Immediately</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="backStep4Btn">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Back
+                                </button>
+                                <button type="button" class="btn btn-primary" id="sendNowBtn">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Send Campaign
+                                </button>
+                                <button type="button" class="btn btn-primary" id="scheduleBtn" style="display: none;">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Schedule Campaign
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Campaign Created Successfully!</h2>
+            <p>Your email campaign has been scheduled and will be sent to 1,240 recipients.</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="viewCampaignBtn">View Campaign</button>
+                <button class="btn btn-secondary" id="createNewBtn">Create Another</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar Toggle
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.querySelector('.sidebar');
+            
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+            });
+            
+            // Step Navigation
+            const steps = document.querySelectorAll('.creation-steps .step');
+            const formSteps = document.querySelectorAll('.form-step');
+            let currentStep = 1;
+            
+            function showStep(stepNumber) {
+                // Update steps UI
+                steps.forEach(step => {
+                    if (parseInt(step.dataset.step) === stepNumber) {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                });
+                
+                // Update form steps
+                formSteps.forEach(step => {
+                    if (parseInt(step.dataset.step) === stepNumber) {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                });
+                
+                currentStep = stepNumber;
+            }
+            
+            // Next Step 1 Button
+            document.getElementById('nextStep1Btn').addEventListener('click', function() {
+                // Validate required fields
+                const campaignName = document.getElementById('campaign-name').value;
+                const campaignSubject = document.getElementById('campaign-subject').value;
+                
+                if (!campaignName || !campaignSubject) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                // Update summary
+                document.getElementById('summary-name').textContent = campaignName;
+                
+                showStep(2);
+            });
+            
+            // Next Step 2 Button
+            document.getElementById('nextStep2Btn').addEventListener('click', function() {
+                showStep(3);
+            });
+            
+            // Next Step 3 Button
+            document.getElementById('nextStep3Btn').addEventListener('click', function() {
+                showStep(4);
+            });
+            
+            // Back Buttons
+            document.getElementById('backStep2Btn').addEventListener('click', function() {
+                showStep(1);
+            });
+            
+            document.getElementById('backStep3Btn').addEventListener('click', function() {
+                showStep(2);
+            });
+            
+            document.getElementById('backStep4Btn').addEventListener('click', function() {
+                showStep(3);
+            });
+            
+            // Template Selection
+            const templateCards = document.querySelectorAll('.template-card');
+            templateCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    templateCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Recipient Group Selection
+            const recipientGroups = document.querySelectorAll('.recipient-group-card');
+            recipientGroups.forEach(group => {
+                group.addEventListener('click', function() {
+                    if (!this.classList.contains('selected')) {
+                        recipientGroups.forEach(g => g.classList.remove('selected'));
+                        this.classList.add('selected');
+                    }
+                });
+            });
+            
+            // Select All Recipients
+            document.getElementById('select-all').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.recipient-item input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+            
+            // Send Options
+            const sendOptions = document.querySelectorAll('.send-option-card');
+            const scheduleDateTime = document.querySelector('.schedule-datetime');
+            const sendNowBtn = document.getElementById('sendNowBtn');
+            const scheduleBtn = document.getElementById('scheduleBtn');
+            
+            sendOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    sendOptions.forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    if (this.dataset.option === 'schedule') {
+                        scheduleDateTime.style.display = 'block';
+                        sendNowBtn.style.display = 'none';
+                        scheduleBtn.style.display = 'block';
+                        document.getElementById('summary-schedule').textContent = 'Scheduled';
+                    } else {
+                        scheduleDateTime.style.display = 'none';
+                        sendNowBtn.style.display = 'block';
+                        scheduleBtn.style.display = 'none';
+                        document.getElementById('summary-schedule').textContent = 'Immediately';
+                    }
+                });
+            });
+            
+            // Save Draft Button
+            document.getElementById('saveDraftBtn').addEventListener('click', function() {
+                alert('Draft saved successfully!');
+                // In a real app, this would save to database
+            });
+            
+            // Use Template Button
+            document.getElementById('useTemplateBtn').addEventListener('click', function() {
+                window.location.href = '/dashboard/campaigns/email/templates.html';
+            });
+            
+            // Send/Schedule Buttons
+            document.getElementById('sendNowBtn').addEventListener('click', showSuccessModal);
+            document.getElementById('scheduleBtn').addEventListener('click', showSuccessModal);
+            
+            // Cancel Button
+            document.getElementById('cancelBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to cancel? All unsaved changes will be lost.')) {
+                    window.location.href = '/dashboard/campaigns/email/index.html';
+                }
+            });
+            
+            // Success Modal
+            function showSuccessModal() {
+                document.getElementById('successModal').style.display = 'block';
+            }
+            
+            document.getElementById('viewCampaignBtn').addEventListener('click', function() {
+                window.location.href = '/dashboard/campaigns/email/index.html';
+            });
+            
+            document.getElementById('createNewBtn').addEventListener('click', function() {
+                window.location.reload();
+            });
+            
+            // Email Editor Functionality
+            const editorButtons = document.querySelectorAll('.email-editor-toolbar button');
+            editorButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const command = this.dataset.command;
+                    if (command === 'insertImage') {
+                        const url = prompt('Enter the image URL:');
+                        if (url) {
+                            document.execCommand('insertImage', false, url);
+                        }
+                    } else if (command === 'createLink') {
+                        const url = prompt('Enter the link URL:');
+                        if (url) {
+                            document.execCommand('createLink', false, url);
+                        }
+                    } else {
+                        document.execCommand(command, false, null);
+                    }
+                });
+            });
+            
+            // Image Upload Preview
+            document.getElementById('email-images').addEventListener('change', function(e) {
+                const files = e.target.files;
+                const preview = document.getElementById('imagePreview');
+                preview.innerHTML = '';
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.maxWidth = '100px';
+                            img.style.maxHeight = '100px';
+                            img.style.margin = '5px';
+                            preview.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

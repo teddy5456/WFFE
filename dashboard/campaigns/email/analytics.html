@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Analytics | WFFE Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
+    <link rel="stylesheet" href="campaigns.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-couch"></i>
+                    <span>WFFE Connect</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Main</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/index.html">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/dashboard/campaigns/email/index.html">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email Campaigns</span>
+                                <span class="badge">3</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/dashboard/campaigns/socialmedia/social.html">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Social Media</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-users"></i>
+                                <span>Customers</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Analytics</div>
+                    <ul>
+                        <li class="active">
+                            <a href="/dashboard/campaigns/email/analytics.html">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Performance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-search-dollar"></i>
+                                <span>ROI Tracker</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-poll"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Settings</div>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-cog"></i>
+                                <span>Account</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-question-circle"></i>
+                                <span>Help Center</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
+                    </div>
+                    <div class="user-info">
+                        <div class="name">Sarah Johnson</div>
+                        <div class="role">Marketing Manager</div>
+                    </div>
+                    <button class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Campaign Analytics</h1>
+                    <div class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span>/</span>
+                        <a href="#">Campaigns</a>
+                        <span>/</span>
+                        <a href="#">Email</a>
+                        <span>/</span>
+                        <a href="#">Summer Collection Launch</a>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <button class="quick-action-btn">
+                        <i class="fas fa-download"></i>
+                        <span>Export Report</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Analytics Content -->
+            <div class="content-wrapper">
+                <div class="analytics-header">
+                    <div class="campaign-info">
+                        <h2>Summer Collection Launch</h2>
+                        <div class="campaign-meta">
+                            <span class="status-badge sent">Sent</span>
+                            <span><i class="fas fa-calendar"></i> Sent: Jun 15, 2023 at 10:30 AM</span>
+                            <span><i class="fas fa-users"></i> 2,450 recipients</span>
+                        </div>
+                    </div>
+                    
+                    <div class="time-filter">
+                        <select class="filter-select">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option selected>Since campaign sent</option>
+                            <option>Custom range</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="card-value">24.5%</div>
+                        <div class="card-label">Open Rate</div>
+                        <div class="card-trend up">
+                            <i class="fas fa-arrow-up"></i> 2.1% vs average
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-value">8.2%</div>
+                        <div class="card-label">Click Rate</div>
+                        <div class="card-trend up">
+                            <i class="fas fa-arrow-up"></i> 1.3% vs average
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-value">201</div>
+                        <div class="card-label">Total Clicks</div>
+                        <div class="card-trend up">
+                            <i class="fas fa-arrow-up"></i> 15% vs average
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-value">$2,450</div>
+                        <div class="card-label">Revenue</div>
+                        <div class="card-trend up">
+                            <i class="fas fa-arrow-up"></i> 12% vs average
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts -->
+                <div class="analytics-charts">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Performance Over Time</h3>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color opens"></span>
+                                    <span>Opens</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color clicks"></span>
+                                    <span>Clicks</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/800x300?text=Performance+Chart" alt="Performance Chart" style="width:100%; border-radius: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div class="chart-row">
+                        <div class="half-chart-container">
+                            <div class="chart-header">
+                                <h3>Top Links Clicked</h3>
+                            </div>
+                            <div class="links-list">
+                                <div class="link-item">
+                                    <div class="link-info">
+                                        <div class="link-name">Summer Collection</div>
+                                        <div class="link-url">example.com/summer</div>
+                                    </div>
+                                    <div class="link-stats">
+                                        <div class="link-clicks">84 clicks</div>
+                                        <div class="link-percent">41.8%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="link-item">
+                                    <div class="link-info">
+                                        <div class="link-name">Special Offer</div>
+                                        <div class="link-url">example.com/offer</div>
+                                    </div>
+                                    <div class="link-stats">
+                                        <div class="link-clicks">72 clicks</div>
+                                        <div class="link-percent">35.8%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="link-item">
+                                    <div class="link-info">
+                                        <div class="link-name">Shop Now</div>
+                                        <div class="link-url">example.com/shop</div>
+                                    </div>
+                                    <div class="link-stats">
+                                        <div class="link-clicks">45 clicks</div>
+                                        <div class="link-percent">22.4%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="half-chart-container">
+                            <div class="chart-header">
+                                <h3>Devices</h3>
+                            </div>
+                            <div class="chart-placeholder">
+                                <img src="https://via.placeholder.com/400x250?text=Devices+Chart" alt="Devices Chart" style="width:100%; border-radius: 8px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-row">
+                        <div class="half-chart-container">
+                            <div class="chart-header">
+                                <h3>Locations</h3>
+                            </div>
+                            <div class="chart-placeholder">
+                                <img src="https://via.placeholder.com/400x250?text=Locations+Map" alt="Locations Map" style="width:100%; border-radius: 8px;">
+                            </div>
+                        </div>
+                        
+                        <div class="half-chart-container">
+                            <div class="chart-header">
+                                <h3>Email Clients</h3>
+                            </div>
+                            <div class="chart-placeholder">
+                                <img src="https://via.placeholder.com/400x250?text=Email+Clients+Chart" alt="Email Clients Chart" style="width:100%; border-radius: 8px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recipient Activity -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2>Recipient Activity</h2>
+                        <div class="activity-filter">
+                            <select class="filter-select">
+                                <option>All Activity</option>
+                                <option>Opened</option>
+                                <option>Clicked</option>
+                                <option>Converted</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-table-container">
+                        <table class="activity-table">
+                            <thead>
+                                <tr>
+                                    <th>Recipient</th>
+                                    <th>Status</th>
+                                    <th>Opened At</th>
+                                    <th>Clicks</th>
+                                    <th>Last Click</th>
+                                    <th>Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="recipient-info">
+                                            <div class="recipient-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="recipient-details">
+                                                <div class="recipient-name">john.doe@example.com</div>
+                                                <div class="recipient-tag">VIP Customer</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="activity-status">
+                                            <span class="status-dot clicked"></span>
+                                            <span>Clicked</span>
+                                        </div>
+                                    </td>
+                                    <td>Jun 15, 2023 10:42 AM</td>
+                                    <td>3</td>
+                                    <td>Jun 15, 2023 11:15 AM</td>
+                                    <td>$125</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <div class="recipient-info">
+                                            <div class="recipient-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="recipient-details">
+                                                <div class="recipient-name">jane.smith@example.com</div>
+                                                <div class="recipient-tag">New Customer</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="activity-status">
+                                            <span class="status-dot opened"></span>
+                                            <span>Opened</span>
+                                        </div>
+                                    </td>
+                                    <td>Jun 15, 2023 11:05 AM</td>
+                                    <td>0</td>
+                                    <td>-</td>
+                                    <td>$0</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <div class="recipient-info">
+                                            <div class="recipient-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="recipient-details">
+                                                <div class="recipient-name">mike.johnson@example.com</div>
+                                                <div class="recipient-tag">Repeat Customer</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="activity-status">
+                                            <span class="status-dot converted"></span>
+                                            <span>Converted</span>
+                                        </div>
+                                    </td>
+                                    <td>Jun 15, 2023 10:38 AM</td>
+                                    <td>2</td>
+                                    <td>Jun 15, 2023 10:45 AM</td>
+                                    <td>$85</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <button class="pagination-btn disabled">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="campaigns.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | WFFE Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="auth.css">
+    <style>
+        :root {
+            --primary: #6d4c41;
+            --secondary: #d7ccc8;
+            --accent: #ffab91;
+            --dark: #3e2723;
+            --light: #f5f5f5;
+            --text: #212121;
+            --text-light: #757575;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-left">
+            <h2>Welcome Back to WFFE Connect</h2>
+            <p>Log in to access your digital marketing dashboard and continue growing your furniture business with powerful tools designed just for you.</p>
+            <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Furniture Marketing">
+        </div>
+        
+        <div class="auth-right">
+            <div class="auth-form">
+                <h1>Sign In</h1>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                        <div style="text-align: right; margin-top: 0.5rem;">
+                            <a href="#" style="font-size: 0.9rem;">Forgot password?</a>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="auth-btn">Sign In</button>
+                </form>
+                
+                <div class="auth-footer">
+                    Don't have an account? <a href="register.html">Sign up</a>
+                </div>
+                
+                <div class="social-auth">
+                    <p>Or sign in with</p>
+                    <div class="social-btns">
+                        <a href="#" class="social-btn google"><i class="fab fa-google"></i></a>
+                        <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn apple"><i class="fab fa-apple"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js" defer></script>
+</body>
+</html>
