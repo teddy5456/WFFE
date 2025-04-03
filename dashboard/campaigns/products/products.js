@@ -1,165 +1,82 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Modal Handling
-    const productModal = document.getElementById('product-modal');
-    const addProductBtn = document.getElementById('add-product');
-    const closeModalBtn = document.querySelector('#product-modal .close-btn');
-    const cancelProductBtn = document.getElementById('cancel-product');
+    console.log('Started');
+   
+    let productData = {};
 
-    // Show modal
-    addProductBtn.addEventListener('click', () => {
-        productModal.style.display = 'block';
-    });
+    async function fetchProductData() {
+        try {
+            console.log("fetching product data");
+            const response = await fetch('http://localhost:8000/api/products');
 
-    // Hide modal
-    closeModalBtn.addEventListener('click', () => {
-        productModal.style.display = 'none';
-    });
-
-    cancelProductBtn.addEventListener('click', () => {
-        productModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target === productModal) {
-            productModal.style.display = 'none';
-        }
-    });
-
-    // Image Upload Handling
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('product-images');
-    const imagePreview = document.getElementById('image-preview');
-
-    dropZone.addEventListener('click', () => {
-        fileInput.click();
-    });
-
-    fileInput.addEventListener('change', handleFiles);
-    
-    // Drag and drop functionality
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, preventDefaults, false);
-    });
-
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropZone.addEventListener(eventName, highlight, false);
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, unhighlight, false);
-    });
-
-    function highlight() {
-        dropZone.classList.add('highlight');
-    }
-
-    function unhighlight() {
-        dropZone.classList.remove('highlight');
-    }
-
-    dropZone.addEventListener('drop', handleDrop, false);
-
-    function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFiles({ target: { files } });
-    }
-
-    function handleFiles(e) {
-        const files = e.target.files;
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'image-preview-item';
-                    previewItem.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview">
-                        <span class="remove-image"><i class="fas fa-times"></i></span>
-                    `;
-                    imagePreview.appendChild(previewItem);
-                    
-                    // Add remove functionality
-                    previewItem.querySelector('.remove-image').addEventListener('click', () => {
-                        previewItem.remove();
-                    });
-                };
-                reader.readAsDataURL(file);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            productData = await response.json();
+            init();
+        }
+        catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
         }
     }
 
-    // Form Submission
-    const productForm = document.getElementById('product-form');
-    productForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+    function init() {
+        // Assuming productData is an array of products
+        const tableBody = document.querySelector('tbody'); // Select your table body
         
-        // Form validation
-        const productName = document.getElementById('product-name').value;
-        if (!productName) {
-            alert('Please enter a product name');
-            return;
-        }
-
-        // Here you would typically send data to the server
-        console.log('Product form submitted');
-        
-        // For demo purposes
-        alert('Product saved successfully!');
-        productModal.style.display = 'none';
-        productForm.reset();
-        imagePreview.innerHTML = '';
-    });
-
-    // Search functionality
-    const productSearch = document.getElementById('product-search');
-    productSearch.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const productCards = document.querySelectorAll('.product-card');
-        
-        productCards.forEach(card => {
-            const productName = card.querySelector('h3').textContent.toLowerCase();
-            if (productName.includes(searchTerm)) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    });
-
-    // Filter functionality
-    const categoryFilter = document.getElementById('category-filter');
-    const statusFilter = document.getElementById('status-filter');
-    
-    [categoryFilter, statusFilter].forEach(filter => {
-        filter.addEventListener('change', applyFilters);
-    });
-
-    function applyFilters() {
-        const categoryValue = categoryFilter.value;
-        const statusValue = statusFilter.value;
-        const productCards = document.querySelectorAll('.product-card');
-        
-        productCards.forEach(card => {
-            const cardCategory = card.dataset.category || '';
-            const cardStatus = card.querySelector('.product-status').classList.contains(statusValue) ? 
-                              statusValue : 
-                              card.querySelector('.product-status').textContent.toLowerCase().replace(' ', '-');
+        productData.forEach(product => {
+            const row = document.createElement('tr');
             
-            const categoryMatch = !categoryValue || cardCategory === categoryValue;
-            const statusMatch = !statusValue || cardStatus === statusValue;
+            // Product name cell
+            const nameCell = document.createElement('td');
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product-cell';
+            const productSpan = document.createElement('span');
+            productSpan.className = 'product-cell-text';
+            productSpan.textContent = product.name || 'Premium Lounge Chair'; // Use actual data
+            productDiv.appendChild(productSpan);
+            nameCell.appendChild(productDiv);
             
-            if (categoryMatch && statusMatch) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
+            // Product code cell
+            const codeCell = document.createElement('td');
+            codeCell.textContent = product.code || 'WFFE-CH-001'; // Use actual data
+            
+            // Stock cell
+            const stockCell = document.createElement('td');
+            const stockSpan = document.createElement('span');
+            stockSpan.className = `stock-badge ${product.stock > 0 ? 'in-stock' : 'out-of-stock'}`;
+            stockSpan.textContent = product.stock || '42'; // Use actual data
+            stockCell.appendChild(stockSpan);
+            
+            // Date cell
+            const dateCell = document.createElement('td');
+            dateCell.textContent = product.date ? formatDate(product.date) : 'Jun 15, 2023'; // Use actual data
+            
+            // Action cell
+            const actionCell = document.createElement('td');
+            const actionButton = document.createElement('button');
+            actionButton.className = 'action-btn inventory';
+            actionButton.innerHTML = '<i class="fas fa-boxes"></i> Update';
+            actionCell.appendChild(actionButton);
+            
+            // Append all cells to the row
+            row.appendChild(nameCell);
+            row.appendChild(codeCell);
+            row.appendChild(stockCell);
+            row.appendChild(dateCell);
+            row.appendChild(actionCell);
+            
+            // Append row to table body
+            tableBody.appendChild(row);
         });
     }
+
+    // Helper function to format date
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+    }
+
+    // Actually call the fetch function
+    fetchProductData();
 });

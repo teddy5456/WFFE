@@ -580,6 +580,7 @@
   
   .main-image-container {
     position: relative;
+    object-fit: contain;
     border-radius: var(--radius-md);
     overflow: hidden;
     background-color: var(--light);
@@ -587,9 +588,8 @@
   
   .main-image {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1/1;
-    object-fit: contain;
+    height: 500px;
+    object-fit: cover;
   }
   
   .zoom-button {
@@ -610,8 +610,7 @@
   
   .image-badges {
     position: absolute;
-    top: var(--space-md);
-    left: var(--space-md);
+    z-index: 999;
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
@@ -2722,6 +2721,10 @@
   }
   
   @media (max-width: 576px) {
+    .body {
+      overflow-x: hidden;
+    }
+
     .header-container {
       height: 60px;
     }
@@ -2753,4 +2756,39 @@
     .ar-actions {
       flex-direction: column;
     }
+
+    .nav-links {
+      display: none;
+  }
+
+  .product-tabs-container {
+    display: none;
+  }
+
+
+
+  .product-container{
+    padding: 0 var(--space-md);
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .main-image {
+     height: auto;
+  }
+
+  .breadcrumb-container {
+    margin: 0;
+    padding: 10px 0;
+  }
+
+  .gallery-thumbnails{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  .gallery-thumbnails button{
+  }
   }

@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waikas Fabrics & Furniture</title>
+    <meta name="description" content="Premium furniture and fabrics in Nairobi">
+    <meta property="og:title" content="Waikas Fabrics & Furniture">
+    <meta property="og:description" content="Handcrafted premium furniture in Nairobi">
+    <meta property="og:image" content="/images/social-share.jpg">
+    <meta property="og:url" content="https://waikas.com">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/products/category.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FurnitureStore",
+      "name": "Waikas Fabrics & Furniture",
+      "description": "Premium handcrafted furniture in Nairobi",
+      "url": "https://waikas.com",
+      "logo": "https://waikas.com/logo.png"
+    }
+    </script>
+</head>
+<body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <div class="container">
+            <p>✨ Free Nairobi Delivery on Orders Over KES 50,000 | <strong>15% Off</strong> Custom Orders This Month</p>
+            <button class="announcement-close" aria-label="Close announcement">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="container">
+            <div class="header-grid">
+                <div class="logo">
+                    <a href="/">
+                        <i class="fas fa-couch logo-icon"></i>
+                        <span class="logo-text">Waikas Fabrics & Furniture</span>
+                    </a>
+                </div>
+                
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li class="dropdown">
+                            <a href="/products/category.html">Living Room <i class="fas fa-chevron-down"></i></a>
+                        </li>
+                        <li><a href="/bedroom">Bedroom</a></li>
+                        <li><a href="/dining">Dining</a></li>
+                        <li><a href="/office">Office</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="search-container">
+                        <button class="search-toggle">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <a href="/account" class="account-link">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="/wishlist" class="wishlist-link">
+                        <i class="fas fa-heart"></i>
+                        <span class="wishlist-count">0</span>
+                    </a>
+                    <div class="cart-container">
+                        <a href="/cart" class="cart-link">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="category-hero" id="categoryHero">
+        <div class="container">
+            <div class="hero-content">
+                <nav class="breadcrumbs">
+                    <a href="/">Home</a>
+                    <span>/</span>
+                    <a href="/collections">Collections</a>
+                    <span>/</span>
+                    <span id="currentCategory">Loading...</span>
+                </nav>
+                <h1 id="categoryTitle">Loading...</h1>
+                <p id="categoryDescription"></p>
+                <div class="hero-cta">
+                    <a href="#all-products" class="btn btn-primary">View All Products</a>
+                    <a href="#" id="customDesignLink" class="btn btn-outline">Custom Design Service</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <nav class="category-subnav">
+        <div class="container">
+            <ul id="subcategoryNav">
+                <li><a href="#all" class="active" data-subcategory="all">All Products</a></li>
+                <!-- Subcategories will be dynamically inserted here -->
+            </ul>
+        </div>
+    </nav>
+
+    <main class="category-main">
+        <div class="container">
+            <div class="category-grid">
+                <!-- Filters Sidebar -->
+                <aside class="filters-sidebar" id="filtersSidebar">
+                    <div class="filters-header">
+                        <h3>Filters</h3>
+                        <button class="close-filters" id="closeFilters">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Price Filter -->
+                    <div class="filter-group">
+                        <div class="filter-header">
+                            <h4>Price Range</h4>
+                            <button class="filter-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="filter-content">
+                            <div class="price-range">
+                                <div class="range-slider">
+                                    <input type="range" min="0" max="500000" value="0" id="priceMin">
+                                    <input type="range" min="0" max="500000" value="500000" id="priceMax">
+                                </div>
+                                <div class="price-inputs">
+                                    <div class="price-input">
+                                        <label for="minPrice">Min</label>
+                                        <input type="number" id="minPrice" value="0" min="0">
+                                    </div>
+                                    <div class="price-input">
+                                        <label for="maxPrice">Max</label>
+                                        <input type="number" id="maxPrice" value="500000" max="500000">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Color Filter -->
+                    <div class="filter-group">
+                        <div class="filter-header">
+                            <h4>Colors</h4>
+                            <button class="filter-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="filter-content">
+                            <div class="color-filters">
+                                <div class="color-option" data-color="blue" style="background-color: #1e3a8a;" aria-label="Blue"></div>
+                                <div class="color-option" data-color="green" style="background-color: #064e3b;" aria-label="Green"></div>
+                                <div class="color-option" data-color="red" style="background-color: #991b1b;" aria-label="Red"></div>
+                                <div class="color-option" data-color="gray" style="background-color: #6b7280;" aria-label="Gray"></div>
+                                <div class="color-option" data-color="beige" style="background-color: #d4a373;" aria-label="Beige"></div>
+                                <div class="color-option" data-color="black" style="background-color: #1a1a1a;" aria-label="Black"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Material Filter -->
+                    <div class="filter-group">
+                        <div class="filter-header">
+                            <h4>Materials</h4>
+                            <button class="filter-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="filter-content">
+                            <ul class="checkbox-filters">
+                                <li>
+                                    <input type="checkbox" id="material-wood" checked>
+                                    <label for="material-wood">Solid Wood</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="material-fabric" checked>
+                                    <label for="material-fabric">Premium Fabric</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="material-leather" checked>
+                                    <label for="material-leather">Genuine Leather</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="material-metal" checked>
+                                    <label for="material-metal">Metal Accents</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" id="applyFilters">Apply Filters</button>
+                        <button class="btn btn-text" id="resetFilters">Reset All</button>
+                    </div>
+                </aside>
+                
+                <!-- All Products Section -->
+                <section class="products-section" id="products">
+                    <div class="container">
+                        <div class="products-header">
+                            <h2>All <span id="allProductsCategoryName"></span> Products</h2>
+                            <div class="sort-options">
+                                <label for="mainSortBy">Sort by:</label>
+                                <select id="mainSortBy">
+                                    <option value="featured">Featured</option>
+                                    <option value="price-asc">Price: Low to High</option>
+                                    <option value="price-desc">Price: High to Low</option>
+                                    <option value="newest">Newest Arrivals</option>
+                                    <option value="rating">Customer Rating</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="products-grid" id="allProductsGrid">
+                            <div class="loading-state">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading all products...</p>
+                            </div>
+                        </div>
+                        
+                        <nav class="pagination" id="pagination">
+                            <ul id="paginationList">
+                                <!-- Pagination will be dynamically inserted here -->
+                            </ul>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Category Benefits -->
+    <section class="category-benefits">
+        <div class="container">
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Free Nairobi Delivery</h3>
+                    <p>On all orders over KES 50,000 with professional assembly included</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <h3>30-Day Returns</h3>
+                    <p>Hassle-free returns within 30 days of delivery</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>5-Year Warranty</h3>
+                    <p>Industry-leading warranty on all furniture frames</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <h3>Custom Sizing</h3>
+                    <p>Tailor any piece to your exact dimensions and fabric</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subcategory Products Section -->
+    <section class="subcategory-products-section" id="subcategory-products">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="subcategoryProductsTitle">Shop by Collection</h2>
+            </div>
+            
+            <div class="subcategory-tabs" id="subcategoryTabs">
+                <!-- Dynamic tabs will be inserted here -->
+            </div>
+            
+            <div class="subcategory-content" id="subcategoryContent">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Lookbook -->
+    <section class="lookbook-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Living Room Inspiration</h2>
+                <a href="/lookbook/living-room" class="view-all">View Lookbook</a>
+            </div>
+            <div class="lookbook-grid">
+                <div class="lookbook-card">
+                    <img src="/images/lookbook/modern-living.jpg" alt="Modern Living Room" loading="lazy">
+                    <div class="lookbook-content">
+                        <h3>Modern Elegance</h3>
+                        <a href="#" class="shop-the-look">Shop This Look</a>
+                    </div>
+                </div>
+                <div class="lookbook-card">
+                    <img src="/images/lookbook/classic-living.jpg" alt="Classic Living Room" loading="lazy">
+                    <div class="lookbook-content">
+                        <h3>Classic Comfort</h3>
+                        <a href="#" class="shop-the-look">Shop This Look</a>
+                    </div>
+                </div>
+                <div class="lookbook-card">
+                    <img src="/images/lookbook/contemporary-living.jpg" alt="Contemporary Living Room" loading="lazy">
+                    <div class="lookbook-content">
+                        <h3>Contemporary Style</h3>
+                        <a href="#" class="shop-the-look">Shop This Look</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category FAQ -->
+    <section class="category-faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Living Room Furniture Questions</h2>
+            </div>
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What's the lead time for custom sofas?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Custom sofa orders typically take 4-6 weeks from design approval to delivery. We'll provide regular updates throughout the process.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        How do I care for my fabric furniture?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We recommend regular vacuuming with an upholstery attachment and immediate treatment of spills with a clean, damp cloth. All our fabrics come with stain-resistant treatment.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Can I change the fabric on displayed models?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! We offer over 200 fabric options for custom orders. Visit our showroom to view swatches or request a fabric sample kit.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-grid">
+                <div class="newsletter-content">
+                    <h2>Get Design Inspiration</h2>
+                    <p>Subscribe for exclusive offers, styling tips, and first access to new collections</p>
+                    <form class="newsletter-form">
+                        <div class="form-group">
+                            <input type="email" placeholder="Your email address" required>
+                            <button type="submit">Subscribe</button>
+                        </div>
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="newsletterConsent" checked>
+                            <label for="newsletterConsent">I agree to receive marketing communications</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="newsletter-image">
+                    <img src="/images/newsletter-living-room.jpg" alt="Living Room Design" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-couch"></i>
+                        <span>Waikas Fabrics & Furniture</span>
+                    </div>
+                    <p>Handcrafting premium furniture in Nairobi since 2010</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="link-column">
+                        <h3>Shop</h3>
+                        <ul>
+                            <li><a href="/living-room">Living Room</a></li>
+                            <li><a href="/bedroom">Bedroom</a></li>
+                            <li><a href="/dining">Dining</a></li>
+                            <li><a href="/office">Office</a></li>
+                            <li><a href="/outdoor">Outdoor</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="link-column">
+                        <h3>Help</h3>
+                        <ul>
+                            <li><a href="/contact">Contact Us</a></li>
+                            <li><a href="/faq">FAQs</a></li>
+                            <li><a href="/delivery">Delivery Info</a></li>
+                            <li><a href="/returns">Returns Policy</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="link-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="/about">About Us</a></li>
+                            <li><a href="/showroom">Visit Showroom</a></li>
+                            <li><a href="/blog">Design Blog</a></li>
+                            <li><a href="/careers">Careers</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; 2023 Waikas Fabrics & Furniture. All rights reserved.
+                </div>
+                <div class="legal-links">
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/sitemap">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuration
+            const ITEMS_PER_PAGE = 12;
+            const categoryId = sessionStorage.getItem('selectedCategoryId') || 1;
+            let allProducts = [];
+            let currentPage = 1;
+            let currentFilters = {
+                subcategory: 'all',
+                priceMin: 0,
+                priceMax: 500000,
+                colors: [],
+                materials: []
+            };
+
+        const elements = {
+            allProductsGrid: document.getElementById('allProductsGrid'),
+            pagination: document.getElementById('pagination'),
+            paginationList: document.getElementById('paginationList'),
+            subcategoryNav: document.getElementById('subcategoryNav'),
+            minPriceInput: document.getElementById('minPrice'),
+            maxPriceInput: document.getElementById('maxPrice'),
+            priceMinSlider: document.getElementById('priceMin'),
+            priceMaxSlider: document.getElementById('priceMax'),
+            applyFiltersBtn: document.getElementById('applyFilters'),
+            resetFiltersBtn: document.getElementById('resetFilters'),
+            mainSortBy: document.getElementById('mainSortBy'),
+            categoryHero: document.getElementById('categoryHero'),
+            currentCategory: document.getElementById('currentCategory'),
+            categoryTitle: document.getElementById('categoryTitle'),
+            categoryDescription: document.getElementById('categoryDescription')
+        };
+
+            // Initialize
+            init();
+
+            async function init() {
+    try {
+        // Show loading state immediately
+        showLoadingState();
+        
+        // Verify critical elements exist
+        if (!elements.allProductsGrid || !elements.pagination) {
+            throw new Error('Critical page elements missing');
+        }
+
+        // Get category ID from URL or default to 1
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryId = urlParams.get('category') || 1;
+        sessionStorage.setItem('selectedCategoryId', categoryId);
+
+        // Fetch category data with error handling
+        const category = await fetchCategory(categoryId).catch(err => {
+            console.error('Category fetch failed:', err);
+            throw new Error('Failed to load category data');
+        });
+
+        if (!category) {
+            throw new Error('Category data not available');
+        }
+
+        // Update UI with category info
+        updateCategoryUI(category);
+
+        // Fetch products with error handling
+        allProducts = await fetchProducts(categoryId).catch(err => {
+            console.error('Products fetch failed:', err);
+            throw new Error('Failed to load products');
+        });
+
+        if (!Array.isArray(allProducts)) {
+            throw new Error('Invalid products data received');
+        }
+
+        // Setup subcategories if they exist
+        if (category.subcategories && category.subcategories.length > 0) {
+            setupSubcategoryNavigation(category.subcategories);
+        } else {
+            document.getElementById('subcategory-products').style.display = 'none';
+        }
+
+        // Initial render
+        renderFilteredProducts();
+        setupEventListeners();
+
+    } catch (error) {
+        console.error('Initialization failed:', error);
+        showErrorState(error.message || 'Failed to initialize page');
+        
+        // Optional: Retry mechanism
+        const retryBtn = document.createElement('button');
+        retryBtn.className = 'btn btn-primary';
+        retryBtn.textContent = 'Retry';
+        retryBtn.onclick = init;
+        elements.allProductsGrid.appendChild(retryBtn);
+    }
+}
+
+function showLoadingState() {
+    elements.allProductsGrid.innerHTML = `
+        <div class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading products...</p>
+        </div>
+    `;
+}
+            // Data fetching functions
+            async function fetchCategory(id) {
+                const response = await fetch(`http://localhost:8000/api/categories/${id}`);
+                if (!response.ok) throw new Error('Failed to fetch category');
+                return await response.json();
+            }
+
+            async function fetchProducts(categoryId) {
+                const response = await fetch(`http://localhost:8000/api/categories/${categoryId}/products`);
+                if (!response.ok) throw new Error('Failed to fetch products');
+                return await response.json();
+            }
+
+            // UI Update functions
+            function updateCategoryUI(category) {
+                document.title = `Waikas Fabrics & Furniture | ${category.name}`;
+                document.querySelector('meta[name="description"]').content = 
+                    `Browse our ${category.name.toLowerCase()} collection - handcrafted in Kenya`;
+                
+                document.getElementById('currentCategory').textContent = category.name;
+                document.getElementById('categoryTitle').textContent = `${category.name} Furniture`;
+                document.getElementById('categoryDescription').textContent = 
+                    category.description || `Premium ${category.name.toLowerCase()} furniture collection`;
+                document.getElementById('allProductsCategoryName').textContent = category.name;
+                document.getElementById('customDesignLink').href = `/custom-${category.slug}`;
+            }
+
+            function setupSubcategoryNavigation(subcategories) {
+                if (!subcategories || subcategories.length === 0) {
+                    document.getElementById('subcategory-products').style.display = 'none';
+                    return;
+                }
+
+                subcategories.forEach(subcat => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a href="#${subcat.slug}" data-subcategory="${subcat.subcategory_id}">
+                            ${subcat.name}
+                        </a>
+                    `;
+                    elements.subcategoryNav.appendChild(li);
+                });
+
+                // Set up click handlers for subcategory filtering
+                document.querySelectorAll('#subcategoryNav a').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        document.querySelectorAll('#subcategoryNav a').forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        currentFilters.subcategory = this.dataset.subcategory;
+                        currentPage = 1; // Reset to first page when changing subcategory
+                        renderFilteredProducts();
+                    });
+                });
+            }
+
+            // Product rendering functions
+            function renderFilteredProducts() {
+                // Apply filters
+                let filteredProducts = applyFilters(allProducts);
+                
+                // Apply sorting
+                filteredProducts = sortProducts(filteredProducts, elements.mainSortBy.value);
+                
+                // Paginate
+                const paginatedProducts = paginateProducts(filteredProducts);
+                
+                // Render products
+                renderProducts(paginatedProducts);
+                
+                // Render pagination
+                renderPagination(filteredProducts.length);
+            }
+
+            function applyFilters(products) {
+                return products.filter(product => {
+                    // Subcategory filter
+                    if (currentFilters.subcategory !== 'all' && 
+                        product.subcategory_id != currentFilters.subcategory) {
+                        return false;
+                    }
+                    
+                    // Price filter
+                    if (product.price < currentFilters.priceMin || 
+                        product.price > currentFilters.priceMax) {
+                        return false;
+                    }
+                    
+                    // Color filter (if any colors selected)
+                    if (currentFilters.colors.length > 0 && 
+                        !currentFilters.colors.includes(product.color)) {
+                        return false;
+                    }
+                    
+                    // Material filter (if any materials selected)
+                    if (currentFilters.materials.length > 0 && 
+                        !product.materials.some(m => currentFilters.materials.includes(m))) {
+                        return false;
+                    }
+                    
+                    return true;
+                });
+            }
+
+            function sortProducts(products, sortValue) {
+                return [...products].sort((a, b) => {
+                    switch(sortValue) {
+                        case 'price-asc': return a.price - b.price;
+                        case 'price-desc': return b.price - a.price;
+                        case 'newest': return new Date(b.created_at) - new Date(a.created_at);
+                        case 'rating': return b.rating - a.rating;
+                        default: return a.featured_order - b.featured_order; // Featured
+                    }
+                });
+            }
+
+            function paginateProducts(products) {
+                const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+                return products.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+            }
+
+            function renderProducts(products) {
+                elements.allProductsGrid.innerHTML = '';
+                
+                if (products.length === 0) {
+                    elements.allProductsGrid.innerHTML = `
+                        <div class="no-products">
+                            <i class="fas fa-search"></i>
+                            <p>No products match your filters</p>
+                            <button class="btn btn-text" id="resetFiltersBtn">Reset Filters</button>
+                        </div>
+                    `;
+                    document.getElementById('resetFiltersBtn').addEventListener('click', resetFilters);
+                    return;
+                }
+                
+                products.forEach(product => {
+                    elements.allProductsGrid.appendChild(createProductCard(product));
+                });
+            }
+
+            function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.dataset.productId = product.product_id; // Add product ID as data attribute
+    
+    card.innerHTML = `
+        ${product.is_bestseller ? '<div class="product-badge">Bestseller</div>' : ''}
+        <div class="product-image">
+            <img src="${product.images[0]?.image_url || '/images/placeholder-product.jpg'}" 
+                 alt="${product.name}" 
+                 loading="lazy">
+            <div class="product-actions">
+                <button class="quick-view" data-product-id="${product.product_id}">
+                    <i class="fas fa-expand"></i> Quick View
+                </button>
+                <button class="add-wishlist" aria-label="Add to wishlist">
+                    <i class="far fa-heart"></i>
+                </button>
+            </div>
+        </div>
+        <div class="product-info">
+            <h3 class="product-title">${product.name}</h3>
+            <div class="product-price">
+                <span class="current-price">KES ${product.price.toLocaleString()}</span>
+                ${product.original_price ? `
+                <span class="original-price">KES ${product.original_price.toLocaleString()}</span>
+                ` : ''}
+            </div>
+            <div class="product-rating">
+                ${generateStarRating(product.rating)}
+                <span class="review-count">(${product.review_count})</span>
+            </div>
+            <button class="add-to-cart" data-product-id="${product.product_id}">Add to Cart</button>
+        </div>
+    `;
+    
+    // Add click event listener to the entire card
+    card.addEventListener('click', function(e) {
+        // Don't trigger if clicking on buttons inside the card
+        if (!e.target.closest('.product-actions') && !e.target.closest('.add-to-cart')) {
+            // Store product ID in sessionStorage
+            sessionStorage.setItem('selectedProductId', product.product_id);
+            // Redirect to product.html
+            window.location.href = 'product.html';
+        }
+    });
+    
+    return card;
+}
+            function generateStarRating(rating) {
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+                const emptyStars = 5 - fullStars - halfStar;
+                
+                let stars = '';
+                for (let i = 0; i < fullStars; i++) stars += '<i class="fas fa-star"></i>';
+                if (halfStar) stars += '<i class="fas fa-star-half-alt"></i>';
+                for (let i = 0; i < emptyStars; i++) stars += '<i class="far fa-star"></i>';
+                
+                return stars;
+            }
+
+            // Pagination functions
+            function renderPagination(totalItems) {
+                const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+                elements.paginationList.innerHTML = '';
+                
+                if (totalPages <= 1) {
+                    elements.pagination.style.display = 'none';
+                    return;
+                }
+                
+                elements.pagination.style.display = 'block';
+                
+                // Previous button
+                const prevLi = document.createElement('li');
+                prevLi.innerHTML = `
+                    <a href="#" class="prev ${currentPage === 1 ? 'disabled' : ''}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                `;
+                elements.paginationList.appendChild(prevLi);
+                
+                if (currentPage > 1) {
+                    prevLi.querySelector('a').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage--;
+                        renderFilteredProducts();
+                    });
+                }
+                
+                // Page numbers
+                const maxVisiblePages = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                
+                // First page and ellipsis
+                if (startPage > 1) {
+                    const firstLi = document.createElement('li');
+                    firstLi.innerHTML = `<a href="#" data-page="1">1</a>`;
+                    elements.paginationList.appendChild(firstLi);
+                    
+                    if (startPage > 2) {
+                        const ellipsisLi = document.createElement('li');
+                        ellipsisLi.innerHTML = '<span class="ellipsis">...</span>';
+                        elements.paginationList.appendChild(ellipsisLi);
+                    }
+                }
+                
+                // Middle pages
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageLi = document.createElement('li');
+                    pageLi.innerHTML = `
+                        <a href="#" class="${i === currentPage ? 'active' : ''}" data-page="${i}">
+                            ${i}
+                        </a>
+                    `;
+                    elements.paginationList.appendChild(pageLi);
+                }
+                
+                // Last page and ellipsis
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const ellipsisLi = document.createElement('li');
+                        ellipsisLi.innerHTML = '<span class="ellipsis">...</span>';
+                        elements.paginationList.appendChild(ellipsisLi);
+                    }
+                    
+                    const lastLi = document.createElement('li');
+                    lastLi.innerHTML = `<a href="#" data-page="${totalPages}">${totalPages}</a>`;
+                    elements.paginationList.appendChild(lastLi);
+                }
+                
+                // Next button
+                const nextLi = document.createElement('li');
+                nextLi.innerHTML = `
+                    <a href="#" class="next ${currentPage === totalPages ? 'disabled' : ''}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                `;
+                elements.paginationList.appendChild(nextLi);
+                
+                if (currentPage < totalPages) {
+                    nextLi.querySelector('a').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage++;
+                        renderFilteredProducts();
+                    });
+                }
+                
+                // Add click handlers to page numbers
+                document.querySelectorAll('#paginationList a[data-page]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = parseInt(link.dataset.page);
+                        renderFilteredProducts();
+                    });
+                });
+            }
+
+            // Filter functions
+            function setupEventListeners() {
+                // Price range sliders
+                elements.priceMinSlider.addEventListener('input', (e) => {
+                    currentFilters.priceMin = parseInt(e.target.value);
+                    elements.minPriceInput.value = currentFilters.priceMin;
+                });
+                
+                elements.priceMaxSlider.addEventListener('input', (e) => {
+                    currentFilters.priceMax = parseInt(e.target.value);
+                    elements.maxPriceInput.value = currentFilters.priceMax;
+                });
+                
+                // Price input fields
+                elements.minPriceInput.addEventListener('change', (e) => {
+                    const value = Math.min(parseInt(e.target.value), currentFilters.priceMax);
+                    currentFilters.priceMin = value;
+                    elements.priceMinSlider.value = value;
+                });
+                
+                elements.maxPriceInput.addEventListener('change', (e) => {
+                    const value = Math.max(parseInt(e.target.value), currentFilters.priceMin);
+                    currentFilters.priceMax = value;
+                    elements.priceMaxSlider.value = value;
+                });
+                
+                // Color filters
+                document.querySelectorAll('.color-option').forEach(color => {
+                    color.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                        const colorValue = this.dataset.color;
+                        
+                        if (this.classList.contains('active')) {
+                            if (!currentFilters.colors.includes(colorValue)) {
+                                currentFilters.colors.push(colorValue);
+                            }
+                        } else {
+                            currentFilters.colors = currentFilters.colors.filter(c => c !== colorValue);
+                        }
+                    });
+                });
+                
+                // Material filters
+                document.querySelectorAll('.checkbox-filters input').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        const material = this.id.replace('material-', '');
+                        
+                        if (this.checked) {
+                            if (!currentFilters.materials.includes(material)) {
+                                currentFilters.materials.push(material);
+                            }
+                        } else {
+                            currentFilters.materials = currentFilters.materials.filter(m => m !== material);
+                        }
+                    });
+                });
+                
+                // Apply filters button
+                elements.applyFiltersBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    renderFilteredProducts();
+                });
+                
+                // Reset filters button
+                elements.resetFiltersBtn.addEventListener('click', resetFilters);
+                
+                // Sort dropdown
+                elements.mainSortBy.addEventListener('change', () => {
+                    currentPage = 1;
+                    renderFilteredProducts();
+                });
+                
+                // Quick view buttons
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('.quick-view')) {
+                        const productId = e.target.closest('.quick-view').dataset.productId;
+                        openQuickView(productId);
+                    }
+                });
+                
+                // Add to cart buttons
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('.add-to-cart')) {
+                        const productId = e.target.closest('.add-to-cart').dataset.productId;
+                        addToCart(productId);
+                    }
+                });
+            }
+
+            function resetFilters() {
+                // Reset all filter values
+                currentFilters = {
+                    subcategory: 'all',
+                    priceMin: 0,
+                    priceMax: 500000,
+                    colors: [],
+                    materials: []
+                };
+                
+                // Reset UI elements
+                elements.priceMinSlider.value = 0;
+                elements.priceMaxSlider.value = 500000;
+                elements.minPriceInput.value = 0;
+                elements.maxPriceInput.value = 500000;
+                
+                document.querySelectorAll('.color-option').forEach(c => c.classList.remove('active'));
+                document.querySelectorAll('.checkbox-filters input').forEach(c => c.checked = true);
+                document.querySelector('#subcategoryNav a[data-subcategory="all"]').classList.add('active');
+                document.querySelectorAll('#subcategoryNav a:not([data-subcategory="all"])').forEach(a => a.classList.remove('active'));
+                
+                elements.mainSortBy.value = 'featured';
+                currentPage = 1;
+                
+                renderFilteredProducts();
+            }
+
+            // Product interaction functions
+            function openQuickView(productId) {
+                // In a real implementation, this would fetch product details and show a modal
+                console.log('Quick view for product:', productId);
+                // Example: fetch(`/api/products/${productId}`).then(...)
+            }
+
+            function addToCart(productId) {
+                // In a real implementation, this would add the product to cart via API
+                console.log('Add to cart:', productId);
+                // Example: fetch('/api/cart', { method: 'POST', body: { productId } }).then(...)
+                
+                // Update cart count UI
+                const cartCount = document.querySelector('.cart-count');
+                cartCount.textContent = parseInt(cartCount.textContent) + 1;
+                cartCount.classList.add('animate-bounce');
+                setTimeout(() => cartCount.classList.remove('animate-bounce'), 1000);
+            }
+
+            // Error handling
+            function showErrorState() {
+                elements.allProductsGrid.innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load products. Please try again later.</p>
+                        <button class="btn btn-text" onclick="window.location.reload()">Retry</button>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

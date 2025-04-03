@@ -7,7 +7,7 @@
     <meta name="description" content="Handcrafted luxury blue velvet sofa with solid wood frame. Customizable fabrics and sizes available. Free delivery in Nairobi.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="/product.css" rel="stylesheet">
+    <link href="/products/product.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
 
@@ -174,14 +174,11 @@
                 <li class="breadcrumb-item">
                     <a href="/">Home</a>
                 </li>
-                <li class="breadcrumb-item">
-                    <a href="/living-room">Living Room</a>
+                <li class="breadcrumb-item current-category">
+                    <a  href="/living-room">Living Room</a>
                 </li>
-                <li class="breadcrumb-item">
+                <li class="breadcrumb-item current-subcategory">
                     <a href="/sofas">Sofas</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="/sofas/3-seater">3-Seater Sofas</a>
                 </li>
                 <li class="breadcrumb-item current">
                     <span>Premium Blue Velvet Sofa</span>
@@ -189,6 +186,7 @@
             </ol>
         </nav>
     </div>
+    <div id="product-app"></div>
         <div class="product-container">
             <!-- Product Gallery Section -->
             <div class="product-gallery">
@@ -966,8 +964,8 @@
             <!-- Product Details Section -->
             <div class="product-details">
                 <div class="product-header">
-                    <h1 class="product-title">Premium Blue Velvet Sofa</h1>
-                    <div class="product-subtitle">Handcrafted Luxury 3-Seater with Solid Wood Frame</div>
+                    <h1 class="product-title"></h1>
+                    <div class="product-subtitle"></div>
                     
                     <div class="product-meta">
                         <div class="rating-container">
@@ -995,9 +993,9 @@
                 </div>
                 
                 <div class="product-price-container">
-                    <div class="price-current">KES 149,999</div>
-                    <div class="price-original">KES 179,999</div>
-                    <div class="price-discount">Save KES 30,000</div>
+                    <div class="price-current"></div>
+                    <div class="price-original"></div>
+                    <div class="price-discount"></div>
                     <div class="price-installment">
                         <span>or 6 interest-free payments of KES 24,999</span>
                         <button class="installment-info" aria-label="Installment plan details">
@@ -1065,31 +1063,31 @@
                     <div class="fabric-choices">
                         <div class="fabric-choice selected" data-fabric="premium-velvet" data-price="0">
                             <div class="fabric-info">
-                                <h4 class="fabric-name">Premium Velvet</h4>
-                                <p class="fabric-description">Luxurious soft-touch velvet with stain-resistant treatment</p>
+                                <h4 class="fabric-name"></h4>
+                                <p class="fabric-description"></p>
                             </div>
-                            <div class="fabric-price">+KES 0</div>
+                            <div class="fabric-price"></div>
                         </div>
                         <div class="fabric-choice" data-fabric="italian-leather" data-price="40000">
                             <div class="fabric-info">
-                                <h4 class="fabric-name">Italian Leather</h4>
-                                <p class="fabric-description">Full-grain aniline leather with natural patina</p>
+                                <h4 class="fabric-name"></h4>
+                                <p class="fabric-description"></p>
                             </div>
-                            <div class="fabric-price">+KES 40,000</div>
+                            <div class="fabric-price"></div>
                         </div>
                         <div class="fabric-choice" data-fabric="linen-blend" data-price="15000">
                             <div class="fabric-info">
-                                <h4 class="fabric-name">Linen Blend</h4>
-                                <p class="fabric-description">Breathable natural fabric with subtle texture</p>
+                                <h4 class="fabric-name"></h4>
+                                <p class="fabric-description"></p>
                             </div>
-                            <div class="fabric-price">+KES 15,000</div>
+                            <div class="fabric-price"></div>
                         </div>
                         <div class="fabric-choice" data-fabric="performance-twill" data-price="20000">
                             <div class="fabric-info">
-                                <h4 class="fabric-name">Performance Twill</h4>
-                                <p class="fabric-description">Durable, family-friendly with high abrasion resistance</p>
+                                <h4 class="fabric-name"></h4>
+                                <p class="fabric-description"></p>
                             </div>
-                            <div class="fabric-price">+KES 20,000</div>
+                            <div class="fabric-price"></div>
                         </div>
                     </div>
                 </div>
@@ -1535,6 +1533,6 @@
     <div class="mobile-menu" id="mobileMenu">
         <!-- Comprehensive mobile menu would go here -->
     </div>
-    <script src="/product.js"></script>
+    <script src="/products/product.js"></script>
 </body>
 </html>

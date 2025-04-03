@@ -455,18 +455,28 @@
             <span>WFFE Connect</span>
         </div>
         <div class="nav-links">
-            <a href="#">Home</a>
+            <a href="/products/product-landing.html">Home</a>
             <a href="#features">Features</a>
-            <a href="#">Solutions</a>
-            <a href="/product.html">Shop</a>
-            <a href="/product-landing.html">Mall</a>
-            <a href="#">Pricing</a>
+            <a href="/">About Us</a>
             <a href="#">Contact</a>
             <a href="/dashboard/index.html">Main</a>
         </div>
-        <div class="nav-btns">
-            <button class="btn btn-outline"><a href="/auth/login.html">Login</a></button>
-            <button class="btn btn-primary"><a href="/auth/register.html">Get Started</a></button>
+        <div class="nav-btns" id="auth-buttons">
+            <!-- Default state (will be replaced if logged in) -->
+            <button class="btn btn-outline" id="login-btn"><a href="/auth/login.html">Login</a></button>
+            <button class="btn btn-primary" id="register-btn"><a href="/auth/register.html">Get Started</a></button>
+            
+            <!-- Logged in state (hidden by default) -->
+            <div class="profile-dropdown" id="profile-dropdown" style="display: none; position: relative;">
+                <button class="btn btn-primary" id="profile-btn">
+                    <i class="fas fa-user"></i> Profile
+                </button>
+                <div class="dropdown-menu" style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-width: 200px; z-index: 1000;">
+                    <a href="/dashboard/profile.html" style="display: block; padding: 10px 15px; color: var(--text); text-decoration: none;">My Profile</a>
+                    <a href="/dashboard/settings.html" style="display: block; padding: 10px 15px; color: var(--text); text-decoration: none;">Settings</a>
+                    <a href="#" id="logout-btn" style="display: block; padding: 10px 15px; color: var(--text); text-decoration: none;">Logout</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -614,6 +624,92 @@
                 });
             });
         });
+    </script>
+      <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Check authentication status
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch('htt://localhost:8000/api/check-session', {
+                    credentials: 'include' // Important for cookies
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.authenticated) {
+                        // User is logged in
+                        document.getElementById('login-btn').style.display = 'none';
+                        document.getElementById('register-btn').style.display = 'none';
+                        document.getElementById('profile-dropdown').style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking auth status:', error);
+            }
+        }
+
+        // Logout functionality
+        async function logout() {
+            try {
+                const response = await fetch('http:localhost:8000/api/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    // Reload the page to update the UI
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+
+        // Profile dropdown toggle
+        document.getElementById('profile-btn')?.addEventListener('click', function() {
+            const dropdown = this.nextElementSibling;
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown-menu');
+            const profileBtn = document.getElementById('profile-btn');
+            
+            if (dropdown && profileBtn && 
+                !event.target.closest('.profile-dropdown') && 
+                dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Logout button click
+        document.getElementById('logout-btn')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+
+        // Check auth status when page loads
+        document.addEventListener('DOMContentLoaded', checkAuthStatus);
     </script>
 </body>
 </html>

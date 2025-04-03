@@ -99,12 +99,10 @@
                 </a>
             </div>
             <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#features">Features</a>
-                <a href="#">Solutions</a>
-                <a href="/product.html">Shop</a>
-                <a href="#">Pricing</a>
-                <a href="#">Contact</a>
+                <a href="/products/product-landing.html">Home</a>
+                <a href="#categories">Categories</a>
+                <a href="#feedback">Newsletter</a>
+                <a href="/">About Us</a>
                 <a href="/dashboard/index.html">Main</a>
             </div>
             <div class="nav-btns">
@@ -127,40 +125,40 @@
                     <ul class="nav-list">
                         <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
                         <li class="nav-item dropdown">
-                            <a href="/living-room" class="nav-link">Living Room <i class="fas fa-chevron-down dropdown-icon"></i></a>
+                            <a href="category.html"  class="nav-link">Living Room <i class="fas fa-chevron-down dropdown-icon"></i></a>
                             <div class="dropdown-menu">
-                                <div class="dropdown-container">
+                                <div class="dropdown-container" >
                                     <div class="dropdown-column">
                                         <h3 class="dropdown-heading">Sofas & Sectionals</h3>
                                         <ul class="dropdown-list">
-                                            <li><a href="/sofas/3-seater">3-Seater Sofas</a></li>
-                                            <li><a href="/sofas/2-seater">2-Seater Sofas</a></li>
-                                            <li><a href="/sectionals">Sectionals</a></li>
-                                            <li><a href="/loveseats">Loveseats</a></li>
-                                            <li><a href="/chaise-lounges">Chaise Lounges</a></li>
-                                            <li><a href="/sofa-beds">Sofa Beds</a></li>
-                                            <li><a href="/recliners">Recliners</a></li>
+                                            <li onclick="openCategory(1)">3-Seater Sofas</li>
+                                            <li onclick="openCategory(1)">2-Seater Sofas</li>
+                                            <li onclick="openCategory(1)">Sectionals</li>
+                                            <li onclick="openCategory(1)">Loveseats</li>
+                                            <li onclick="openCategory(1)">Chaise Lounges></li>
+                                            <li onclick="openCategory(1)">Sofa Beds</li>
+                                            <li onclick="openCategory(1)">Recliners</li>
                                         </ul>
                                     </div>
                                     <div class="dropdown-column">
                                         <h3 class="dropdown-heading">Chairs & Accents</h3>
                                         <ul class="dropdown-list">
-                                            <li><a href="/armchairs">Armchairs</a></li>
-                                            <li><a href="/accent-chairs">Accent Chairs</a></li>
-                                            <li><a href="/swivel-chairs">Swivel Chairs</a></li>
-                                            <li><a href="/wingback-chairs">Wingback Chairs</a></li>
-                                            <li><a href="/ottomans">Ottomans</a></li>
-                                            <li><a href="/benches">Benches</a></li>
+                                            <li onclick="openCategory(1)">Armchairs</li>
+                                            <li onclick="openCategory(1)">Accent Chairs</li>
+                                            <li onclick="openCategory(1)">Swivel Chairs</li>
+                                            <li onclick="openCategory(1)">Wingback Chairs</li>
+                                            <li onclick="openCategory(1)">Ottomans</li>
+                                            <li onclick="openCategory(1)">Benches</li>
                                         </ul>
                                     </div>
                                     <div class="dropdown-column">
                                         <h3 class="dropdown-heading">Tables</h3>
                                         <ul class="dropdown-list">
-                                            <li><a href="/coffee-tables">Coffee Tables</a></li>
-                                            <li><a href="/side-tables">Side Tables</a></li>
-                                            <li><a href="/console-tables">Console Tables</a></li>
-                                            <li><a href="/nested-tables">Nested Tables</a></li>
-                                            <li><a href="/cocktail-tables">Cocktail Tables</a></li>
+                                            <li onclick="openCategory(1)"><a href="/coffee-tables">Coffee Tables</a></li>
+                                            <li onclick="openCategory(1)"><a href="/side-tables">Side Tables</a></li>
+                                            <li onclick="openCategory(1)"><a href="/console-tables">Console Tables</a></li>
+                                            <li onclick="openCategory(1)"><a href="/nested-tables">Nested Tables</a></li>
+                                            <li onclick="openCategory(1)"><a href="/cocktail-tables">Cocktail Tables</a></li>
                                         </ul>
                                     </div>
                                     <div class="dropdown-column">
@@ -186,16 +184,16 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a href="/bedroom" class="nav-link">Bedroom <i class="fas fa-chevron-down dropdown-icon"></i></a>
+                        <li class="nav-item dropdown" onclick="openCategory(2)">
+                            <a  onclick="openCategory(2)" class="nav-link">Bedroom</a>
                             <!-- Similar dropdown structure for bedroom -->
                         </li>
-                        <li class="nav-item dropdown">
-                            <a href="/dining" class="nav-link">Dining <i class="fas fa-chevron-down dropdown-icon"></i></a>
+                        <li class="nav-item dropdown" onclick="openCategory(2)">
+                            <a onclick="openCategory(3)" class="nav-link">Dining</a>
                             <!-- Similar dropdown structure for dining -->
                         </li>
-                        <li class="nav-item dropdown">
-                            <a href="/office" class="nav-link">Office <i class="fas fa-chevron-down dropdown-icon"></i></a>
+                        <li class="nav-item dropdown" onclick="openCategory(1)">
+                            <a onclick="openCategory(4)" class="nav-link">Office</a>
                             <!-- Similar dropdown structure for office -->
                         </li>
                         <li class="nav-item"><a href="/outdoor" class="nav-link">Outdoor</a></li>
@@ -495,7 +493,7 @@
         </section>
 
         <!-- Category Navigation -->
-        <section class="category-nav-section">
+        <section id="category" class="category-nav-section">
             <div class="container">
                 <div class="category-nav">
                     <a href="/living-room" class="category-card">
@@ -544,181 +542,6 @@
             </div>
         </section>
 
-        <!-- Featured Products -->
-        <section class="featured-products-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Our Signature Collection</h2>
-                    <div class="section-controls">
-                        <div class="view-options">
-                            <button class="view-option active" data-view="grid" aria-label="Grid view">
-                                <i class="fas fa-th"></i>
-                            </button>
-                            <button class="view-option" data-view="list" aria-label="List view">
-                                <i class="fas fa-list"></i>
-                            </button>
-                        </div>
-                        <a href="/living-room" class="view-all">View All</a>
-                    </div>
-                </div>
-                
-                <div class="products-grid">
-                    <!-- Product 1 -->
-                    <div class="product-card">
-                        <div class="product-badge">Bestseller</div>
-                        <div class="product-image">
-                            <img src="/images/products/blue-velvet-sofa.jpg" alt="Premium Blue Velvet Sofa" loading="lazy">
-                            <div class="product-actions">
-                                <button class="quick-view" data-product="1">Quick View</button>
-                                <button class="add-to-wishlist" aria-label="Add to wishlist">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Premium Blue Velvet Sofa</h3>
-                            <div class="product-price">
-                                <span class="current-price">KES 149,999</span>
-                                <span class="original-price">KES 179,999</span>
-                                <span class="discount-badge">Save 17%</span>
-                            </div>
-                            <div class="product-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="review-count">(142 reviews)</span>
-                            </div>
-                            <div class="product-colors">
-                                <div class="color-option" style="background-color: #1e3a8a;" data-color="midnight-blue"></div>
-                                <div class="color-option" style="background-color: #831843;" data-color="ruby-red"></div>
-                                <div class="color-option" style="background-color: #064e3b;" data-color="emerald-green"></div>
-                                <div class="color-option" style="background-color: #1c1917;" data-color="charcoal-black"></div>
-                            </div>
-                            <button class="add-to-cart">Add to Cart</button>
-                            <div class="product-shipping">
-                                <i class="fas fa-truck"></i> Free delivery to Nairobi
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 2 -->
-                    <div class="product-card">
-                        <div class="product-badge">New</div>
-                        <div class="product-image">
-                            <img src="/images/products/emerald-armchair.jpg" alt="Emerald Green Armchair" loading="lazy">
-                            <div class="product-actions">
-                                <button class="quick-view" data-product="2">Quick View</button>
-                                <button class="add-to-wishlist" aria-label="Add to wishlist">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Emerald Green Armchair</h3>
-                            <div class="product-price">
-                                <span class="current-price">KES 59,999</span>
-                            </div>
-                            <div class="product-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="review-count">(28 reviews)</span>
-                            </div>
-                            <button class="add-to-cart">Add to Cart</button>
-                            <div class="product-shipping">
-                                <i class="fas fa-truck"></i> Free delivery to Nairobi
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 3 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="/images/products/wooden-dining-table.jpg" alt="Solid Wood Dining Table" loading="lazy">
-                            <div class="product-actions">
-                                <button class="quick-view" data-product="3">Quick View</button>
-                                <button class="add-to-wishlist" aria-label="Add to wishlist">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Solid Wood Dining Table</h3>
-                            <div class="product-price">
-                                <span class="current-price">KES 89,999</span>
-                                <span class="original-price">KES 99,999</span>
-                            </div>
-                            <div class="product-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                                <span class="review-count">(76 reviews)</span>
-                            </div>
-                            <div class="product-sizes">
-                                <span class="size-option">6-seater</span>
-                                <span class="size-option">8-seater</span>
-                                <span class="size-option">Extendable</span>
-                            </div>
-                            <button class="add-to-cart">Add to Cart</button>
-                            <div class="product-shipping">
-                                <i class="fas fa-truck"></i> Free delivery to Nairobi
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 4 -->
-                    <div class="product-card">
-                        <div class="product-badge">Limited</div>
-                        <div class="product-image">
-                            <img src="/images/products/leather-chair.jpg" alt="Leather Executive Chair" loading="lazy">
-                            <div class="product-actions">
-                                <button class="quick-view" data-product="4">Quick View</button>
-                                <button class="add-to-wishlist" aria-label="Add to wishlist">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Leather Executive Chair</h3>
-                            <div class="product-price">
-                                <span class="current-price">KES 74,999</span>
-                            </div>
-                            <div class="product-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="review-count">(53 reviews)</span>
-                            </div>
-                            <div class="product-colors">
-                                <div class="color-option" style="background-color: #1c1917;" data-color="black"></div>
-                                <div class="color-option" style="background-color: #78350f;" data-color="brown"></div>
-                                <div class="color-option" style="background-color: #44403c;" data-color="gray"></div>
-                            </div>
-                            <button class="add-to-cart">Add to Cart</button>
-                            <div class="product-shipping">
-                                <i class="fas fa-truck"></i> Free delivery to Nairobi
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Promo Banner -->
         <section class="promo-banner">
@@ -743,61 +566,38 @@
                 </div>
                 
                 <div class="categories-grid">
-                    <div class="category-card large">
-                        <a href="/living-room/sofas">
-                            <img src="/images/categories/living-room.jpg" alt="Living Room Furniture" loading="lazy">
-                            <div class="category-content">
-                                <h3>Living Room</h3>
-                                <p>Sofas, sectionals, chairs and tables</p>
-                                <span class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </a>
+                    <div class="category-card large" onclick="openCategory(1)">
+                        <img src="/images/categories/living-room.jpg" alt="Living Room Furniture">
+                        <h3>Living Room</h3>
+                        <span>Shop Now →</span>
                     </div>
-                    
-                    <div class="category-card">
-                        <a href="/bedroom/beds">
-                            <img src="/images/categories/bedroom.jpg" alt="Bedroom Furniture" loading="lazy">
-                            <div class="category-content">
-                                <h3>Bedroom</h3>
-                                <p>Beds, dressers and nightstands</p>
-                                <span class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </a>
+                
+                    <div class="category-card" onclick="openCategory(2)">
+                        <img src="/images/categories/bedroom.jpg" alt="Bedroom Furniture">
+                        <h3>Bedroom</h3>
+                        <span>Shop Now →</span>
                     </div>
-                    
-                    <div class="category-card">
-                        <a href="/dining/tables">
-                            <img src="/images/categories/dining.jpg" alt="Dining Room Furniture" loading="lazy">
-                            <div class="category-content">
-                                <h3>Dining</h3>
-                                <p>Tables, chairs and buffets</p>
-                                <span class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </a>
+                
+                    <div class="category-card" onclick="openCategory(3)">
+                        <img src="/images/categories/dining.jpg" alt="Dining Furniture">
+                        <h3>Dining</h3>
+                        <span>Shop Now →</span>
                     </div>
-                    
-                    <div class="category-card">
-                        <a href="/office/desks">
-                            <img src="/images/categories/office.jpg" alt="Office Furniture" loading="lazy">
-                            <div class="category-content">
-                                <h3>Office</h3>
-                                <p>Desks, chairs and storage</p>
-                                <span class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </a>
+                
+                    <div class="category-card" onclick="openCategory(4)">
+                        <img src="/images/categories/office.jpg" alt="Office Furniture">
+                        <h3>Office</h3>
+                        <span>Shop Now →</span>
                     </div>
-                    
-                    <div class="category-card">
-                        <a href="/outdoor/lounge">
-                            <img src="/images/categories/outdoor.jpg" alt="Outdoor Furniture" loading="lazy">
-                            <div class="category-content">
-                                <h3>Outdoor</h3>
-                                <p>Patio sets and lounge furniture</p>
-                                <span class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </a>
+                
+                    <div class="category-card" onclick="openCategory(5)">
+                        <img src="/images/categories/outdoor.jpg" alt="Outdoor Furniture">
+                        <h3>Outdoor</h3>
+                        <span>Shop Now →</span>
                     </div>
                 </div>
+                
+                
             </div>
         </section>
 
@@ -959,31 +759,8 @@
             </div>
         </section>
 
-        <!-- Instagram Feed -->
-        <section class="instagram-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Follow Us @WaikasFurniture</h2>
-                    <a href="https://instagram.com/waikasfurniture" class="view-all">View on Instagram</a>
-                </div>
-                
-                <div class="instagram-feed">
-                    <div class="instagram-post">
-                        <img src="/images/instagram/post1.jpg" alt="Instagram post" loading="lazy">
-                        <div class="instagram-overlay">
-                            <div class="instagram-stats">
-                                <span><i class="fas fa-heart"></i> 243</span>
-                                <span><i class="fas fa-comment"></i> 18</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- More Instagram posts -->
-                </div>
-            </div>
-        </section>
-
         <!-- Newsletter -->
-        <section class="newsletter-section">
+        <section id="feedback" class="newsletter-section">
             <div class="container">
                 <div class="newsletter-grid">
                     <div class="newsletter-content">
@@ -1004,7 +781,7 @@
                         <p class="privacy-note">We respect your privacy. Unsubscribe at any time. <a href="/privacy">Privacy Policy</a></p>
                     </div>
                     <div class="newsletter-image">
-                        <img src="/images/newsletter.jpg" alt="Newsletter" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bcg" alt="Newsletter" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -1181,7 +958,7 @@
     </button>
 
     <!-- Scripts -->
-    <script src="js/product-landing.js"></script>
+    <script src="/products/product-landing.js"></script>
     
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
@@ -1191,5 +968,65 @@
         gtag('js', new Date());
         gtag('config', 'GA_MEASUREMENT_ID');
     </script>
+
+    <!-- Add this script right before your closing </body> tag -->
+<script>
+// Function to store category ID in session storage
+function storeCategoryId(categoryId) {
+    sessionStorage.setItem('selectedCategoryId', categoryId);
+}
+
+// Function to extract category ID from URL
+function getCategoryFromUrl(url) {
+    // Extract the last part of the URL as category ID
+    const parts = url.split('/');
+    let category = parts[parts.length - 1];
+    
+    // Remove any .html or query parameters
+    category = category.replace('.html', '').split('?')[0];
+    
+    return category || 'default-category';
+}
+
+// 1. Handle main navigation category clicks
+document.querySelectorAll('.main-nav .nav-link[href*="/products/category.html"], .dropdown-menu a').forEach(link => {
+    link.addEventListener('click', function() {
+        const categoryId = getCategoryFromUrl(this.getAttribute('href'));
+        storeCategoryId(categoryId);
+    });
+});
+
+// 2. Handle mobile navigation category clicks
+document.querySelectorAll('.mobile-nav .mobile-nav-link[href*="/products/category.html"], .mobile-dropdown-menu a').forEach(link => {
+    link.addEventListener('click', function() {
+        const categoryId = getCategoryFromUrl(this.getAttribute('href'));
+        storeCategoryId(categoryId);
+    });
+});
+
+// 3. Handle category grid clicks (both the icon grid and "Shop By Room" grid)
+document.querySelectorAll('.category-nav .category-card, .categories-grid .category-card').forEach(card => {
+    card.addEventListener('click', function() {
+        // Get the href from the anchor tag inside or use the card's click handler
+        const link = this.querySelector('a') || this;
+        const href = link.getAttribute('href');
+        const categoryId = getCategoryFromUrl(href);
+        storeCategoryId(categoryId);
+        
+        // If you have existing click handlers, they'll still work
+        if (typeof window.openCategory === 'function') {
+            window.openCategory(categoryId);
+        }
+    });
+});
+
+// 4. Preserve your existing openCategory function if it exists
+if (typeof window.openCategory !== 'function') {
+    window.openCategory = function(categoryId) {
+        storeCategoryId(categoryId);
+        window.location.href = '/products/category.html?category=' + categoryId;
+    };
+}
+</script>
 </body>
 </html>

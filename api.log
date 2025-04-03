@@ -1,0 +1,121 @@
+ERROR:root:GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+ERROR:root:GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+ERROR:root:GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+ERROR:root:GET request failed: no such table: categories
+ERROR:root:GET request failed: no such table: categories
+2025-03-29 00:54:36,598 - ERROR - GET request failed: 'Category' object has no attribute 'get_category'
+2025-03-29 00:54:47,818 - ERROR - GET request failed: 'Category' object has no attribute 'get_category'
+2025-03-29 00:56:15,145 - ERROR - GET request failed: 'Category' object has no attribute 'get_category'
+2025-03-29 00:57:16,248 - ERROR - GET request failed: 'Category' object has no attribute 'get_category'
+2025-03-29 01:43:07,728 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:43:21,558 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:43:26,097 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:47:30,366 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:47:58,467 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:48:31,006 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:49:30,539 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:50:43,828 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:50:53,683 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:54:47,396 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:54:54,956 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:54:57,150 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:54:58,077 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:54:59,287 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 01:55:03,128 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 02:01:51,128 - ERROR - GET request failed: 1305 (42000): FUNCTION waikas_db.JSON_ARRAYAGG does not exist
+2025-03-29 02:03:30,809 - ERROR - GET request failed: 'Category' object has no attribute 'get_category_products'
+2025-03-29 03:11:06,347 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 03:11:17,320 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 03:14:52,642 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 03:15:51,282 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 03:18:03,968 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 03:18:06,878 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 03:18:37,420 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 03:21:13,438 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 03:22:30,586 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 04:06:20,299 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 04:19:33,021 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 04:19:52,301 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 04:22:23,218 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 04:22:28,042 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-29 04:22:49,301 - ERROR - GET request failed: 'Subcategory' object has no attribute 'get_subcategory_products'
+2025-03-30 00:31:39,318 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-03-30 00:31:44,744 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-03-30 00:31:50,459 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-03-30 00:32:00,799 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-03-30 00:32:20,492 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-03-30 00:32:38,357 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-03-30 02:47:13,732 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 02:47:13,734 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 02:47:13,735 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 02:47:13,809 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 02:47:13,809 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 02:47:13,809 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 02:47:13,820 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 02:47:13,820 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 02:47:13,821 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 21:42:47,932 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 21:42:47,933 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 21:42:47,934 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 21:48:52,508 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 21:48:52,509 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-30 21:48:52,509 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:57:39,340 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:57:39,344 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:57:39,345 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,197 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,197 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,198 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,227 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,227 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,228 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,256 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,256 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,257 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,283 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,284 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-03-31 20:58:52,284 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 00:27:04,045 - ERROR - Operation failed: 1062 (23000): Duplicate entry 'WFFE-CH33' for key 'sku'
+2025-04-02 00:50:01,342 - ERROR - Operation failed: 1062 (23000): Duplicate entry 'WFFE-CH33' for key 'sku'
+2025-04-02 18:51:36,713 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 18:51:36,714 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 18:51:36,714 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 18:51:36,787 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 18:51:36,787 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 18:51:36,788 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 18:51:36,807 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 18:51:36,808 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 18:51:36,808 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-02 23:16:37,001 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-02 23:16:46,978 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-02 23:16:53,284 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-02 23:31:36,633 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-02 23:31:37,321 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-02 23:35:26,293 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:02:30,549 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:02:30,551 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:02:30,553 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:07:45,417 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:07:45,418 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:07:45,419 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:07:50,205 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:07:50,207 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:07:50,211 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:18:06,354 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:18:06,355 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:18:06,357 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:32:03,648 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:32:03,649 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:32:03,651 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:32:04,755 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:32:04,756 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:32:04,758 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:33:11,876 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:33:11,877 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:33:11,879 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:40:47,158 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:41:52,313 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:41:52,315 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 00:41:52,317 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 01:06:20,809 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 01:06:30,904 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'

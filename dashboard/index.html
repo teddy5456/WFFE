@@ -4,22 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | WFFE Connect</title>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="dashboard.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Dashboard Layout -->
     <div class="dashboard-container">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
                     <a href="/"><i class="fas fa-couch"></i></a>
-                    <span><a href="/"   style="text-decoration: none; color: black;">WFFE Connect</a></span>
+                    <span><a href="/">WFFE Connect</a></span>
                 </div>
                 <button class="sidebar-toggle" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
@@ -27,6 +32,7 @@
             </div>
             
             <nav class="sidebar-nav">
+                <!-- Main Navigation -->
                 <div class="nav-section">
                     <div class="nav-title">Main</div>
                     <ul>
@@ -40,7 +46,7 @@
                             <a href="/dashboard/campaigns/email/index.html">
                                 <i class="fas fa-envelope"></i>
                                 <span>Email Campaigns</span>
-                                <span class="badge">3</span>
+                                <span class="badge" id="emailCampaignsCount">0</span>
                             </a>
                         </li>
                         <li>
@@ -64,6 +70,7 @@
                     </ul>
                 </div>
                 
+                <!-- Analytics Navigation -->
                 <div class="nav-section">
                     <div class="nav-title">Analytics</div>
                     <ul>
@@ -88,6 +95,7 @@
                     </ul>
                 </div>
                 
+                <!-- Settings Navigation -->
                 <div class="nav-section">
                     <div class="nav-title">Settings</div>
                     <ul>
@@ -101,6 +109,7 @@
                             <a href="#">
                                 <i class="fas fa-bell"></i>
                                 <span>Notifications</span>
+                                <span class="badge" id="notificationsCount">0</span>
                             </a>
                         </li>
                         <li>
@@ -113,25 +122,26 @@
                 </div>
             </nav>
             
+            <!-- User Profile -->
             <div class="sidebar-footer">
                 <div class="user-profile">
                     <div class="avatar">
-                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User" id="userAvatar">
                     </div>
                     <div class="user-info">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="role">Marketing Manager</div>
+                        <div class="name" id="userName">Loading...</div>
+                        <div class="role" id="userRole">Loading...</div>
                     </div>
-                    <button class="user-menu">
+                    <button class="user-menu" id="userMenuBtn">
                         <i class="fas fa-ellipsis-v"></i>
                     </button>
                 </div>
             </div>
         </aside>
-        
-        <!-- Main Content Area -->
+
+        <!-- MAIN CONTENT -->
         <main class="main-content">
-            <!-- Top Navigation Bar -->
+            <!-- TOP BAR -->
             <header class="topbar">
                 <div class="topbar-left">
                     <h1>Dashboard Overview</h1>
@@ -144,20 +154,20 @@
                 
                 <div class="topbar-right">
                     <div class="search-box">
-                        <input type="text" placeholder="Search...">
-                        <button><i class="fas fa-search"></i></button>
+                        <input type="text" placeholder="Search..." id="searchInput">
+                        <button id="searchBtn"><i class="fas fa-search"></i></button>
                     </div>
                     
                     <div class="topbar-actions">
-                        <button class="notification-btn">
+                        <button class="notification-btn" id="notificationsBtn">
                             <i class="fas fa-bell"></i>
-                            <span class="badge">5</span>
+                            <span class="badge" id="notificationsBadge">0</span>
                         </button>
-                        <button class="message-btn">
+                        <button class="message-btn" id="messagesBtn">
                             <i class="fas fa-envelope"></i>
-                            <span class="badge">2</span>
+                            <span class="badge" id="messagesBadge">0</span>
                         </button>
-                        <button class="quick-action-btn">
+                        <button class="quick-action-btn" id="newCampaignBtn">
                             <i class="fas fa-plus"></i>
                             <span>New Campaign</span>
                         </button>
@@ -165,73 +175,73 @@
                 </div>
             </header>
             
-            <!-- Dashboard Content -->
+            <!-- DASHBOARD CONTENT -->
             <div class="content-wrapper">
-                <!-- Stats Cards -->
+                <!-- STATS CARDS -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #FFEE58;">
-                            <i class="fas fa-eye" style="color: #FBC02D;"></i>
+                        <div class="stat-icon impression-icon">
+                            <i class="fas fa-eye"></i>
                         </div>
                         <div class="stat-info">
-                            <div class="stat-value">24.5K</div>
+                            <div class="stat-value" id="impressionsStat">0</div>
                             <div class="stat-label">Impressions</div>
                         </div>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 12.5%
+                        <div class="stat-trend up" id="impressionsTrend">
+                            <i class="fas fa-arrow-up"></i> <span>0%</span>
                         </div>
                     </div>
                     
                     <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #B3E5FC;">
-                            <i class="fas fa-mouse-pointer" style="color: #03A9F4;"></i>
+                        <div class="stat-icon click-icon">
+                            <i class="fas fa-mouse-pointer"></i>
                         </div>
                         <div class="stat-info">
-                            <div class="stat-value">3.2K</div>
+                            <div class="stat-value" id="clicksStat">0</div>
                             <div class="stat-label">Clicks</div>
                         </div>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 8.3%
+                        <div class="stat-trend up" id="clicksTrend">
+                            <i class="fas fa-arrow-up"></i> <span>0%</span>
                         </div>
                     </div>
                     
                     <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #C8E6C9;">
-                            <i class="fas fa-shopping-cart" style="color: #4CAF50;"></i>
+                        <div class="stat-icon conversion-icon">
+                            <i class="fas fa-shopping-cart"></i>
                         </div>
                         <div class="stat-info">
-                            <div class="stat-value">142</div>
+                            <div class="stat-value" id="conversionsStat">0</div>
                             <div class="stat-label">Conversions</div>
                         </div>
-                        <div class="stat-trend down">
-                            <i class="fas fa-arrow-down"></i> 3.2%
+                        <div class="stat-trend down" id="conversionsTrend">
+                            <i class="fas fa-arrow-down"></i> <span>0%</span>
                         </div>
                     </div>
                     
                     <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #FFCDD2;">
-                            <i class="fas fa-dollar-sign" style="color: #F44336;"></i>
+                        <div class="stat-icon revenue-icon">
+                            <i class="fas fa-dollar-sign"></i>
                         </div>
                         <div class="stat-info">
-                            <div class="stat-value">$8,742</div>
+                            <div class="stat-value" id="revenueStat">$0</div>
                             <div class="stat-label">Revenue</div>
                         </div>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 18.7%
+                        <div class="stat-trend up" id="revenueTrend">
+                            <i class="fas fa-arrow-up"></i> <span>0%</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Main Charts Row -->
+                <!-- CHARTS ROW -->
                 <div class="charts-row">
                     <div class="chart-card">
                         <div class="card-header">
                             <h3>Campaign Performance</h3>
                             <div class="card-actions">
-                                <select class="time-select">
-                                    <option>Last 7 days</option>
-                                    <option selected>Last 30 days</option>
-                                    <option>Last 90 days</option>
+                                <select class="time-select" id="timeRangeSelect">
+                                    <option value="7">Last 7 days</option>
+                                    <option value="30" selected>Last 30 days</option>
+                                    <option value="90">Last 90 days</option>
                                 </select>
                             </div>
                         </div>
@@ -250,146 +260,63 @@
                     </div>
                 </div>
                 
-                <!-- Bottom Content Row -->
+                <!-- BOTTOM CONTENT ROW -->
                 <div class="content-row">
-                    <!-- Recent Campaigns -->
+                    <!-- RECENT CAMPAIGNS -->
                     <div class="content-card">
                         <div class="card-header">
                             <h3>Recent Campaigns</h3>
-                            <a href="#" class="view-all">View All</a>
+                            <a href="#" class="view-all" id="viewAllCampaigns">View All</a>
                         </div>
-                        <div class="campaign-list">
-                            <div class="campaign-item">
-                                <div class="campaign-info">
-                                    <div class="campaign-name">Summer Collection Launch</div>
-                                    <div class="campaign-meta">
-                                        <span class="campaign-type email">
-                                            <i class="fas fa-envelope"></i> Email
-                                        </span>
-                                        <span class="campaign-date">Jun 15, 2023</span>
-                                    </div>
-                                </div>
-                                <div class="campaign-stats">
-                                    <div class="stat">
-                                        <div class="value">24.5%</div>
-                                        <div class="label">Open Rate</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="value">8.2%</div>
-                                        <div class="label">CTR</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="value">$2,450</div>
-                                        <div class="label">Revenue</div>
-                                    </div>
-                                </div>
-                                <button class="campaign-action">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                            </div>
-                            
-                            <div class="campaign-item">
-                                <div class="campaign-info">
-                                    <div class="campaign-name">Father's Day Sale</div>
-                                    <div class="campaign-meta">
-                                        <span class="campaign-type social">
-                                            <i class="fas fa-share-alt"></i> Social
-                                        </span>
-                                        <span class="campaign-date">Jun 10, 2023</span>
-                                    </div>
-                                </div>
-                                <div class="campaign-stats">
-                                    <div class="stat">
-                                        <div class="value">3.2K</div>
-                                        <div class="label">Engagements</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="value">142</div>
-                                        <div class="label">Clicks</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="value">$1,870</div>
-                                        <div class="label">Revenue</div>
-                                    </div>
-                                </div>
-                                <button class="campaign-action">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                            </div>
-                            
-                            <div class="campaign-item">
-                                <div class="campaign-info">
-                                    <div class="campaign-name">New Arrivals</div>
-                                    <div class="campaign-meta">
-                                        <span class="campaign-type email">
-                                            <i class="fas fa-envelope"></i> Email
-                                        </span>
-                                        <span class="campaign-date">Jun 5, 2023</span>
-                                    </div>
-                                </div>
-                                <div class="campaign-stats">
-                                    <div class="stat">
-                                        <div class="value">22.1%</div>
-                                        <div class="label">Open Rate</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="value">7.8%</div>
-                                        <div class="label">CTR</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="value">$1,920</div>
-                                        <div class="label">Revenue</div>
-                                    </div>
-                                </div>
-                                <button class="campaign-action">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
+                        <div class="campaign-list" id="campaignList">
+                            <div class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i> Loading campaigns...
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Quick Actions -->
+                    <!-- QUICK ACTIONS -->
                     <div class="content-card quick-actions">
                         <div class="card-header">
                             <h3>Quick Actions</h3>
                         </div>
                         <div class="actions-grid">
-                            <button class="action-btn">
+                            <button class="action-btn" id="newEmailBtn">
                                 <div class="action-icon">
                                     <i class="fas fa-envelope"></i>
                                 </div>
                                 <span>New Email</span>
                             </button>
                             
-                            <button class="action-btn">
+                            <button class="action-btn" id="newSocialPostBtn">
                                 <div class="action-icon">
                                     <i class="fas fa-share-alt"></i>
                                 </div>
                                 <span>Social Post</span>
                             </button>
                             
-                            <button class="action-btn">
+                            <button class="action-btn" id="createAdBtn">
                                 <div class="action-icon">
                                     <i class="fas fa-ad"></i>
                                 </div>
                                 <span>Create Ad</span>
                             </button>
                             
-                            <button class="action-btn">
+                            <button class="action-btn" id="viewReportsBtn">
                                 <div class="action-icon">
                                     <i class="fas fa-chart-line"></i>
                                 </div>
                                 <span>View Reports</span>
                             </button>
                             
-                            <button class="action-btn">
+                            <button class="action-btn" id="audienceBtn">
                                 <div class="action-icon">
                                     <i class="fas fa-users"></i>
                                 </div>
                                 <span>Audience</span>
                             </button>
                             
-                            <button class="action-btn">
+                            <button class="action-btn" id="addProductBtn">
                                 <div class="action-icon">
                                     <i class="fas fa-couch"></i>
                                 </div>
@@ -397,29 +324,12 @@
                             </button>
                         </div>
                         
+                        <!-- RECENT ACTIVITY -->
                         <div class="recent-activity">
                             <h4>Recent Activity</h4>
-                            <ul>
-                                <li>
-                                    <i class="fas fa-circle activity-icon email"></i>
-                                    <div class="activity-details">
-                                        <div class="activity-text">Sent "Summer Sale" email to 2,450 subscribers</div>
-                                        <div class="activity-time">2 hours ago</div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <i class="fas fa-circle activity-icon social"></i>
-                                    <div class="activity-details">
-                                        <div class="activity-text">Posted new product collection on Instagram</div>
-                                        <div class="activity-time">5 hours ago</div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <i class="fas fa-circle activity-icon order"></i>
-                                    <div class="activity-details">
-                                        <div class="activity-text">New order #WF-4589 for $1,245</div>
-                                        <div class="activity-time">Yesterday</div>
-                                    </div>
+                            <ul id="recentActivityList">
+                                <li class="loading-spinner">
+                                    <i class="fas fa-spinner fa-spin"></i> Loading activity...
                                 </li>
                             </ul>
                         </div>
@@ -429,7 +339,51 @@
         </main>
     </div>
 
-    <!-- Chart.js -->
+    <!-- NEW CAMPAIGN MODAL -->
+    <div class="modal" id="newCampaignModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2>Create New Campaign</h2>
+            <form id="campaignForm">
+                <div class="form-group">
+                    <label for="campaignName">Campaign Name</label>
+                    <input type="text" id="campaignName" required placeholder="Summer Sale 2023">
+                </div>
+                
+                <div class="form-group">
+                    <label for="campaignType">Campaign Type</label>
+                    <select id="campaignType" required>
+                        <option value="">Select type</option>
+                        <option value="email">Email Campaign</option>
+                        <option value="social">Social Media</option>
+                        <option value="product">Product Promotion</option>
+                    </select>
+                </div>
+                
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endDate">End Date</label>
+                        <input type="date" id="endDate" required>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelCampaignBtn">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Campaign</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="dashboard.js"></script>
 </body>
