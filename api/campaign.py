@@ -1,346 +1,295 @@
-# campaign.py
 import mysql.connector
+import traceback
+from mysql.connector import Error
+from typing import Optional, Dict, List, Union
 from datetime import datetime
-from decimal import Decimal
-import logging
 
 class Campaign:
     def __init__(self):
-        self.conn = None
-
-    def connect_to_db(self):
-        """Establish database connection"""
+        """Initialize database connection"""
         try:
-            self.conn = mysql.connector.connect(
-                host="localhost",
-                user="teddy",
-                password="0857",
-                database="waikas_db"
+            self.connection = mysql.connector.connect(
+                host='localhost',
+                database='waikas_db',
+                user='teddy',
+                password='0857',
+                autocommit=False
             )
-            return self.conn
-        except mysql.connector.Error as err:
-            logging.error(f"Database connection error: {err}")
-            return None
+        except Error as e:
+            print("Error while connecting to MySQL", e)
+            raise
+    
+    def __del__(self):
+        """Clean up database connection"""
+        if hasattr(self, 'connection') and self.connection.is_connected():
+            self.connection.close()
 
-    def _format_campaign(self, campaign_data):
-        """Format campaign data for JSON response"""
-        if not campaign_data:
-            return None
-            
-        formatted = dict(campaign_data)
-        
-        # Convert Decimal to float
-        for field in ['discount_value', 'impressions', 'clicks', 'conversions', 'revenue']:
-            if field in formatted and isinstance(formatted[field], Decimal):
-                formatted[field] = float(formatted[field])
-                
-        # Convert datetime to string
-        for field in ['start_date', 'end_date', 'created_at', 'updated_at']:
-            if field in formatted and isinstance(formatted[field], datetime):
-                formatted[field] = formatted[field].isoformat()
-                
-        return formatted
-
-    def get_all_campaigns(self, status=None):
-        """Get campaigns with optional status filter"""
-        conn = self.connect_to_db()
-        if not conn:
-            return {"error": "Database connection failed"}, 500
-            
+    def _execute_query(self, query: str, params: Optional[tuple] = None, fetch: bool = False) -> Union[List[Dict], int]:
+        """Generic query executor"""
+        cursor = None
         try:
-            cursor = conn.cursor(dictionary=True)
+            cursor = self.connection.cursor(dictionary=True)
+            cursor.execute(query, params or ())
             
-            query = "SELECT * FROM campaigns"
-            params = ()
-            
-            if status:
-                query += " WHERE status = %s"
-                params = (status,)
-                
-            query += " ORDER BY start_date DESC"
-            
-            cursor.execute(query, params)
-            campaigns = cursor.fetchall()
-            return [self._format_campaign(c) for c in campaigns], 200
-            
-        except mysql.connector.Error as err:
-            logging.error(f"Database error getting campaigns: {err}")
-            return {"error": "Database operation failed"}, 500
+            if fetch:
+                result = cursor.fetchall()
+            else:
+                self.connection.commit()
+                result = cursor.rowcount
+            return result
+        except Error as e:
+            self.connection.rollback()
+            print(f"Database error: {e}")
+            raise
         finally:
-            if conn:
-                conn.close()
+            if cursor:
+                cursor.close()
 
-    def get_active_campaigns(self):
-        """Get all currently active campaigns"""
-        conn = self.connect_to_db()
-        if not conn:
-            return {"error": "Database connection failed"}, 500
-            
-        try:
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("""
-                SELECT * FROM campaigns 
-                WHERE status = 'active' 
-                AND start_date <= NOW() 
-                AND end_date >= NOW()
-                ORDER BY start_date DESC
-            """)
-            campaigns = cursor.fetchall()
-            return [self._format_campaign(c) for c in campaigns], 200
-            
-        except mysql.connector.Error as err:
-            logging.error(f"Database error getting active campaigns: {err}")
-            return {"error": "Database operation failed"}, 500
-        finally:
-            if conn:
-                conn.close()
-
-    def get_campaign(self, campaign_id):
-        """Get a single campaign by ID"""
-        conn = self.connect_to_db()
-        if not conn:
-            return {"error": "Database connection failed"}, 500
-            
-        try:
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM campaigns WHERE campaign_id = %s", (campaign_id,))
-            campaign = cursor.fetchone()
-            
-            if not campaign:
-                return {"error": "Campaign not found"}, 404
-                
-            # Get associated products
-            cursor.execute("""
-                SELECT p.*, cp.is_featured, cp.custom_discount
-                FROM campaign_products cp
-                JOIN products p ON cp.product_id = p.product_id
-                WHERE cp.campaign_id = %s
-            """, (campaign_id,))
-            products = cursor.fetchall()
-            
-            # Get ad placements
-            cursor.execute("""
-                SELECT * FROM ad_placements 
-                WHERE campaign_id = %s
-                ORDER BY display_order
-            """, (campaign_id,))
-            placements = cursor.fetchall()
-            
-            campaign['products'] = products
-            campaign['ad_placements'] = placements
-            return self._format_campaign(campaign), 200
-            
-        except mysql.connector.Error as err:
-            logging.error(f"Database error getting campaign: {err}")
-            return {"error": "Database operation failed"}, 500
-        finally:
-            if conn:
-                conn.close()
-
-    def create_campaign(self, data):
+    def create_campaign(self, data: Dict) -> Dict:
         """Create a new campaign"""
-        required_fields = ['name', 'campaign_type', 'start_date', 'end_date']
-        missing_fields = [field for field in required_fields if field not in data]
+        required_fields = {'name', 'campaign_type', 'start_date'}
+        missing_fields = required_fields - set(data.keys())
         if missing_fields:
-            return {"error": f"Missing required fields: {', '.join(missing_fields)}"}, 400
+            raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
 
-        conn = self.connect_to_db()
-        if not conn:
-            return {"error": "Database connection failed"}, 500
-            
+        # Type-specific fields
+        type_specific = {
+            'in_app_ad': ['banner_image_url', 'target_url', 'locations'],
+            'email': ['email_subject', 'recipient_count', 'template_id'],
+            'social_media': ['social_platform', 'post_id', 'ad_spend']
+        }.get(data['campaign_type'], [])
+
+        fields = ['name', 'description', 'campaign_type', 'status', 
+                 'start_date', 'end_date', 'discount_amount', 'discount_type'] + type_specific
+        params = [data.get(field) for field in fields]
+
+        query = f"""
+        INSERT INTO campaigns ({', '.join(fields)})
+        VALUES ({', '.join(['%s'] * len(fields))})
+        """
+
         try:
-            cursor = conn.cursor(dictionary=True)
+            campaign_id = self._execute_query(query, tuple(params))
             
-            # Insert campaign
-            sql = """
-            INSERT INTO campaigns 
-            (name, description, campaign_type, status, discount_type, discount_value, 
-             start_date, end_date, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW())
+            if 'products' in data:
+                self._add_campaign_products(campaign_id, data['products'])
+            
+            return {"campaign_id": campaign_id, "success": True}
+        except Error as e:
+            print("Error creating campaign:", e)
+            raise
+
+    def get_campaign(self, campaign_id: int) -> Optional[Dict]:
+        """Get a single campaign"""
+        try:
+            query = "SELECT * FROM campaigns WHERE campaign_id = %s"
+            result = self._execute_query(query, (campaign_id,), fetch=True)
+            return result[0] if result else None
+        except Error as e:
+            print(f"Error getting campaign {campaign_id}:", e)
+            raise
+
+    def get_all_campaigns(self, filters: Optional[Dict] = None) -> List[Dict]:
+        """Get all campaigns with optional filters"""
+        try:
+            query = "SELECT * FROM campaigns"
+            params = []
+            
+            if filters:
+                where_clauses = []
+                for field, value in filters.items():
+                    if value:
+                        where_clauses.append(f"{field} = %s")
+                        params.append(value)
+                
+                if where_clauses:
+                    query += " WHERE " + " AND ".join(where_clauses)
+            
+            query += " ORDER BY start_date DESC"
+            return self._execute_query(query, tuple(params) if params else None, fetch=True)
+        except Error as e:
+            print("Error getting campaigns:", e)
+            raise
+
+    def get_active_campaigns(self) -> List[Dict]:
+        """Get all active campaigns"""
+        try:
+            query = """
+            SELECT * FROM campaigns 
+            WHERE status = 'active' 
+            AND start_date <= NOW() 
+            AND (end_date IS NULL OR end_date >= NOW())
+            ORDER BY start_date DESC
             """
-            cursor.execute(sql, (
-                data['name'],
-                data.get('description', ''),
-                data['campaign_type'],
-                data.get('status', 'draft'),
-                data.get('discount_type'),
-                data.get('discount_value'),
-                data['start_date'],
-                data['end_date']
-            ))
-            campaign_id = cursor.lastrowid
-            
-            # Add products if provided
-            if 'products' in data and isinstance(data['products'], list):
-                for product in data['products']:
-                    cursor.execute("""
-                        INSERT INTO campaign_products 
-                        (campaign_id, product_id, is_featured, custom_discount)
-                        VALUES (%s, %s, %s, %s)
-                    """, (
-                        campaign_id,
-                        product['product_id'],
-                        product.get('is_featured', False),
-                        product.get('custom_discount')
-                    ))
-            
-            # Add ad placements if provided
-            if 'ad_placements' in data and isinstance(data['ad_placements'], list):
-                for placement in data['ad_placements']:
-                    cursor.execute("""
-                        INSERT INTO ad_placements 
-                        (campaign_id, location, image_url, alt_text, link_url, is_active, display_order)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)
-                    """, (
-                        campaign_id,
-                        placement['location'],
-                        placement.get('image_url'),
-                        placement.get('alt_text'),
-                        placement.get('link_url'),
-                        placement.get('is_active', True),
-                        placement.get('display_order', 0)
-                    ))
-            
-            conn.commit()
-            return self.get_campaign(campaign_id)
-            
-        except mysql.connector.Error as err:
-            conn.rollback()
-            logging.error(f"Database error creating campaign: {err}")
-            return {"error": "Database operation failed"}, 500
-        finally:
-            if conn:
-                conn.close()
+            return self._execute_query(query, fetch=True)
+        except Error as e:
+            print("Error getting active campaigns:", e)
+            raise
 
-    def update_campaign(self, campaign_id, data):
-        """Update an existing campaign"""
-        conn = self.connect_to_db()
-        if not conn:
-            return {"error": "Database connection failed"}, 500
+    def update_campaign(self, campaign_id: int, data: Dict) -> Dict:
+        """Update a campaign"""
+        if not data:
+            raise ValueError("No data provided for update")
             
         try:
-            cursor = conn.cursor()
+            set_clause = []
+            params = []
+            for field, value in data.items():
+                if field != 'products':
+                    set_clause.append(f"{field} = %s")
+                    params.append(value)
             
-            # Update campaign fields
-            sql = """
+            params.append(campaign_id)
+            query = f"UPDATE campaigns SET {', '.join(set_clause)} WHERE campaign_id = %s"
+            
+            rows_affected = self._execute_query(query, tuple(params))
+            
+            if 'products' in data:
+                self._execute_query(
+                    "DELETE FROM campaign_products WHERE campaign_id = %s",
+                    (campaign_id,)
+                )
+                self._add_campaign_products(campaign_id, data['products'])
+            
+            return {"rows_affected": rows_affected, "success": rows_affected > 0}
+        except Error as e:
+            print(f"Error updating campaign {campaign_id}:", e)
+            raise
+
+    def delete_campaign(self, campaign_id: int) -> Dict:
+        """Soft delete a campaign"""
+        try:
+            query = "UPDATE campaigns SET status = 'deleted' WHERE campaign_id = %s"
+            rows_affected = self._execute_query(query, (campaign_id,))
+            return {"rows_affected": rows_affected, "success": rows_affected > 0}
+        except Error as e:
+            print(f"Error deleting campaign {campaign_id}:", e)
+            raise
+
+    def record_interaction(self, interaction_data: Dict) -> Dict:
+        """Record a campaign interaction"""
+        required_fields = {'campaign_id', 'interaction_type'}
+        missing_fields = required_fields - set(interaction_data.keys())
+        if missing_fields:
+            raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
+
+        metric_field = {
+            'impression': 'impressions',
+            'click': 'clicks',
+            'conversion': 'conversions'
+        }.get(interaction_data['interaction_type'])
+
+        if not metric_field:
+            raise ValueError("Invalid interaction type")
+
+        try:
+            # Update campaign metrics
+            update_query = f"""
             UPDATE campaigns 
-            SET name = %s, 
-                description = %s,
-                campaign_type = %s,
-                status = %s,
-                discount_type = %s,
-                discount_value = %s,
-                start_date = %s,
-                end_date = %s,
-                updated_at = NOW()
+            SET {metric_field} = {metric_field} + 1
+            {', revenue = revenue + %s' if interaction_data['interaction_type'] == 'conversion' else ''}
             WHERE campaign_id = %s
             """
-            cursor.execute(sql, (
-                data.get('name'),
-                data.get('description'),
-                data.get('campaign_type'),
-                data.get('status'),
-                data.get('discount_type'),
-                data.get('discount_value'),
-                data.get('start_date'),
-                data.get('end_date'),
-                campaign_id
-            ))
             
-            # Update products if provided
-            if 'products' in data:
-                cursor.execute("DELETE FROM campaign_products WHERE campaign_id = %s", (campaign_id,))
-                for product in data['products']:
-                    cursor.execute("""
-                        INSERT INTO campaign_products 
-                        (campaign_id, product_id, is_featured, custom_discount)
-                        VALUES (%s, %s, %s, %s)
-                    """, (
-                        campaign_id,
-                        product['product_id'],
-                        product.get('is_featured', False),
-                        product.get('custom_discount')
-                    ))
+            update_params = []
+            if interaction_data['interaction_type'] == 'conversion':
+                update_params.append(float(interaction_data.get('conversion_amount', 0)))
+            update_params.append(interaction_data['campaign_id'])
             
-            # Update placements if provided
-            if 'ad_placements' in data:
-                cursor.execute("DELETE FROM ad_placements WHERE campaign_id = %s", (campaign_id,))
-                for placement in data['ad_placements']:
-                    cursor.execute("""
-                        INSERT INTO ad_placements 
-                        (campaign_id, location, image_url, alt_text, link_url, is_active, display_order)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)
-                    """, (
-                        campaign_id,
-                        placement['location'],
-                        placement.get('image_url'),
-                        placement.get('alt_text'),
-                        placement.get('link_url'),
-                        placement.get('is_active', True),
-                        placement.get('display_order', 0)
-                    ))
+            self._execute_query(update_query, tuple(update_params))
             
-            conn.commit()
-            return self.get_campaign(campaign_id)
+            # Record detailed interaction
+            interaction_query = """
+            INSERT INTO campaign_interactions (
+                campaign_id, user_id, interaction_type, source_url, 
+                device_type, conversion_amount, email_address, social_platform
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """
             
-        except mysql.connector.Error as err:
-            conn.rollback()
-            logging.error(f"Database error updating campaign: {err}")
-            return {"error": "Database operation failed"}, 500
-        finally:
-            if conn:
-                conn.close()
-
-    def delete_campaign(self, campaign_id):
-        """Delete a campaign"""
-        conn = self.connect_to_db()
-        if not conn:
-            return {"error": "Database connection failed"}, 500
-            
-        try:
-            cursor = conn.cursor()
-            
-            # Delete associations first
-            cursor.execute("DELETE FROM campaign_products WHERE campaign_id = %s", (campaign_id,))
-            cursor.execute("DELETE FROM ad_placements WHERE campaign_id = %s", (campaign_id,))
-            
-            # Delete campaign
-            cursor.execute("DELETE FROM campaigns WHERE campaign_id = %s", (campaign_id,))
-            
-            conn.commit()
-            return {"message": "Campaign deleted successfully"}, 200
-            
-        except mysql.connector.Error as err:
-            conn.rollback()
-            logging.error(f"Database error deleting campaign: {err}")
-            return {"error": "Database operation failed"}, 500
-        finally:
-            if conn:
-                conn.close()
-
-    def record_metric(self, campaign_id, metric_type):
-        """Record a campaign metric (impression, click, conversion)"""
-        valid_metrics = ['impressions', 'clicks', 'conversions']
-        if metric_type not in valid_metrics:
-            return {"error": "Invalid metric type"}, 400
-
-        conn = self.connect_to_db()
-        if not conn:
-            return {"error": "Database connection failed"}, 500
-            
-        try:
-            cursor = conn.cursor()
-            cursor.execute(
-                f"UPDATE campaigns SET {metric_type} = {metric_type} + 1 WHERE campaign_id = %s",
-                (campaign_id,)
+            interaction_params = (
+                interaction_data['campaign_id'],
+                interaction_data.get('user_id'),
+                interaction_data['interaction_type'],
+                interaction_data.get('source_url'),
+                interaction_data.get('device_type'),
+                float(interaction_data.get('conversion_amount', 0)) if interaction_data['interaction_type'] == 'conversion' else 0.0,
+                interaction_data.get('email_address'),
+                interaction_data.get('social_platform')
             )
-            conn.commit()
-            return {"message": f"{metric_type} recorded"}, 200
             
-        except mysql.connector.Error as err:
-            conn.rollback()
-            logging.error(f"Database error recording metric: {err}")
-            return {"error": "Database operation failed"}, 500
+            self._execute_query(interaction_query, interaction_params)
+            
+            return {"success": True}
+        except Error as e:
+            print("Error recording interaction:", e)
+            raise
+
+    def get_campaign_analytics(self, campaign_id: int) -> Dict:
+        """Get analytics for a campaign"""
+        try:
+            campaign = self.get_campaign(campaign_id)
+            if not campaign:
+                raise ValueError("Campaign not found")
+            
+            # Time-series data
+            time_series = self._execute_query("""
+                SELECT 
+                    DATE(interaction_time) AS date,
+                    interaction_type,
+                    COUNT(*) AS count,
+                    SUM(IF(interaction_type='conversion', conversion_amount, 0)) AS revenue
+                FROM campaign_interactions
+                WHERE campaign_id = %s
+                GROUP BY DATE(interaction_time), interaction_type
+                ORDER BY date
+            """, (campaign_id,), fetch=True)
+            
+            # Traffic sources
+            traffic_sources = self._execute_query("""
+                SELECT 
+                    CASE
+                        WHEN source_url LIKE '%facebook%' THEN 'Facebook'
+                        WHEN source_url LIKE '%instagram%' THEN 'Instagram'
+                        WHEN source_url LIKE '%google%' THEN 'Google'
+                        WHEN email_address IS NOT NULL THEN 'Email'
+                        ELSE 'Direct'
+                    END AS source,
+                    COUNT(*) AS interactions,
+                    SUM(IF(interaction_type='conversion', 1, 0)) AS conversions,
+                    SUM(IF(interaction_type='conversion', conversion_amount, 0)) AS revenue
+                FROM campaign_interactions
+                WHERE campaign_id = %s
+                GROUP BY source
+                ORDER BY interactions DESC
+            """, (campaign_id,), fetch=True)
+            
+            return {
+                "campaign": campaign,
+                "time_series": time_series,
+                "traffic_sources": traffic_sources,
+                "success": True
+            }
+        except Error as e:
+            print(f"Error getting analytics for campaign {campaign_id}:", e)
+            raise
+
+    def _add_campaign_products(self, campaign_id: int, product_ids: List[int]) -> None:
+        """Helper to add products to a campaign"""
+        if not product_ids:
+            return
+            
+        values = [(campaign_id, pid) for pid in product_ids]
+        query = "INSERT INTO campaign_products (campaign_id, product_id) VALUES (%s, %s)"
+        
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            cursor.executemany(query, values)
+            self.connection.commit()
+        except Error as e:
+            self.connection.rollback()
+            print("Error adding campaign products:", e)
+            raise
         finally:
-            if conn:
-                conn.close()
+            if cursor:
+                cursor.close()

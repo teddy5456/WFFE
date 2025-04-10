@@ -4,27 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | WFFE Connect</title>
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+    <!-- Dashboard Layout -->
     <div class="dashboard-container">
-        <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
                     <a href="/"><i class="fas fa-couch"></i></a>
-                    <span><a href="/">WFFE Connect</a></span>
+                    <span><a href="/" style="text-decoration: none; color: black;">WFFE Connect</a></span>
                 </div>
                 <button class="sidebar-toggle" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
@@ -32,12 +27,11 @@
             </div>
             
             <nav class="sidebar-nav">
-                <!-- Main Navigation -->
                 <div class="nav-section">
                     <div class="nav-title">Main</div>
                     <ul>
                         <li class="active">
-                            <a href="#">
+                            <a href="#" id="dashboardLink">
                                 <i class="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -46,7 +40,7 @@
                             <a href="/dashboard/campaigns/email/index.html">
                                 <i class="fas fa-envelope"></i>
                                 <span>Email Campaigns</span>
-                                <span class="badge" id="emailCampaignsCount">0</span>
+                                <span class="badge">3</span>
                             </a>
                         </li>
                         <li>
@@ -70,12 +64,11 @@
                     </ul>
                 </div>
                 
-                <!-- Analytics Navigation -->
                 <div class="nav-section">
                     <div class="nav-title">Analytics</div>
                     <ul>
                         <li>
-                            <a href="/dashboard/campaigns/email/analytics.html">
+                            <a href="#" id="analyticsLink">
                                 <i class="fas fa-chart-line"></i>
                                 <span>Performance</span>
                             </a>
@@ -95,7 +88,6 @@
                     </ul>
                 </div>
                 
-                <!-- Settings Navigation -->
                 <div class="nav-section">
                     <div class="nav-title">Settings</div>
                     <ul>
@@ -109,7 +101,6 @@
                             <a href="#">
                                 <i class="fas fa-bell"></i>
                                 <span>Notifications</span>
-                                <span class="badge" id="notificationsCount">0</span>
                             </a>
                         </li>
                         <li>
@@ -122,50 +113,49 @@
                 </div>
             </nav>
             
-            <!-- User Profile -->
             <div class="sidebar-footer">
                 <div class="user-profile">
                     <div class="avatar">
-                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User" id="userAvatar">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
                     </div>
                     <div class="user-info">
-                        <div class="name" id="userName">Loading...</div>
-                        <div class="role" id="userRole">Loading...</div>
+                        <div class="name">Sarah Johnson</div>
+                        <div class="role">Marketing Manager</div>
                     </div>
-                    <button class="user-menu" id="userMenuBtn">
+                    <button class="user-menu">
                         <i class="fas fa-ellipsis-v"></i>
                     </button>
                 </div>
             </div>
         </aside>
-
-        <!-- MAIN CONTENT -->
+        
+        <!-- Main Content Area -->
         <main class="main-content">
-            <!-- TOP BAR -->
+            <!-- Top Navigation Bar -->
             <header class="topbar">
                 <div class="topbar-left">
-                    <h1>Dashboard Overview</h1>
-                    <div class="breadcrumb">
+                    <h1 id="pageTitle">Select a Campaign</h1>
+                    <div class="breadcrumb" id="breadcrumb">
                         <a href="#">Home</a>
                         <span>/</span>
-                        <a href="#">Dashboard</a>
+                        <a href="#">Campaigns</a>
                     </div>
                 </div>
                 
                 <div class="topbar-right">
                     <div class="search-box">
-                        <input type="text" placeholder="Search..." id="searchInput">
-                        <button id="searchBtn"><i class="fas fa-search"></i></button>
+                        <input type="text" placeholder="Search campaigns..." id="campaignSearch">
+                        <button><i class="fas fa-search"></i></button>
                     </div>
                     
                     <div class="topbar-actions">
-                        <button class="notification-btn" id="notificationsBtn">
+                        <button class="notification-btn">
                             <i class="fas fa-bell"></i>
-                            <span class="badge" id="notificationsBadge">0</span>
+                            <span class="badge">5</span>
                         </button>
-                        <button class="message-btn" id="messagesBtn">
+                        <button class="message-btn">
                             <i class="fas fa-envelope"></i>
-                            <span class="badge" id="messagesBadge">0</span>
+                            <span class="badge">2</span>
                         </button>
                         <button class="quick-action-btn" id="newCampaignBtn">
                             <i class="fas fa-plus"></i>
@@ -175,163 +165,178 @@
                 </div>
             </header>
             
-            <!-- DASHBOARD CONTENT -->
+            <!-- Dashboard Content -->
             <div class="content-wrapper">
-                <!-- STATS CARDS -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon impression-icon">
-                            <i class="fas fa-eye"></i>
+                <!-- Campaign Selection View -->
+                <div class="campaign-selection-view" id="campaignSelectionView">
+                    <div class="campaign-filters">
+                        <div class="filter-group">
+                            <label>Filter by:</label>
+                            <select id="campaignTypeFilter">
+                                <option value="all">All Types</option>
+                                <option value="email">Email</option>
+                                <option value="social">Social Media</option>
+                                <option value="paid">Paid Ads</option>
+                            </select>
                         </div>
-                        <div class="stat-info">
-                            <div class="stat-value" id="impressionsStat">0</div>
-                            <div class="stat-label">Impressions</div>
+                        <div class="filter-group">
+                            <label>Status:</label>
+                            <select id="campaignStatusFilter">
+                                <option value="all">All Statuses</option>
+                                <option value="active">Active</option>
+                                <option value="completed">Completed</option>
+                                <option value="draft">Draft</option>
+                            </select>
                         </div>
-                        <div class="stat-trend up" id="impressionsTrend">
-                            <i class="fas fa-arrow-up"></i> <span>0%</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon click-icon">
-                            <i class="fas fa-mouse-pointer"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value" id="clicksStat">0</div>
-                            <div class="stat-label">Clicks</div>
-                        </div>
-                        <div class="stat-trend up" id="clicksTrend">
-                            <i class="fas fa-arrow-up"></i> <span>0%</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon conversion-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value" id="conversionsStat">0</div>
-                            <div class="stat-label">Conversions</div>
-                        </div>
-                        <div class="stat-trend down" id="conversionsTrend">
-                            <i class="fas fa-arrow-down"></i> <span>0%</span>
+                        <div class="filter-group">
+                            <label>Date Range:</label>
+                            <select id="campaignDateFilter">
+                                <option value="all">All Time</option>
+                                <option value="7days">Last 7 Days</option>
+                                <option value="30days">Last 30 Days</option>
+                                <option value="90days">Last 90 Days</option>
+                            </select>
                         </div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon revenue-icon">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value" id="revenueStat">$0</div>
-                            <div class="stat-label">Revenue</div>
-                        </div>
-                        <div class="stat-trend up" id="revenueTrend">
-                            <i class="fas fa-arrow-up"></i> <span>0%</span>
+                    <div class="campaign-grid" id="campaignGrid">
+                        <!-- Campaign cards will be loaded here dynamically -->
+                        <div class="campaign-card loading">
+                            <div class="loading-spinner"></div>
+                            <p>Loading campaigns...</p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- CHARTS ROW -->
-                <div class="charts-row">
-                    <div class="chart-card">
-                        <div class="card-header">
-                            <h3>Campaign Performance</h3>
-                            <div class="card-actions">
-                                <select class="time-select" id="timeRangeSelect">
-                                    <option value="7">Last 7 days</option>
-                                    <option value="30" selected>Last 30 days</option>
-                                    <option value="90">Last 90 days</option>
-                                </select>
+                <!-- Campaign Analytics View (hidden by default) -->
+                <div class="campaign-analytics-view" id="campaignAnalyticsView" style="display: none;">
+                    <div class="back-to-campaigns" id="backToCampaigns">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to Campaigns</span>
+                    </div>
+                    
+                    <div class="campaign-header">
+                        <div class="campaign-title">
+                            <h2 id="selectedCampaignName">Campaign Name</h2>
+                            <div class="campaign-meta">
+                                <span class="campaign-type" id="selectedCampaignType">
+                                    <i class="fas fa-envelope"></i> Email
+                                </span>
+                                <span class="campaign-date" id="selectedCampaignDate">Jun 10, 2023</span>
+                                <span class="campaign-status active" id="selectedCampaignStatus">Active</span>
                             </div>
                         </div>
-                        <div class="chart-container">
-                            <canvas id="performanceChart"></canvas>
+                        <div class="campaign-actions">
+                            <button class="btn secondary">
+                                <i class="fas fa-pencil-alt"></i> Edit
+                            </button>
+                            <button class="btn primary">
+                                <i class="fas fa-rocket"></i> Publish
+                            </button>
                         </div>
                     </div>
                     
-                    <div class="chart-card">
-                        <div class="card-header">
-                            <h3>Traffic Sources</h3>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="trafficChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- BOTTOM CONTENT ROW -->
-                <div class="content-row">
-                    <!-- RECENT CAMPAIGNS -->
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3>Recent Campaigns</h3>
-                            <a href="#" class="view-all" id="viewAllCampaigns">View All</a>
-                        </div>
-                        <div class="campaign-list" id="campaignList">
-                            <div class="loading-spinner">
-                                <i class="fas fa-spinner fa-spin"></i> Loading campaigns...
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #FFEE58;">
+                                <i class="fas fa-eye" style="color: #FBC02D;"></i>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <!-- QUICK ACTIONS -->
-                    <div class="content-card quick-actions">
-                        <div class="card-header">
-                            <h3>Quick Actions</h3>
-                        </div>
-                        <div class="actions-grid">
-                            <button class="action-btn" id="newEmailBtn">
-                                <div class="action-icon">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <span>New Email</span>
-                            </button>
-                            
-                            <button class="action-btn" id="newSocialPostBtn">
-                                <div class="action-icon">
-                                    <i class="fas fa-share-alt"></i>
-                                </div>
-                                <span>Social Post</span>
-                            </button>
-                            
-                            <button class="action-btn" id="createAdBtn">
-                                <div class="action-icon">
-                                    <i class="fas fa-ad"></i>
-                                </div>
-                                <span>Create Ad</span>
-                            </button>
-                            
-                            <button class="action-btn" id="viewReportsBtn">
-                                <div class="action-icon">
-                                    <i class="fas fa-chart-line"></i>
-                                </div>
-                                <span>View Reports</span>
-                            </button>
-                            
-                            <button class="action-btn" id="audienceBtn">
-                                <div class="action-icon">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <span>Audience</span>
-                            </button>
-                            
-                            <button class="action-btn" id="addProductBtn">
-                                <div class="action-icon">
-                                    <i class="fas fa-couch"></i>
-                                </div>
-                                <span>Add Product</span>
-                            </button>
+                            <div class="stat-info">
+                                <div class="stat-value" id="impressionsStat">0</div>
+                                <div class="stat-label">Impressions</div>
+                            </div>
+                            <div class="stat-trend up" id="impressionsTrend">
+                                <i class="fas fa-arrow-up"></i> 0%
+                            </div>
                         </div>
                         
-                        <!-- RECENT ACTIVITY -->
-                        <div class="recent-activity">
-                            <h4>Recent Activity</h4>
-                            <ul id="recentActivityList">
-                                <li class="loading-spinner">
-                                    <i class="fas fa-spinner fa-spin"></i> Loading activity...
-                                </li>
-                            </ul>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #B3E5FC;">
+                                <i class="fas fa-mouse-pointer" style="color: #03A9F4;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="clicksStat">0</div>
+                                <div class="stat-label">Clicks</div>
+                            </div>
+                            <div class="stat-trend up" id="clicksTrend">
+                                <i class="fas fa-arrow-up"></i> 0%
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #C8E6C9;">
+                                <i class="fas fa-shopping-cart" style="color: #4CAF50;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="conversionsStat">0</div>
+                                <div class="stat-label">Conversions</div>
+                            </div>
+                            <div class="stat-trend down" id="conversionsTrend">
+                                <i class="fas fa-arrow-down"></i> 0%
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #FFCDD2;">
+                                <i class="fas fa-dollar-sign" style="color: #F44336;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="revenueStat">$0</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                            <div class="stat-trend up" id="revenueTrend">
+                                <i class="fas fa-arrow-up"></i> 0%
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Charts Row -->
+                    <div class="charts-row">
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Performance Over Time</h3>
+                                <div class="card-actions">
+                                    <select class="time-select" id="performanceTimeRange">
+                                        <option>Last 7 days</option>
+                                        <option selected>Last 30 days</option>
+                                        <option>Last 90 days</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Traffic Sources</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="trafficChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Analytics -->
+                    <div class="content-row">
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Audience Demographics</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="demographicsChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3>Top Performing Content</h3>
+                            </div>
+                            <div class="top-content-list" id="topContentList">
+                                <!-- Will be populated dynamically -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -339,52 +344,527 @@
         </main>
     </div>
 
-    <!-- NEW CAMPAIGN MODAL -->
-    <div class="modal" id="newCampaignModal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <h2>Create New Campaign</h2>
-            <form id="campaignForm">
-                <div class="form-group">
-                    <label for="campaignName">Campaign Name</label>
-                    <input type="text" id="campaignName" required placeholder="Summer Sale 2023">
-                </div>
-                
-                <div class="form-group">
-                    <label for="campaignType">Campaign Type</label>
-                    <select id="campaignType" required>
-                        <option value="">Select type</option>
-                        <option value="email">Email Campaign</option>
-                        <option value="social">Social Media</option>
-                        <option value="product">Product Promotion</option>
-                    </select>
-                </div>
-                
-                <div class="form-group-row">
-                    <div class="form-group">
-                        <label for="startDate">Start Date</label>
-                        <input type="date" id="startDate" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="endDate">End Date</label>
-                        <input type="date" id="endDate" required>
-                    </div>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary" id="cancelCampaignBtn">Cancel</button>
-                    <button type="submit" class="btn-primary">Create Campaign</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- TOAST NOTIFICATION -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- JavaScript -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // State management
+            const state = {
+                selectedCampaign: null,
+                campaigns: [],
+                filteredCampaigns: [],
+                performanceChart: null,
+                trafficChart: null,
+                demographicsChart: null
+            };
+
+            // DOM Elements (same as before)
+            const elements = {
+                campaignSelectionView: document.getElementById('campaignSelectionView'),
+                campaignAnalyticsView: document.getElementById('campaignAnalyticsView'),
+                campaignGrid: document.getElementById('campaignGrid'),
+                backToCampaigns: document.getElementById('backToCampaigns'),
+                pageTitle: document.getElementById('pageTitle'),
+                breadcrumb: document.getElementById('breadcrumb'),
+                campaignSearch: document.getElementById('campaignSearch'),
+                campaignTypeFilter: document.getElementById('campaignTypeFilter'),
+                campaignStatusFilter: document.getElementById('campaignStatusFilter'),
+                campaignDateFilter: document.getElementById('campaignDateFilter'),
+                selectedCampaignName: document.getElementById('selectedCampaignName'),
+                selectedCampaignType: document.getElementById('selectedCampaignType'),
+                selectedCampaignDate: document.getElementById('selectedCampaignDate'),
+                selectedCampaignStatus: document.getElementById('selectedCampaignStatus'),
+                impressionsStat: document.getElementById('impressionsStat'),
+                clicksStat: document.getElementById('clicksStat'),
+                conversionsStat: document.getElementById('conversionsStat'),
+                revenueStat: document.getElementById('revenueStat'),
+                impressionsTrend: document.getElementById('impressionsTrend'),
+                clicksTrend: document.getElementById('clicksTrend'),
+                conversionsTrend: document.getElementById('conversionsTrend'),
+                revenueTrend: document.getElementById('revenueTrend'),
+                topContentList: document.getElementById('topContentList'),
+                performanceTimeRange: document.getElementById('performanceTimeRange')
+            };
+
+            // Event Listeners (same as before)
+            elements.backToCampaigns.addEventListener('click', showCampaignSelection);
+            elements.campaignTypeFilter.addEventListener('change', filterCampaigns);
+            elements.campaignStatusFilter.addEventListener('change', filterCampaigns);
+            elements.campaignDateFilter.addEventListener('change', filterCampaigns);
+            elements.campaignSearch.addEventListener('input', filterCampaigns);
+            elements.performanceTimeRange.addEventListener('change', updatePerformanceChart);
+
+            // Initialize the app
+            init();
+
+            async function init() {
+                await fetchCampaigns();
+                renderCampaignGrid();
+            }
+
+            async function fetchCampaigns() {
+                try {
+                    // Show loading state
+                    elements.campaignGrid.innerHTML = `
+                        <div class="campaign-card loading">
+                            <div class="loading-spinner"></div>
+                            <p>Loading campaigns...</p>
+                        </div>
+                    `;
+
+                    // Make API call to your backend
+                    const response = await fetch('http://localhost:8000/api/campaigns');
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const apiData = await response.json();
+
+                    // Transform API data to match frontend structure
+                    state.campaigns = apiData.map(campaign => ({
+                        id: campaign.campaign_id,
+                        name: campaign.name,
+                        type: campaign.campaign_type,
+                        status: campaign.status,
+                        startDate: campaign.start_date,
+                        endDate: campaign.end_date,
+                        impressions: campaign.impressions || 0,
+                        clicks: campaign.clicks || 0,
+                        conversions: campaign.conversions || 0,
+                        revenue: campaign.revenue || 0,
+                        ctr: campaign.ctr || 0,
+                        cr: campaign.conversion_rate || 0,
+                        products: campaign.products || [],
+                        // Generate mock analytics data (replace with real API calls if available)
+                        dailyData: generateDailyData(
+                            Math.ceil((new Date(campaign.end_date) - new Date(campaign.start_date)) / (1000 * 60 * 60 * 24)),
+                            campaign.impressions || 0,
+                            campaign.clicks || 0,
+                            campaign.conversions || 0
+                        ),
+                        trafficSources: {
+                            organic: 35,
+                            social: 25,
+                            email: 20,
+                            direct: 15,
+                            referral: 5
+                        },
+                        demographics: {
+                            age: {
+                                "18-24": 15,
+                                "25-34": 35,
+                                "35-44": 25,
+                                "45-54": 15,
+                                "55+": 10
+                            },
+                            gender: {
+                                male: 40,
+                                female: 60
+                            }
+                        },
+                        topContent: [
+                            { title: "Featured Product", clicks: 842, ctr: 18.2 },
+                            { title: "Special Offer", clicks: 756, ctr: 16.5 },
+                            { title: "New Collection", clicks: 632, ctr: 14.8 }
+                        ]
+                    }));
+                    
+                    state.filteredCampaigns = [...state.campaigns];
+                } catch (error) {
+                    console.error('Error fetching campaigns:', error);
+                    // Show error to user
+                    elements.campaignGrid.innerHTML = `
+                        <div class="empty-state error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Failed to load campaigns</p>
+                            <button class="btn primary" onclick="window.location.reload()">Try Again</button>
+                        </div>
+                    `;
+                }
+            }
+
+
+            function generateDailyData(days, totalImpressions, totalClicks, totalConversions) {
+                const data = [];
+                const avgImpressions = totalImpressions / days;
+                const avgClicks = totalClicks / days;
+                const avgConversions = totalConversions / days;
+                
+                for (let i = 0; i < days; i++) {
+                    // Add some randomness to make it look realistic
+                    const impressions = Math.floor(avgImpressions * (0.8 + Math.random() * 0.4));
+                    const clicks = Math.floor(avgClicks * (0.8 + Math.random() * 0.4));
+                    const conversions = Math.floor(avgConversions * (0.8 + Math.random() * 0.4));
+                    
+                    const date = new Date();
+                    date.setDate(date.getDate() - (days - i));
+                    
+                    data.push({
+                        date: date.toISOString().split('T')[0],
+                        impressions,
+                        clicks,
+                        conversions,
+                        revenue: Math.floor(conversions * (40 + Math.random() * 20))
+                    });
+                }
+                
+                return data;
+            }
+
+            function renderCampaignGrid() {
+                elements.campaignGrid.innerHTML = '';
+                
+                if (state.filteredCampaigns.length === 0) {
+                    elements.campaignGrid.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>No campaigns match your filters</p>
+                            <button class="btn primary" id="newCampaignBtn">Create New Campaign</button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                state.filteredCampaigns.forEach(campaign => {
+                    const campaignCard = document.createElement('div');
+                    campaignCard.className = `campaign-card ${campaign.status}`;
+                    campaignCard.innerHTML = `
+                        <div class="campaign-card-header">
+                            <h3>${campaign.name}</h3>
+                            <span class="campaign-type ${campaign.type}">
+                                ${getCampaignTypeIcon(campaign.type)} ${formatCampaignType(campaign.type)}
+                            </span>
+                        </div>
+                        <div class="campaign-card-dates">
+                            <div>
+                                <small>Start Date</small>
+                                <p>${formatDate(campaign.startDate)}</p>
+                            </div>
+                            <div>
+                                <small>End Date</small>
+                                <p>${formatDate(campaign.endDate)}</p>
+                            </div>
+                        </div>
+                        <div class="campaign-card-stats">
+                            <div>
+                                <small>Impressions</small>
+                                <p>${campaign.impressions.toLocaleString()}</p>
+                            </div>
+                            <div>
+                                <small>Clicks</small>
+                                <p>${campaign.clicks.toLocaleString()}</p>
+                            </div>
+                            <div>
+                                <small>Revenue</small>
+                                <p>$${campaign.revenue.toLocaleString()}</p>
+                            </div>
+                        </div>
+                        <div class="campaign-card-actions">
+                            <button class="btn secondary view-campaign" data-id="${campaign.id}">
+                                View Analytics
+                            </button>
+                        </div>
+                    `;
+                    
+                    campaignCard.querySelector('.view-campaign').addEventListener('click', () => {
+                        showCampaignAnalytics(campaign.id);
+                    });
+                    
+                    elements.campaignGrid.appendChild(campaignCard);
+                });
+            }
+
+            function filterCampaigns() {
+                const typeFilter = elements.campaignTypeFilter.value;
+                const statusFilter = elements.campaignStatusFilter.value;
+                const dateFilter = elements.campaignDateFilter.value;
+                const searchQuery = elements.campaignSearch.value.toLowerCase();
+                
+                state.filteredCampaigns = state.campaigns.filter(campaign => {
+                    // Type filter
+                    if (typeFilter !== 'all' && campaign.type !== typeFilter) {
+                        return false;
+                    }
+                    
+                    // Status filter
+                    if (statusFilter !== 'all' && campaign.status !== statusFilter) {
+                        return false;
+                    }
+                    
+                    // Date filter
+                    if (dateFilter !== 'all') {
+                        const days = parseInt(dateFilter);
+                        const cutoffDate = new Date();
+                        cutoffDate.setDate(cutoffDate.getDate() - days);
+                        
+                        const campaignDate = new Date(campaign.startDate);
+                        if (campaignDate < cutoffDate) {
+                            return false;
+                        }
+                    }
+                    
+                    // Search filter
+                    if (searchQuery && !campaign.name.toLowerCase().includes(searchQuery)) {
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                renderCampaignGrid();
+            }
+
+            function showCampaignSelection() {
+                elements.campaignSelectionView.style.display = 'block';
+                elements.campaignAnalyticsView.style.display = 'none';
+                elements.pageTitle.textContent = 'Select a Campaign';
+                updateBreadcrumb(['Home', 'Campaigns']);
+                state.selectedCampaign = null;
+            }
+
+            function showCampaignAnalytics(campaignId) {
+                state.selectedCampaign = state.campaigns.find(c => c.id === campaignId);
+                if (!state.selectedCampaign) return;
+                
+                // Update UI elements
+                elements.campaignSelectionView.style.display = 'none';
+                elements.campaignAnalyticsView.style.display = 'block';
+                elements.pageTitle.textContent = state.selectedCampaign.name;
+                updateBreadcrumb(['Home', 'Campaigns', state.selectedCampaign.name]);
+                
+                // Update campaign info
+                elements.selectedCampaignName.textContent = state.selectedCampaign.name;
+                elements.selectedCampaignType.innerHTML = `
+                    ${getCampaignTypeIcon(state.selectedCampaign.type)} ${formatCampaignType(state.selectedCampaign.type)}
+                `;
+                elements.selectedCampaignType.className = `campaign-type ${state.selectedCampaign.type}`;
+                elements.selectedCampaignDate.textContent = formatDate(state.selectedCampaign.startDate);
+                elements.selectedCampaignStatus.textContent = state.selectedCampaign.status;
+                elements.selectedCampaignStatus.className = `campaign-status ${state.selectedCampaign.status}`;
+                
+                // Update stats
+                elements.impressionsStat.textContent = state.selectedCampaign.impressions.toLocaleString();
+                elements.clicksStat.textContent = state.selectedCampaign.clicks.toLocaleString();
+                elements.conversionsStat.textContent = state.selectedCampaign.conversions.toLocaleString();
+                elements.revenueStat.textContent = `$${state.selectedCampaign.revenue.toLocaleString()}`;
+                
+                // Update trends (random for demo)
+                elements.impressionsTrend.innerHTML = `<i class="fas fa-arrow-up"></i> ${state.selectedCampaign.ctr.toFixed(2)}%`;
+                elements.clicksTrend.innerHTML = `<i class="fas fa-arrow-up"></i> ${(state.selectedCampaign.ctr * 0.8).toFixed(2)}%`;
+                elements.conversionsTrend.innerHTML = `<i class="fas fa-arrow-up"></i> ${state.selectedCampaign.cr.toFixed(2)}%`;
+                elements.revenueTrend.innerHTML = `<i class="fas fa-arrow-up"></i> ${(state.selectedCampaign.cr * 1.2).toFixed(2)}%`;
+                
+                // Update top content
+                elements.topContentList.innerHTML = '';
+                state.selectedCampaign.topContent.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <div class="content-item">
+                            <div class="content-title">${item.title}</div>
+                            <div class="content-stats">
+                                <span>${item.clicks} clicks</span>
+                                <span>${item.ctr}% CTR</span>
+                            </div>
+                        </div>
+                    `;
+                    elements.topContentList.appendChild(li);
+                });
+                
+                // Initialize charts
+                initCharts();
+            }
+
+            function initCharts() {
+                // Destroy existing charts if they exist
+                if (state.performanceChart) {
+                    state.performanceChart.destroy();
+                }
+                if (state.trafficChart) {
+                    state.trafficChart.destroy();
+                }
+                if (state.demographicsChart) {
+                    state.demographicsChart.destroy();
+                }
+                
+                // Performance Chart
+                const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+                state.performanceChart = new Chart(performanceCtx, {
+                    type: 'line',
+                    data: {
+                        labels: state.selectedCampaign.dailyData.map(data => formatShortDate(data.date)),
+                        datasets: [
+                            {
+                                label: 'Impressions',
+                                data: state.selectedCampaign.dailyData.map(data => data.impressions),
+                                borderColor: '#FBC02D',
+                                backgroundColor: 'rgba(251, 192, 45, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: 'Clicks',
+                                data: state.selectedCampaign.dailyData.map(data => data.clicks),
+                                borderColor: '#03A9F4',
+                                backgroundColor: 'rgba(3, 169, 244, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: 'Conversions',
+                                data: state.selectedCampaign.dailyData.map(data => data.conversions),
+                                borderColor: '#4CAF50',
+                                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                // Traffic Chart
+                const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+                state.trafficChart = new Chart(trafficCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Organic Search', 'Social Media', 'Email', 'Direct', 'Referral'],
+                        datasets: [{
+                            data: [
+                                state.selectedCampaign.trafficSources.organic,
+                                state.selectedCampaign.trafficSources.social,
+                                state.selectedCampaign.trafficSources.email,
+                                state.selectedCampaign.trafficSources.direct,
+                                state.selectedCampaign.trafficSources.referral
+                            ],
+                            backgroundColor: [
+                                '#4CAF50',
+                                '#2196F3',
+                                '#9C27B0',
+                                '#FF9800',
+                                '#F44336'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            }
+                        },
+                        cutout: '70%'
+                    }
+                });
+                
+                // Demographics Chart
+                const demographicsCtx = document.getElementById('demographicsChart').getContext('2d');
+                state.demographicsChart = new Chart(demographicsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(state.selectedCampaign.demographics.age),
+                        datasets: [
+                            {
+                                label: 'Age Distribution',
+                                data: Object.values(state.selectedCampaign.demographics.age),
+                                backgroundColor: '#03A9F4',
+                                borderRadius: 4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function updatePerformanceChart() {
+                // In a real app, this would fetch new data based on the time range
+                // For this demo, we'll just regenerate the chart with the same data
+                if (state.selectedCampaign) {
+                    initCharts();
+                }
+            }
+
+            // Helper functions
+            function getCampaignTypeIcon(type) {
+                switch(type) {
+                    case 'email': return '<i class="fas fa-envelope"></i>';
+                    case 'social': return '<i class="fas fa-share-alt"></i>';
+                    case 'paid': return '<i class="fas fa-ad"></i>';
+                    default: return '<i class="fas fa-campaign"></i>';
+                }
+            }
+
+            function formatCampaignType(type) {
+                switch(type) {
+                    case 'email': return 'Email';
+                    case 'social': return 'Social';
+                    case 'paid': return 'Paid';
+                    default: return 'Campaign';
+                }
+            }
+
+            function formatDate(dateString) {
+                const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString('en-US', options);
+            }
+
+            function formatShortDate(dateString) {
+                const options = { month: 'short', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString('en-US', options);
+            }
+
+            function updateBreadcrumb(items) {
+                elements.breadcrumb.innerHTML = '';
+                items.forEach((item, index) => {
+                    const span = document.createElement(index === items.length - 1 ? 'span' : 'a');
+                    if (index !== items.length - 1) {
+                        span.href = '#';
+                    }
+                    span.textContent = item;
+                    elements.breadcrumb.appendChild(span);
+                    
+                    if (index < items.length - 1) {
+                        const separator = document.createElement('span');
+                        separator.textContent = '/';
+                        elements.breadcrumb.appendChild(separator);
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

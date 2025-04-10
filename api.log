@@ -119,3 +119,74 @@ ERROR:root:GET request failed: no such table: categories
 2025-04-03 00:41:52,317 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
 2025-04-03 01:06:20,809 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
 2025-04-03 01:06:30,904 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 18:59:43,668 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 18:59:43,669 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 18:59:43,669 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 19:19:17,489 - INFO - No active campaigns found
+2025-04-03 19:19:17,492 - INFO - No active campaigns found
+2025-04-03 19:19:43,463 - INFO - No active campaigns found
+2025-04-03 19:19:43,467 - INFO - No active campaigns found
+2025-04-03 19:19:58,975 - INFO - No active campaigns found
+2025-04-03 19:19:59,042 - INFO - No active campaigns found
+2025-04-03 19:19:59,047 - INFO - No active campaigns found
+2025-04-03 19:20:01,423 - INFO - No active campaigns found
+2025-04-03 19:20:01,454 - INFO - No active campaigns found
+2025-04-03 19:24:19,976 - INFO - No active campaigns found
+2025-04-03 19:24:20,069 - INFO - No active campaigns found
+2025-04-03 19:34:49,761 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 19:35:20,438 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 19:35:34,836 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 19:35:46,992 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 19:35:51,481 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 19:36:10,347 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 19:36:53,726 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:36:53,746 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:37:04,766 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:37:04,798 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:37:04,802 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 19:37:08,466 - ERROR - GET request failed: 'Campaign' object has no attribute 'get_all_campaigns'
+2025-04-03 19:38:10,178 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:13,041 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:13,075 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:13,893 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:14,009 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:14,579 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:15,003 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:15,080 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:15,344 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:15,712 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:15,976 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:16,282 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:16,461 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:16,732 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:16,990 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:17,256 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:17,493 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:17,501 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:17,763 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:18,361 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:18,362 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:18,363 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 19:38:18,449 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:18,692 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:19,265 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:19,399 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:19,737 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:19,739 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:19,862 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:20,608 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:38:20,624 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:40:00,280 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:40:00,332 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:40:53,808 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 19:40:53,829 - ERROR - GET request failed: name 'mysql' is not defined
+2025-04-03 21:01:01,629 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 21:01:01,630 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 21:01:01,630 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 21:02:42,836 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 21:02:42,837 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-03 21:02:42,837 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-07 17:06:43,926 - ERROR - Operation failed: Failed executing the operation; Python type dict cannot be converted
+2025-04-07 18:19:46,404 - ERROR - GET request failed: 1054 (42S22): Unknown column 'p.image_url' in 'field list'
+2025-04-07 18:22:47,288 - ERROR - GET request failed: 1054 (42S22): Unknown column 'p.image_url' in 'field list'
+2025-04-09 20:34:31,732 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)

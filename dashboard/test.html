@@ -1,0 +1,13 @@
+-- Campaign record
+INSERT INTO campaigns (name, description, campaign_type, status, start_date, end_date, 
+                      impressions, clicks, conversions, revenue, social_platform, 
+                      post_id, ad_spend, discount_amount, discount_type, created_at, updated_at) 
+VALUES 
+('Back to School Promo', 'Special offers for students', 'social_media', 'active', 
+ '2023-08-01 00:00:00', '2023-08-31 23:59:59', 32000, 2100, 310, 7750.00, 
+ 'instagram', '17895632458974123', 1500.00, 15.00, 'percentage', NOW(), NOW());
+
+-- Link to existing products (replace 301,302,303 with your actual product IDs)
+INSERT INTO campaign_products (campaign_id, product_id) 
+VALUES 
+(LAST_INSERT_ID(), 7), -- Replace 301 with your product ID;

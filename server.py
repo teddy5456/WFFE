@@ -178,11 +178,17 @@ class RequestHandler(BaseHTTPRequestHandler):
             elif path == '/api/campaigns':
                 params = self._parse_query_params()
                 status = params.get('status', [None])[0]
-                campaigns = Campaign().get_all_campaigns(status)
+                campaign_type = params.get('type', [None])[0]
+                campaigns = Campaign().get_all_campaigns({
+                    'status': status,
+                    'campaign_type': campaign_type
+                })
                 self._send_response(campaigns)
+            
             elif path == '/api/campaigns/active':
                 campaigns = Campaign().get_active_campaigns()
                 self._send_response(campaigns)
+            
             elif len(path_parts) == 4 and path_parts[1] == 'api' and path_parts[2] == 'campaigns' and path_parts[3].isdigit():
                 campaign_id = int(path_parts[3])
                 campaign = Campaign().get_campaign(campaign_id)
@@ -190,6 +196,12 @@ class RequestHandler(BaseHTTPRequestHandler):
                     self._send_response(campaign)
                 else:
                     self._send_response({"error": "Campaign not found"}, 404)
+            
+            elif len(path_parts) == 5 and path_parts[1] == 'api' and path_parts[2] == 'campaigns' and path_parts[3].isdigit() and path_parts[4] == 'analytics':
+                campaign_id = int(path_parts[3])
+                analytics = Campaign().get_campaign_analytics(campaign_id)
+                self._send_response(analytics)
+            
             else:
                 self._send_response({"error": "Endpoint not found"}, 404)
                 
@@ -230,13 +242,16 @@ class RequestHandler(BaseHTTPRequestHandler):
                                     ['name', 'category_id'])
             elif path == '/api/campaigns':
                 self._handle_request(Campaign().create_campaign,
-                                    ['name', 'campaign_type', 'start_date', 'end_date'])
-            elif path.startswith('/api/campaigns/') and '/metrics/' in path:
+                                    ['name', 'campaign_type', 'start_date'])
+            elif path.startswith('/api/campaigns/') and '/interactions' in path:
                 parts = path.split('/')
-                if len(parts) == 6 and parts[3].isdigit():
+                if len(parts) == 5 and parts[3].isdigit():
                     campaign_id = int(parts[3])
-                    metric_type = parts[5]
-                    response = Campaign().record_metric(campaign_id, metric_type)
+                    data = self._get_request_body()
+                    response = Campaign().record_interaction({
+                        'campaign_id': campaign_id,
+                        **data
+                    })
                     self._send_response(response)
                 else:
                     self._send_response({"error": "Invalid endpoint"}, 404)
