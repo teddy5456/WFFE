@@ -1,0 +1,38 @@
+# render.yaml
+services:
+  - type: web
+    name: python-http-server
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    env: python
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: MYSQL_HOST
+        fromDatabase:
+          name: your-mysql-db
+          property: host
+      - key: MYSQL_USER
+        fromDatabase:
+          name: your-mysql-db
+          property: user
+      - key: MYSQL_PASSWORD
+        fromDatabase:
+          name: your-mysql-db
+          property: password
+      - key: MYSQL_DATABASE
+        fromDatabase:
+          name: your-mysql-db
+          property: database
+      - key: MYSQL_PORT
+        fromDatabase:
+          name: your-mysql-db
+          property: port
+
+databases:
+  - name: your-mysql-db
+    databaseName: your_database
+    user: your_user
+    plan: free  # or paid plan for production
+    engine: mysql
