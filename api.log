@@ -190,3 +190,25 @@ ERROR:root:GET request failed: no such table: categories
 2025-04-07 18:19:46,404 - ERROR - GET request failed: 1054 (42S22): Unknown column 'p.image_url' in 'field list'
 2025-04-07 18:22:47,288 - ERROR - GET request failed: 1054 (42S22): Unknown column 'p.image_url' in 'field list'
 2025-04-09 20:34:31,732 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-14 21:06:28,692 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-25 17:47:14,972 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-25 17:47:29,960 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-25 17:47:41,217 - ERROR - GET request failed: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-25 19:53:47,040 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:53:47,042 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:53:47,044 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:54:08,245 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:54:08,247 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:54:08,247 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:55:48,633 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:55:48,634 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:55:48,637 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,388 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,390 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,391 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,438 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,438 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,439 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,500 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,501 - ERROR - GET request failed: [WinError 10053] An established connection was aborted by the software in your host machine
+2025-04-25 19:56:13,501 - ERROR - Response encoding failed: [WinError 10053] An established connection was aborted by the software in your host machine

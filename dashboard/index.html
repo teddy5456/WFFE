@@ -3,23 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | WFFE Connect</title>
+    <title>Campaigns | WFFE Connect</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for new campaign types */
+        .campaign-type.email { background-color: #9C27B0; }
+        .campaign-type.social_media { background-color: #2196F3; }
+        .campaign-type.in_app_ad { background-color: #4CAF50; }
+        .campaign-type.paid { background-color: #FF9800; }
+        
+        /* Status badges */
+        .status-badge.active { background-color: #4CAF50; }
+        .status-badge.completed { background-color: #607D8B; }
+        .status-badge.draft { background-color: #9E9E9E; }
+        .status-badge.scheduled { background-color: #FFC107; color: #000; }
+        
+        /* Loading states */
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-    <!-- Dashboard Layout -->
     <div class="dashboard-container">
-        <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <a href="/"><i class="fas fa-couch"></i></a>
-                    <span><a href="/" style="text-decoration: none; color: black;">WFFE Connect</a></span>
+                    <i class="fas fa-couch"></i>
+                    <span>WFFE Connect</span>
                 </div>
                 <button class="sidebar-toggle" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
@@ -31,22 +57,10 @@
                     <div class="nav-title">Main</div>
                     <ul>
                         <li class="active">
-                            <a href="#" id="dashboardLink">
-                                <i class="fas fa-tachometer-alt"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/dashboard/campaigns/email/index.html">
-                                <i class="fas fa-envelope"></i>
-                                <span>Email Campaigns</span>
-                                <span class="badge">3</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/dashboard/campaigns/socialmedia/social.html">
-                                <i class="fas fa-share-alt"></i>
-                                <span>Social Media</span>
+                            <a href="/dashboard/campaigns/index.html">
+                                <i class="fas fa-bullhorn"></i>
+                                <span>Campaigns</span>
+                                <span class="badge" id="campaignCount">0</span>
                             </a>
                         </li>
                         <li>
@@ -68,7 +82,7 @@
                     <div class="nav-title">Analytics</div>
                     <ul>
                         <li>
-                            <a href="#" id="analyticsLink">
+                            <a href="#">
                                 <i class="fas fa-chart-line"></i>
                                 <span>Performance</span>
                             </a>
@@ -129,76 +143,94 @@
             </div>
         </aside>
         
-        <!-- Main Content Area -->
         <main class="main-content">
             <!-- Top Navigation Bar -->
             <header class="topbar">
                 <div class="topbar-left">
-                    <h1 id="pageTitle">Select a Campaign</h1>
-                    <div class="breadcrumb" id="breadcrumb">
+                    <h1>Campaigns</h1>
+                    <div class="breadcrumb">
                         <a href="#">Home</a>
+                        <span>/</span>
+                        <a href="#">Marketing</a>
                         <span>/</span>
                         <a href="#">Campaigns</a>
                     </div>
                 </div>
                 
                 <div class="topbar-right">
-                    <div class="search-box">
-                        <input type="text" placeholder="Search campaigns..." id="campaignSearch">
-                        <button><i class="fas fa-search"></i></button>
+                    <div class="campaign-type-tabs">
+                        <button class="tab-btn active" data-type="all">All Campaigns</button>
+                        <button class="tab-btn" data-type="email">Email</button>
+                        <button class="tab-btn" data-type="social">Social</button>
+                        <button class="tab-btn" data-type="paid">Paid Ads</button>
                     </div>
                     
-                    <div class="topbar-actions">
-                        <button class="notification-btn">
-                            <i class="fas fa-bell"></i>
-                            <span class="badge">5</span>
-                        </button>
-                        <button class="message-btn">
-                            <i class="fas fa-envelope"></i>
-                            <span class="badge">2</span>
-                        </button>
-                        <button class="quick-action-btn" id="newCampaignBtn">
-                            <i class="fas fa-plus"></i>
-                            <span>New Campaign</span>
-                        </button>
-                    </div>
+                    <button class="quick-action-btn" id="newCampaignBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>New Campaign</span>
+                    </button>
                 </div>
             </header>
             
-            <!-- Dashboard Content -->
+            <!-- Campaigns Content -->
             <div class="content-wrapper">
-                <!-- Campaign Selection View -->
-                <div class="campaign-selection-view" id="campaignSelectionView">
-                    <div class="campaign-filters">
-                        <div class="filter-group">
-                            <label>Filter by:</label>
-                            <select id="campaignTypeFilter">
-                                <option value="all">All Types</option>
-                                <option value="email">Email</option>
-                                <option value="social">Social Media</option>
-                                <option value="paid">Paid Ads</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Status:</label>
-                            <select id="campaignStatusFilter">
-                                <option value="all">All Statuses</option>
-                                <option value="active">Active</option>
-                                <option value="completed">Completed</option>
-                                <option value="draft">Draft</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Date Range:</label>
-                            <select id="campaignDateFilter">
-                                <option value="all">All Time</option>
-                                <option value="7days">Last 7 Days</option>
-                                <option value="30days">Last 30 Days</option>
-                                <option value="90days">Last 90 Days</option>
-                            </select>
-                        </div>
+                <!-- Campaign View Selector -->
+                <div class="view-selector">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th-large"></i>
+                        <span>Grid View</span>
+                    </button>
+                    <button class="view-btn" data-view="table">
+                        <i class="fas fa-table"></i>
+                        <span>Table View</span>
+                    </button>
+                    <button class="view-btn" data-view="analytics">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Analytics</span>
+                    </button>
+                </div>
+                
+                <!-- Campaign Filters -->
+                <div class="campaign-filters">
+                    <div class="filter-group">
+                        <label>Status:</label>
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all">All</option>
+                            <option value="draft">Draft</option>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                        </select>
                     </div>
                     
+                    <div class="filter-group">
+                        <label>Date Range:</label>
+                        <select class="filter-select" id="dateFilter">
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                            <option>This year</option>
+                            <option>Custom range</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Sort By:</label>
+                        <select class="filter-select" id="sortFilter">
+                            <option>Newest first</option>
+                            <option>Oldest first</option>
+                            <option>Highest engagement</option>
+                            <option>Highest ROI</option>
+                        </select>
+                    </div>
+                    
+                    <button class="filter-btn" id="applyFilters">
+                        <i class="fas fa-filter"></i>
+                        <span>Apply Filters</span>
+                    </button>
+                </div>
+                
+                <!-- Grid View (Default) -->
+                <div class="campaign-grid-view" id="gridView">
                     <div class="campaign-grid" id="campaignGrid">
                         <!-- Campaign cards will be loaded here dynamically -->
                         <div class="campaign-card loading">
@@ -206,74 +238,115 @@
                             <p>Loading campaigns...</p>
                         </div>
                     </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button class="pagination-btn disabled">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <!-- Campaign Analytics View (hidden by default) -->
-                <div class="campaign-analytics-view" id="campaignAnalyticsView" style="display: none;">
-                    <div class="back-to-campaigns" id="backToCampaigns">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back to Campaigns</span>
-                    </div>
-                    
-                    <div class="campaign-header">
-                        <div class="campaign-title">
-                            <h2 id="selectedCampaignName">Campaign Name</h2>
-                            <div class="campaign-meta">
-                                <span class="campaign-type" id="selectedCampaignType">
-                                    <i class="fas fa-envelope"></i> Email
-                                </span>
-                                <span class="campaign-date" id="selectedCampaignDate">Jun 10, 2023</span>
-                                <span class="campaign-status active" id="selectedCampaignStatus">Active</span>
-                            </div>
+                <!-- Table View (Hidden by default) -->
+                <div class="campaign-table-view" id="tableView" style="display: none;">
+                    <div class="campaigns-table-container">
+                        <table class="campaigns-table">
+                            <thead>
+                                <tr>
+                                    <th>Campaign Name</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Impressions</th>
+                                    <th>Engagement</th>
+                                    <th>Revenue</th>
+                                    <th>Start Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="campaignTableBody">
+                                <!-- Table rows will be loaded here dynamically -->
+                                <tr>
+                                    <td colspan="8" class="loading-row">
+                                        <div class="loading-spinner"></div>
+                                        <p>Loading campaigns...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <button class="pagination-btn disabled">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </div>
-                        <div class="campaign-actions">
-                            <button class="btn secondary">
-                                <i class="fas fa-pencil-alt"></i> Edit
-                            </button>
-                            <button class="btn primary">
-                                <i class="fas fa-rocket"></i> Publish
-                            </button>
+                    </div>
+                </div>
+                
+                <!-- Analytics View (Hidden by default) -->
+                <div class="campaign-analytics-view" id="analyticsView" style="display: none;">
+                    <div class="analytics-header">
+                        <h2>Campaign Performance Overview</h2>
+                        <div class="time-selector">
+                            <select class="filter-select" id="analyticsTimeRange">
+                                <option>Last 30 days</option>
+                                <option>Last 90 days</option>
+                                <option>This year</option>
+                                <option>Custom range</option>
+                            </select>
                         </div>
                     </div>
                     
                     <!-- Stats Cards -->
-                    <div class="stats-grid">
+                    <div class="stats-grid" id="statsGrid">
                         <div class="stat-card">
                             <div class="stat-icon" style="background-color: #FFEE58;">
-                                <i class="fas fa-eye" style="color: #FBC02D;"></i>
+                                <i class="fas fa-bullhorn" style="color: #FBC02D;"></i>
                             </div>
                             <div class="stat-info">
-                                <div class="stat-value" id="impressionsStat">0</div>
-                                <div class="stat-label">Impressions</div>
+                                <div class="stat-value" id="totalCampaigns">0</div>
+                                <div class="stat-label">Total Campaigns</div>
                             </div>
-                            <div class="stat-trend up" id="impressionsTrend">
-                                <i class="fas fa-arrow-up"></i> 0%
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i> <span id="campaignTrend">0%</span>
                             </div>
                         </div>
                         
                         <div class="stat-card">
                             <div class="stat-icon" style="background-color: #B3E5FC;">
-                                <i class="fas fa-mouse-pointer" style="color: #03A9F4;"></i>
+                                <i class="fas fa-envelope-open" style="color: #03A9F4;"></i>
                             </div>
                             <div class="stat-info">
-                                <div class="stat-value" id="clicksStat">0</div>
-                                <div class="stat-label">Clicks</div>
+                                <div class="stat-value" id="avgOpenRate">0%</div>
+                                <div class="stat-label">Avg Open Rate</div>
                             </div>
-                            <div class="stat-trend up" id="clicksTrend">
-                                <i class="fas fa-arrow-up"></i> 0%
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i> <span id="openRateTrend">0%</span>
                             </div>
                         </div>
                         
                         <div class="stat-card">
                             <div class="stat-icon" style="background-color: #C8E6C9;">
-                                <i class="fas fa-shopping-cart" style="color: #4CAF50;"></i>
+                                <i class="fas fa-mouse-pointer" style="color: #4CAF50;"></i>
                             </div>
                             <div class="stat-info">
-                                <div class="stat-value" id="conversionsStat">0</div>
-                                <div class="stat-label">Conversions</div>
+                                <div class="stat-value" id="avgClickRate">0%</div>
+                                <div class="stat-label">Avg Click Rate</div>
                             </div>
-                            <div class="stat-trend down" id="conversionsTrend">
-                                <i class="fas fa-arrow-down"></i> 0%
+                            <div class="stat-trend down">
+                                <i class="fas fa-arrow-down"></i> <span id="clickRateTrend">0%</span>
                             </div>
                         </div>
                         
@@ -282,27 +355,20 @@
                                 <i class="fas fa-dollar-sign" style="color: #F44336;"></i>
                             </div>
                             <div class="stat-info">
-                                <div class="stat-value" id="revenueStat">$0</div>
-                                <div class="stat-label">Revenue</div>
+                                <div class="stat-value" id="totalRevenue">$0</div>
+                                <div class="stat-label">Total Revenue</div>
                             </div>
-                            <div class="stat-trend up" id="revenueTrend">
-                                <i class="fas fa-arrow-up"></i> 0%
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i> <span id="revenueTrend">0%</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Main Charts Row -->
+                    <!-- Main Charts -->
                     <div class="charts-row">
                         <div class="chart-card">
                             <div class="card-header">
-                                <h3>Performance Over Time</h3>
-                                <div class="card-actions">
-                                    <select class="time-select" id="performanceTimeRange">
-                                        <option>Last 7 days</option>
-                                        <option selected>Last 30 days</option>
-                                        <option>Last 90 days</option>
-                                    </select>
-                                </div>
+                                <h3>Campaign Performance Over Time</h3>
                             </div>
                             <div class="chart-container">
                                 <canvas id="performanceChart"></canvas>
@@ -311,32 +377,30 @@
                         
                         <div class="chart-card">
                             <div class="card-header">
-                                <h3>Traffic Sources</h3>
+                                <h3>Campaign Type Distribution</h3>
                             </div>
                             <div class="chart-container">
-                                <canvas id="trafficChart"></canvas>
+                                <canvas id="typeChart"></canvas>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Additional Analytics -->
-                    <div class="content-row">
-                        <div class="content-card">
-                            <div class="card-header">
-                                <h3>Audience Demographics</h3>
-                            </div>
-                            <div class="chart-container">
-                                <canvas id="demographicsChart"></canvas>
+                    <!-- Top Performing Campaigns -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3>Top Performing Campaigns</h3>
+                            <div class="card-actions">
+                                <select class="filter-select" id="topCampaignsFilter">
+                                    <option>Last 30 days</option>
+                                    <option>Last 90 days</option>
+                                    <option>This year</option>
+                                </select>
                             </div>
                         </div>
-                        
-                        <div class="content-card">
-                            <div class="card-header">
-                                <h3>Top Performing Content</h3>
-                            </div>
-                            <div class="top-content-list" id="topContentList">
-                                <!-- Will be populated dynamically -->
-                            </div>
+                        <div class="top-campaigns-list" id="topCampaignsList">
+                            <!-- Top campaigns will be loaded here dynamically -->
+                            <div class="loading-spinner"></div>
+                            <p>Loading top campaigns...</p>
                         </div>
                     </div>
                 </div>
@@ -344,375 +408,1182 @@
         </main>
     </div>
 
+    <!-- New Campaign Modal -->
+    <div class="modal-overlay" id="newCampaignModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create New Campaign</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="campaign-type-selector">
+                    <div class="type-option" data-type="email">
+                        <div class="type-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h4>Email Campaign</h4>
+                        <p>Send targeted emails to your customers</p>
+                    </div>
+                    
+                    <div class="type-option" data-type="social_media">
+                        <div class="type-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <h4>Social Media</h4>
+                        <p>Create posts for social platforms</p>
+                    </div>
+                    
+                    <div class="type-option" data-type="in_app_ad">
+                        <div class="type-icon">
+                            <i class="fas fa-ad"></i>
+                        </div>
+                        <h4>In-App Ads</h4>
+                        <p>Run advertising within your app</p>
+                    </div>
+                </div>
+                
+                <!-- Email Campaign Form (hidden by default) -->
+                <div class="campaign-form" id="emailCampaignForm" style="display: none;">
+                    <div class="form-step active" data-step="1">
+                        <h4>Campaign Details</h4>
+                        <div class="form-group">
+                            <label for="emailCampaignName">Campaign Name</label>
+                            <input type="text" id="emailCampaignName" placeholder="e.g. Summer Sale 2023">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailDescription">Description</label>
+                            <textarea id="emailDescription" rows="3" placeholder="Brief description of the campaign"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailSubject">Email Subject</label>
+                            <input type="text" id="emailSubject" placeholder="e.g. Don't miss our summer sale!">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailAudience">Target Audience</label>
+                            <select id="emailAudience">
+                                <option value="">Select audience</option>
+                                <option value="all">All Customers</option>
+                                <option value="recent">Recent Purchasers</option>
+                                <option value="inactive">Inactive Customers</option>
+                                <option value="custom">Custom Segment</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailRecipientCount">Recipient Count (approx.)</label>
+                            <input type="number" id="emailRecipientCount" placeholder="Estimated number of recipients">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailSenderName">Sender Name</label>
+                            <input type="text" id="emailSenderName" placeholder="e.g. Marketing Team">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailStatus">Status</label>
+                            <select id="emailStatus">
+                                <option value="draft">Draft</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="active">Active</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailSchedule">Schedule</label>
+                            <select id="emailSchedule">
+                                <option value="now">Send immediately</option>
+                                <option value="scheduled">Schedule for later</option>
+                                <option value="draft">Save as draft</option>
+                            </select>
+                            
+                            <div class="schedule-datetime" id="scheduleDateTime" style="display: none;">
+                                <input type="datetime-local" id="emailSendTime">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary cancel-btn">Cancel</button>
+                            <button class="btn primary next-btn" data-next="2">Next: Design Email</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" data-step="2">
+                        <h4>Email Design</h4>
+                        <div class="form-group">
+                            <label>Email Template</label>
+                            <div class="template-selector">
+                                <div class="template-option active">
+                                    <div class="template-preview">
+                                        <img src="../../../assets/images/email-template1.jpg" alt="Template 1">
+                                    </div>
+                                    <div class="template-name">Summer Sale</div>
+                                </div>
+                                
+                                <div class="template-option">
+                                    <div class="template-preview">
+                                        <img src="../../../assets/images/email-template2.jpg" alt="Template 2">
+                                    </div>
+                                    <div class="template-name">New Arrivals</div>
+                                </div>
+                                
+                                <div class="template-option">
+                                    <div class="template-preview">
+                                        <img src="../../../assets/images/email-template3.jpg" alt="Template 3">
+                                    </div>
+                                    <div class="template-name">Promotional</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailContent">Email Content</label>
+                            <textarea id="emailContent" rows="6" placeholder="Write your email content here..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailTemplateId">Template ID</label>
+                            <input type="number" id="emailTemplateId" placeholder="Enter template ID if applicable">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary back-btn" data-back="1">Back</button>
+                            <button class="btn primary next-btn" data-next="3">Next: Review & Send</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" data-step="3">
+                        <h4>Review & Send</h4>
+                        <div class="review-section">
+                            <div class="review-item">
+                                <label>Campaign Name:</label>
+                                <span id="reviewCampaignName">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Description:</label>
+                                <span id="reviewDescription">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Subject:</label>
+                                <span id="reviewSubject">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Audience:</label>
+                                <span id="reviewAudience">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Recipients:</label>
+                                <span id="reviewRecipients">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Sender:</label>
+                                <span id="reviewSender">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Status:</label>
+                                <span id="reviewStatus">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Schedule:</label>
+                                <span id="reviewSchedule">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="preview-section">
+                            <h5>Email Preview</h5>
+                            <div class="email-preview">
+                                <div class="email-preview-header">
+                                    <div class="email-subject" id="previewSubject">Your Email Subject Here</div>
+                                    <div class="email-sender">From: <span id="previewSender">WFFE Connect</span> &lt;hello@wffeconnect.com&gt;</div>
+                                </div>
+                                <div class="email-preview-body">
+                                    <img src="../../../assets/images/email-template-preview.jpg" alt="Email Preview">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary back-btn" data-back="2">Back</button>
+                            <button class="btn primary send-btn" id="sendEmailCampaign">Create Campaign</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Social Campaign Form (hidden by default) -->
+                <div class="campaign-form" id="socialCampaignForm" style="display: none;">
+                    <div class="form-step active" data-step="1">
+                        <h4>Social Campaign Setup</h4>
+                        <div class="form-group">
+                            <label for="socialCampaignName">Campaign Name</label>
+                            <input type="text" id="socialCampaignName" placeholder="e.g. Summer Social Blitz">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="socialDescription">Description</label>
+                            <textarea id="socialDescription" rows="3" placeholder="Brief description of the campaign"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Platform</label>
+                            <select id="socialPlatform">
+                                <option value="instagram">Instagram</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="twitter">Twitter</option>
+                                <option value="linkedin">LinkedIn</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="socialStatus">Status</label>
+                            <select id="socialStatus">
+                                <option value="draft">Draft</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="active">Active</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="socialDiscountAmount">Discount Amount (optional)</label>
+                            <div class="discount-input">
+                                <input type="number" id="socialDiscountAmount" placeholder="e.g. 15">
+                                <select id="socialDiscountType">
+                                    <option value="percentage">%</option>
+                                    <option value="fixed">$</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="socialAdSpend">Ad Spend (optional)</label>
+                            <input type="number" id="socialAdSpend" placeholder="Budget for this campaign">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary cancel-btn">Cancel</button>
+                            <button class="btn primary next-btn" data-next="2">Next: Content</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" data-step="2">
+                        <h4>Social Content</h4>
+                        <div class="form-group">
+                            <label for="socialPostText">Post Text</label>
+                            <textarea id="socialPostText" rows="4" placeholder="Write your post content here..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Media</label>
+                            <div class="media-upload">
+                                <div class="upload-area">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drag & drop images or click to browse</p>
+                                    <input type="file" id="socialMediaUpload" multiple accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="socialPostId">Post ID (optional)</label>
+                            <input type="text" id="socialPostId" placeholder="Existing post ID if applicable">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="socialTargetUrl">Target URL (optional)</label>
+                            <input type="url" id="socialTargetUrl" placeholder="Where should the post link to?">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary back-btn" data-back="1">Back</button>
+                            <button class="btn primary next-btn" data-next="3">Next: Schedule</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" data-step="3">
+                        <h4>Schedule & Publish</h4>
+                        <div class="form-group">
+                            <label for="socialStartDate">Start Date</label>
+                            <input type="datetime-local" id="socialStartDate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="socialEndDate">End Date</label>
+                            <input type="datetime-local" id="socialEndDate">
+                        </div>
+                        
+                        <div class="preview-section">
+                            <h5>Post Preview</h5>
+                            <div class="social-preview">
+                                <div class="social-preview-header">
+                                    <div class="social-avatar">
+                                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Profile">
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">WFFE Connect</div>
+                                        <div class="social-time">Just now</div>
+                                    </div>
+                                </div>
+                                <div class="social-preview-content">
+                                    <div class="social-text" id="previewSocialText">
+                                        Your post content will appear here...
+                                    </div>
+                                    <div class="social-media">
+                                        <img src="../../../assets/images/social-preview.jpg" alt="Post Media">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="review-section">
+                            <div class="review-item">
+                                <label>Campaign Name:</label>
+                                <span id="reviewSocialCampaignName">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Platform:</label>
+                                <span id="reviewSocialPlatform">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Status:</label>
+                                <span id="reviewSocialStatus">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Start Date:</label>
+                                <span id="reviewSocialStartDate">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>End Date:</label>
+                                <span id="reviewSocialEndDate">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary back-btn" data-back="2">Back</button>
+                            <button class="btn primary publish-btn" id="publishSocialCampaign">Create Campaign</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- In-App Ad Campaign Form (hidden by default) -->
+                <div class="campaign-form" id="inAppAdCampaignForm" style="display: none;">
+                    <div class="form-step active" data-step="1">
+                        <h4>Ad Campaign Setup</h4>
+                        <div class="form-group">
+                            <label for="adCampaignName">Campaign Name</label>
+                            <input type="text" id="adCampaignName" placeholder="e.g. Summer Sale Banner">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adDescription">Description</label>
+                            <textarea id="adDescription" rows="3" placeholder="Brief description of the campaign"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adStatus">Status</label>
+                            <select id="adStatus">
+                                <option value="draft">Draft</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="active">Active</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adDiscountAmount">Discount Amount</label>
+                            <div class="discount-input">
+                                <input type="number" id="adDiscountAmount" placeholder="e.g. 20">
+                                <select id="adDiscountType">
+                                    <option value="percentage">%</option>
+                                    <option value="fixed">$</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adBannerImageUrl">Banner Image URL</label>
+                            <input type="url" id="adBannerImageUrl" placeholder="https://example.com/banner.jpg">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adTargetUrl">Target URL</label>
+                            <input type="url" id="adTargetUrl" placeholder="Where should the ad link to?">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adLocations">Locations (comma separated)</label>
+                            <input type="text" id="adLocations" placeholder="e.g. homepage_banner,product_page">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary cancel-btn">Cancel</button>
+                            <button class="btn primary next-btn" data-next="2">Next: Schedule</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" data-step="2">
+                        <h4>Schedule & Budget</h4>
+                        <div class="form-group">
+                            <label for="adStartDate">Start Date</label>
+                            <input type="datetime-local" id="adStartDate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adEndDate">End Date</label>
+                            <input type="datetime-local" id="adEndDate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adAdSpend">Ad Spend (optional)</label>
+                            <input type="number" id="adAdSpend" placeholder="Budget for this campaign">
+                        </div>
+                        
+                        <div class="preview-section">
+                            <h5>Ad Preview</h5>
+                            <div class="ad-preview">
+                                <div class="ad-preview-image">
+                                    <img id="adPreviewImage" src="../../../assets/images/ad-preview-placeholder.jpg" alt="Ad Preview">
+                                </div>
+                                <div class="ad-preview-text">
+                                    <h4 id="adPreviewTitle">Summer Sale 2023</h4>
+                                    <p id="adPreviewDiscount">20% OFF</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="review-section">
+                            <div class="review-item">
+                                <label>Campaign Name:</label>
+                                <span id="reviewAdCampaignName">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Status:</label>
+                                <span id="reviewAdStatus">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Discount:</label>
+                                <span id="reviewAdDiscount">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Start Date:</label>
+                                <span id="reviewAdStartDate">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>End Date:</label>
+                                <span id="reviewAdEndDate">-</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Locations:</label>
+                                <span id="reviewAdLocations">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary back-btn" data-back="1">Back</button>
+                            <button class="btn primary publish-btn" id="publishAdCampaign">Create Campaign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campaign Details Modal -->
+    <div class="modal-overlay" id="campaignDetailsModal" style="display: none;">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h3 id="detailsCampaignName">Campaign Details</h3>
+                <button class="modal-close" id="closeDetailsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="campaign-details-container">
+                    <div class="details-header">
+                        <div class="details-type-badge" id="detailsTypeBadge">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email</span>
+                        </div>
+                        <div class="details-status-badge" id="detailsStatusBadge">Active</div>
+                    </div>
+                    
+                    <div class="details-content">
+                        <div class="details-section">
+                            <h4>Overview</h4>
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <label>Start Date</label>
+                                    <p id="detailsStartDate">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>End Date</label>
+                                    <p id="detailsEndDate">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Created</label>
+                                    <p id="detailsCreatedAt">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Last Updated</label>
+                                    <p id="detailsUpdatedAt">-</p>
+                                </div>
+                                <div class="detail-item full-width">
+                                    <label>Description</label>
+                                    <p id="detailsDescription">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="details-section" id="emailDetailsSection" style="display: none;">
+                            <h4>Email Details</h4>
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <label>Subject</label>
+                                    <p id="detailsEmailSubject">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Recipients</label>
+                                    <p id="detailsRecipientCount">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Sender</label>
+                                    <p id="detailsSenderName">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Template ID</label>
+                                    <p id="detailsTemplateId">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="details-section" id="socialDetailsSection" style="display: none;">
+                            <h4>Social Details</h4>
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <label>Platform</label>
+                                    <p id="detailsSocialPlatform">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Post ID</label>
+                                    <p id="detailsPostId">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Ad Spend</label>
+                                    <p id="detailsAdSpend">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Discount</label>
+                                    <p id="detailsSocialDiscount">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="details-section" id="adDetailsSection" style="display: none;">
+                            <h4>Ad Details</h4>
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <label>Banner Image</label>
+                                    <p id="detailsBannerImageUrl">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Target URL</label>
+                                    <p id="detailsTargetUrl">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Locations</label>
+                                    <p id="detailsLocations">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Discount</label>
+                                    <p id="detailsAdDiscount">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="details-section">
+                            <h4>Performance</h4>
+                            <div class="performance-stats">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="detailsImpressions">0</div>
+                                    <div class="stat-label">Impressions</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="detailsClicks">0</div>
+                                    <div class="stat-label">Clicks</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="detailsConversions">0</div>
+                                    <div class="stat-label">Conversions</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="detailsRevenue">$0</div>
+                                    <div class="stat-label">Revenue</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="detailsCTR">0%</div>
+                                    <div class="stat-label">CTR</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="detailsConversionRate">0%</div>
+                                    <div class="stat-label">Conversion Rate</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn secondary" id="editCampaignBtn">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn danger" id="archiveCampaignBtn">
+                    <i class="fas fa-archive"></i> Archive
+                </button>
+                <button class="btn primary" id="closeDetailsBtn">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // State management
-            const state = {
-                selectedCampaign: null,
-                campaigns: [],
-                filteredCampaigns: [],
-                performanceChart: null,
-                trafficChart: null,
-                demographicsChart: null
-            };
-
-            // DOM Elements (same as before)
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
             const elements = {
-                campaignSelectionView: document.getElementById('campaignSelectionView'),
-                campaignAnalyticsView: document.getElementById('campaignAnalyticsView'),
+                newCampaignBtn: document.getElementById('newCampaignBtn'),
+                newCampaignModal: document.getElementById('newCampaignModal'),
+                closeModal: document.getElementById('closeModal'),
+                campaignTypeOptions: document.querySelectorAll('.type-option'),
+                emailCampaignForm: document.getElementById('emailCampaignForm'),
+                socialCampaignForm: document.getElementById('socialCampaignForm'),
+                inAppAdCampaignForm: document.getElementById('inAppAdCampaignForm'),
+                viewBtns: document.querySelectorAll('.view-btn'),
+                gridView: document.getElementById('gridView'),
+                tableView: document.getElementById('tableView'),
+                analyticsView: document.getElementById('analyticsView'),
+                tabBtns: document.querySelectorAll('.tab-btn'),
                 campaignGrid: document.getElementById('campaignGrid'),
-                backToCampaigns: document.getElementById('backToCampaigns'),
-                pageTitle: document.getElementById('pageTitle'),
-                breadcrumb: document.getElementById('breadcrumb'),
-                campaignSearch: document.getElementById('campaignSearch'),
-                campaignTypeFilter: document.getElementById('campaignTypeFilter'),
-                campaignStatusFilter: document.getElementById('campaignStatusFilter'),
-                campaignDateFilter: document.getElementById('campaignDateFilter'),
-                selectedCampaignName: document.getElementById('selectedCampaignName'),
-                selectedCampaignType: document.getElementById('selectedCampaignType'),
-                selectedCampaignDate: document.getElementById('selectedCampaignDate'),
-                selectedCampaignStatus: document.getElementById('selectedCampaignStatus'),
-                impressionsStat: document.getElementById('impressionsStat'),
-                clicksStat: document.getElementById('clicksStat'),
-                conversionsStat: document.getElementById('conversionsStat'),
-                revenueStat: document.getElementById('revenueStat'),
-                impressionsTrend: document.getElementById('impressionsTrend'),
-                clicksTrend: document.getElementById('clicksTrend'),
-                conversionsTrend: document.getElementById('conversionsTrend'),
-                revenueTrend: document.getElementById('revenueTrend'),
-                topContentList: document.getElementById('topContentList'),
-                performanceTimeRange: document.getElementById('performanceTimeRange')
+                campaignTableBody: document.getElementById('campaignTableBody'),
+                emailSchedule: document.getElementById('emailSchedule'),
+                scheduleDateTime: document.getElementById('scheduleDateTime'),
+                socialSchedule: document.getElementById('socialSchedule'),
+                socialScheduleDateTime: document.getElementById('socialScheduleDateTime'),
+                nextBtns: document.querySelectorAll('.next-btn'),
+                backBtns: document.querySelectorAll('.back-btn'),
+                formSteps: document.querySelectorAll('.form-step'),
+                sendEmailCampaign: document.getElementById('sendEmailCampaign'),
+                publishSocialCampaign: document.getElementById('publishSocialCampaign'),
+                publishAdCampaign: document.getElementById('publishAdCampaign'),
+                campaignDetailsModal: document.getElementById('campaignDetailsModal'),
+                closeDetailsModal: document.getElementById('closeDetailsModal'),
+                applyFilters: document.getElementById('applyFilters'),
+                statusFilter: document.getElementById('statusFilter'),
+                campaignCount: document.getElementById('campaignCount'),
+                statsGrid: document.getElementById('statsGrid'),
+                topCampaignsList: document.getElementById('topCampaignsList'),
+                dateFilter: document.getElementById('dateFilter'),
+                
             };
 
-            // Event Listeners (same as before)
-            elements.backToCampaigns.addEventListener('click', showCampaignSelection);
-            elements.campaignTypeFilter.addEventListener('change', filterCampaigns);
-            elements.campaignStatusFilter.addEventListener('change', filterCampaigns);
-            elements.campaignDateFilter.addEventListener('change', filterCampaigns);
-            elements.campaignSearch.addEventListener('input', filterCampaigns);
-            elements.performanceTimeRange.addEventListener('change', updatePerformanceChart);
-
-            // Initialize the app
-            init();
-
-            async function init() {
-                await fetchCampaigns();
-                renderCampaignGrid();
-            }
-
+            
+            
+            // State variables
+            let currentCampaigns = [];
+            let currentView = 'grid';
+            let currentFilter = 'all';
+            let currentCampaignDetails = null;
+            let performanceChart = null;
+            let typeChart = null;
+            
+            // API Functions
             async function fetchCampaigns() {
                 try {
-                    // Show loading state
-                    elements.campaignGrid.innerHTML = `
-                        <div class="campaign-card loading">
-                            <div class="loading-spinner"></div>
-                            <p>Loading campaigns...</p>
-                        </div>
-                    `;
-
-                    // Make API call to your backend
+                    // Get filter values
+                    const statusFilter = elements.statusFilter.value;
+                    const dateFilter = elements.dateFilter.value;
+                    
+                    // Build query params
+                    const params = new URLSearchParams();
+                    if (statusFilter !== 'all') params.append('status', statusFilter);
+                    
+                    
                     const response = await fetch('http://localhost:8000/api/campaigns');
-                    
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        throw new Error('Network response was not ok');
                     }
-
-                    const apiData = await response.json();
-
-                    // Transform API data to match frontend structure
-                    state.campaigns = apiData.map(campaign => ({
-                        id: campaign.campaign_id,
-                        name: campaign.name,
-                        type: campaign.campaign_type,
-                        status: campaign.status,
-                        startDate: campaign.start_date,
-                        endDate: campaign.end_date,
-                        impressions: campaign.impressions || 0,
-                        clicks: campaign.clicks || 0,
-                        conversions: campaign.conversions || 0,
-                        revenue: campaign.revenue || 0,
-                        ctr: campaign.ctr || 0,
-                        cr: campaign.conversion_rate || 0,
-                        products: campaign.products || [],
-                        // Generate mock analytics data (replace with real API calls if available)
-                        dailyData: generateDailyData(
-                            Math.ceil((new Date(campaign.end_date) - new Date(campaign.start_date)) / (1000 * 60 * 60 * 24)),
-                            campaign.impressions || 0,
-                            campaign.clicks || 0,
-                            campaign.conversions || 0
-                        ),
-                        trafficSources: {
-                            organic: 35,
-                            social: 25,
-                            email: 20,
-                            direct: 15,
-                            referral: 5
-                        },
-                        demographics: {
-                            age: {
-                                "18-24": 15,
-                                "25-34": 35,
-                                "35-44": 25,
-                                "45-54": 15,
-                                "55+": 10
-                            },
-                            gender: {
-                                male: 40,
-                                female: 60
-                            }
-                        },
-                        topContent: [
-                            { title: "Featured Product", clicks: 842, ctr: 18.2 },
-                            { title: "Special Offer", clicks: 756, ctr: 16.5 },
-                            { title: "New Collection", clicks: 632, ctr: 14.8 }
-                        ]
-                    }));
-                    
-                    state.filteredCampaigns = [...state.campaigns];
+                    const data = await response.json();
+                    currentCampaigns = data;
+                    return data;
                 } catch (error) {
                     console.error('Error fetching campaigns:', error);
-                    // Show error to user
-                    elements.campaignGrid.innerHTML = `
-                        <div class="empty-state error">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <p>Failed to load campaigns</p>
-                            <button class="btn primary" onclick="window.location.reload()">Try Again</button>
-                        </div>
-                    `;
+                    showError('Failed to load campaigns. Please try again.');
+                    return [];
                 }
             }
-
-
-            function generateDailyData(days, totalImpressions, totalClicks, totalConversions) {
-                const data = [];
-                const avgImpressions = totalImpressions / days;
-                const avgClicks = totalClicks / days;
-                const avgConversions = totalConversions / days;
-                
-                for (let i = 0; i < days; i++) {
-                    // Add some randomness to make it look realistic
-                    const impressions = Math.floor(avgImpressions * (0.8 + Math.random() * 0.4));
-                    const clicks = Math.floor(avgClicks * (0.8 + Math.random() * 0.4));
-                    const conversions = Math.floor(avgConversions * (0.8 + Math.random() * 0.4));
-                    
-                    const date = new Date();
-                    date.setDate(date.getDate() - (days - i));
-                    
-                    data.push({
-                        date: date.toISOString().split('T')[0],
-                        impressions,
-                        clicks,
-                        conversions,
-                        revenue: Math.floor(conversions * (40 + Math.random() * 20))
+            
+            async function fetchCampaignDetails(id) {
+                try {
+                    const response = await fetch(`http://localhost:8000/api/campaigns/${id}`);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error fetching campaign details:', error);
+                    showError('Failed to load campaign details. Please try again.');
+                    return null;
+                }
+            }
+            
+            async function createCampaign(campaignData) {
+                try {
+                    const response = await fetch('http://localhost:8000/api/campaigns', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(campaignData)
                     });
+                    
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error creating campaign:', error);
+                    showError('Failed to create campaign. Please try again.');
+                    return null;
                 }
-                
-                return data;
             }
-
-            function renderCampaignGrid() {
-                elements.campaignGrid.innerHTML = '';
+            
+            // Helper Functions
+            function formatDate(dateString) {
+                if (!dateString) return '-';
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            
+            function formatCurrency(amount) {
+                if (amount === null || amount === undefined) return '-';
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(amount);
+            }
+            
+            function formatNumber(num) {
+                if (num === null || num === undefined) return '-';
+                return new Intl.NumberFormat('en-US').format(num);
+            }
+            
+            function formatPercentage(num) {
+                if (num === null || num === undefined) return '-';
+                return `${num.toFixed(2)}%`;
+            }
+            
+            function showError(message) {
+                // In a real app, you'd show this in a nice error toast/notification
+                console.error(message);
+                alert(message);
+            }
+            
+            function showSuccess(message) {
+                // In a real app, you'd show this in a nice success toast/notification
+                console.log(message);
+                alert(message);
+            }
+            
+            function getCampaignTypeIcon(type) {
+                switch(type) {
+                    case 'email': return 'fas fa-envelope';
+                    case 'social_media': return 'fas fa-share-alt';
+                    case 'in_app_ad': return 'fas fa-ad';
+                    default: return 'fas fa-bullhorn';
+                }
+            }
+            
+            function getCampaignTypeLabel(type) {
+                switch(type) {
+                    case 'email': return 'Email';
+                    case 'social_media': return 'Social';
+                    case 'in_app_ad': return 'In-App Ad';
+                    default: return type;
+                }
+            }
+            
+            // Rendering Functions
+            async function renderCampaignGrid(filterType = 'all') {
+                const grid = elements.campaignGrid;
+                grid.innerHTML = '<div class="campaign-card loading"><div class="loading-spinner"></div><p>Loading campaigns...</p></div>';
                 
-                if (state.filteredCampaigns.length === 0) {
-                    elements.campaignGrid.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <p>No campaigns match your filters</p>
-                            <button class="btn primary" id="newCampaignBtn">Create New Campaign</button>
-                        </div>
-                    `;
+                const campaigns = await fetchCampaigns();
+                elements.campaignCount.textContent = campaigns.length;
+                
+                const filteredCampaigns = filterType === 'all' 
+                    ? campaigns 
+                    : campaigns.filter(c => {
+                        if (filterType === 'email') return c.campaign_type === 'email';
+                        if (filterType === 'social') return c.campaign_type === 'social_media';
+                        if (filterType === 'paid') return c.campaign_type === 'in_app_ad';
+                        return true;
+                    });
+                
+                if (filteredCampaigns.length === 0) {
+                    grid.innerHTML = '<div class="campaign-card empty"><p>No campaigns found</p></div>';
                     return;
                 }
                 
-                state.filteredCampaigns.forEach(campaign => {
-                    const campaignCard = document.createElement('div');
-                    campaignCard.className = `campaign-card ${campaign.status}`;
-                    campaignCard.innerHTML = `
+                grid.innerHTML = '';
+                
+                filteredCampaigns.forEach(campaign => {
+                    const card = document.createElement('div');
+                    card.className = `campaign-card ${campaign.status}`;
+                    card.dataset.id = campaign.campaign_id;
+                    
+                    // Common stats for all campaign types
+                    const impressions = formatNumber(campaign.impressions);
+                    const clicks = formatNumber(campaign.clicks);
+                    const revenue = formatCurrency(campaign.revenue);
+                    const ctr = formatPercentage(campaign.ctr || 0);
+                    const conversionRate = formatPercentage(campaign.conversion_rate || 0);
+                    
+                    // Type-specific stats
+                    let typeSpecificStats = '';
+                    if (campaign.campaign_type === 'email') {
+                        typeSpecificStats = `
+                            <div class="campaign-stats">
+                                <div>
+                                    <small>Recipients</small>
+                                    <p>${formatNumber(campaign.recipient_count)}</p>
+                                </div>
+                                <div>
+                                    <small>Open Rate</small>
+                                    <p>${ctr}</p>
+                                </div>
+                                <div>
+                                    <small>Revenue</small>
+                                    <p>${revenue}</p>
+                                </div>
+                            </div>
+                        `;
+                    } else if (campaign.campaign_type === 'social_media') {
+                        typeSpecificStats = `
+                            <div class="campaign-stats">
+                                <div>
+                                    <small>Impressions</small>
+                                    <p>${impressions}</p>
+                                </div>
+                                <div>
+                                    <small>Engagements</small>
+                                    <p>${clicks}</p>
+                                </div>
+                                <div>
+                                    <small>Revenue</small>
+                                    <p>${revenue}</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        typeSpecificStats = `
+                            <div class="campaign-stats">
+                                <div>
+                                    <small>Impressions</small>
+                                    <p>${impressions}</p>
+                                </div>
+                                <div>
+                                    <small>Clicks</small>
+                                    <p>${clicks}</p>
+                                </div>
+                                <div>
+                                    <small>Revenue</small>
+                                    <p>${revenue}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    card.innerHTML = `
                         <div class="campaign-card-header">
+                            <div class="campaign-type ${campaign.campaign_type}">
+                                <i class="${getCampaignTypeIcon(campaign.campaign_type)}"></i>
+                                ${getCampaignTypeLabel(campaign.campaign_type)}
+                            </div>
                             <h3>${campaign.name}</h3>
-                            <span class="campaign-type ${campaign.type}">
-                                ${getCampaignTypeIcon(campaign.type)} ${formatCampaignType(campaign.type)}
-                            </span>
+                            <span class="status-badge ${campaign.status}">${campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}</span>
                         </div>
                         <div class="campaign-card-dates">
                             <div>
                                 <small>Start Date</small>
-                                <p>${formatDate(campaign.startDate)}</p>
+                                <p>${formatDate(campaign.start_date)}</p>
                             </div>
                             <div>
                                 <small>End Date</small>
-                                <p>${formatDate(campaign.endDate)}</p>
+                                <p>${formatDate(campaign.end_date)}</p>
                             </div>
                         </div>
-                        <div class="campaign-card-stats">
-                            <div>
-                                <small>Impressions</small>
-                                <p>${campaign.impressions.toLocaleString()}</p>
-                            </div>
-                            <div>
-                                <small>Clicks</small>
-                                <p>${campaign.clicks.toLocaleString()}</p>
-                            </div>
-                            <div>
-                                <small>Revenue</small>
-                                <p>$${campaign.revenue.toLocaleString()}</p>
-                            </div>
-                        </div>
+                        ${typeSpecificStats}
                         <div class="campaign-card-actions">
-                            <button class="btn secondary view-campaign" data-id="${campaign.id}">
-                                View Analytics
+                            <button class="action-btn view">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn ${campaign.status === 'draft' ? 'edit' : 'duplicate'}">
+                                <i class="fas ${campaign.status === 'draft' ? 'fa-pencil-alt' : 'fa-copy'}"></i>
+                            </button>
+                            <button class="action-btn more">
+                                <i class="fas fa-ellipsis-v"></i>
                             </button>
                         </div>
                     `;
                     
-                    campaignCard.querySelector('.view-campaign').addEventListener('click', () => {
-                        showCampaignAnalytics(campaign.id);
+                    grid.appendChild(card);
+                });
+                
+                // Add event listeners to view buttons
+                document.querySelectorAll('.campaign-card .action-btn.view').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const card = e.target.closest('.campaign-card');
+                        const campaignId = card.dataset.id;
+                        await showCampaignDetails(campaignId);
                     });
-                    
-                    elements.campaignGrid.appendChild(campaignCard);
                 });
             }
-
-            function filterCampaigns() {
-                const typeFilter = elements.campaignTypeFilter.value;
-                const statusFilter = elements.campaignStatusFilter.value;
-                const dateFilter = elements.campaignDateFilter.value;
-                const searchQuery = elements.campaignSearch.value.toLowerCase();
+            
+            async function renderCampaignTable(filterType = 'all') {
+                const tableBody = elements.campaignTableBody;
+                tableBody.innerHTML = '<tr><td colspan="8" class="loading-row"><div class="loading-spinner"></div><p>Loading campaigns...</p></td></tr>';
                 
-                state.filteredCampaigns = state.campaigns.filter(campaign => {
-                    // Type filter
-                    if (typeFilter !== 'all' && campaign.type !== typeFilter) {
-                        return false;
-                    }
+                const campaigns = await fetchCampaigns();
+                const filteredCampaigns = filterType === 'all' 
+                    ? campaigns 
+                    : campaigns.filter(c => {
+                        if (filterType === 'email') return c.campaign_type === 'email';
+                        if (filterType === 'social') return c.campaign_type === 'social_media';
+                        if (filterType === 'paid') return c.campaign_type === 'in_app_ad';
+                        return true;
+                    });
+                
+                if (filteredCampaigns.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="8" class="empty-row"><p>No campaigns found</p></td></tr>';
+                    return;
+                }
+                
+                tableBody.innerHTML = '';
+                
+                filteredCampaigns.forEach(campaign => {
+                    const row = document.createElement('tr');
+                    row.dataset.id = campaign.campaign_id;
                     
-                    // Status filter
-                    if (statusFilter !== 'all' && campaign.status !== statusFilter) {
-                        return false;
-                    }
+                    const ctr = campaign.ctr ? `${campaign.ctr.toFixed(2)}%` : '-';
+                    const conversionRate = campaign.conversion_rate ? `${campaign.conversion_rate.toFixed(2)}%` : '-';
                     
-                    // Date filter
-                    if (dateFilter !== 'all') {
-                        const days = parseInt(dateFilter);
-                        const cutoffDate = new Date();
-                        cutoffDate.setDate(cutoffDate.getDate() - days);
-                        
-                        const campaignDate = new Date(campaign.startDate);
-                        if (campaignDate < cutoffDate) {
-                            return false;
-                        }
-                    }
-                    
-                    // Search filter
-                    if (searchQuery && !campaign.name.toLowerCase().includes(searchQuery)) {
-                        return false;
-                    }
-                    
-                    return true;
-                });
-                
-                renderCampaignGrid();
-            }
-
-            function showCampaignSelection() {
-                elements.campaignSelectionView.style.display = 'block';
-                elements.campaignAnalyticsView.style.display = 'none';
-                elements.pageTitle.textContent = 'Select a Campaign';
-                updateBreadcrumb(['Home', 'Campaigns']);
-                state.selectedCampaign = null;
-            }
-
-            function showCampaignAnalytics(campaignId) {
-                state.selectedCampaign = state.campaigns.find(c => c.id === campaignId);
-                if (!state.selectedCampaign) return;
-                
-                // Update UI elements
-                elements.campaignSelectionView.style.display = 'none';
-                elements.campaignAnalyticsView.style.display = 'block';
-                elements.pageTitle.textContent = state.selectedCampaign.name;
-                updateBreadcrumb(['Home', 'Campaigns', state.selectedCampaign.name]);
-                
-                // Update campaign info
-                elements.selectedCampaignName.textContent = state.selectedCampaign.name;
-                elements.selectedCampaignType.innerHTML = `
-                    ${getCampaignTypeIcon(state.selectedCampaign.type)} ${formatCampaignType(state.selectedCampaign.type)}
-                `;
-                elements.selectedCampaignType.className = `campaign-type ${state.selectedCampaign.type}`;
-                elements.selectedCampaignDate.textContent = formatDate(state.selectedCampaign.startDate);
-                elements.selectedCampaignStatus.textContent = state.selectedCampaign.status;
-                elements.selectedCampaignStatus.className = `campaign-status ${state.selectedCampaign.status}`;
-                
-                // Update stats
-                elements.impressionsStat.textContent = state.selectedCampaign.impressions.toLocaleString();
-                elements.clicksStat.textContent = state.selectedCampaign.clicks.toLocaleString();
-                elements.conversionsStat.textContent = state.selectedCampaign.conversions.toLocaleString();
-                elements.revenueStat.textContent = `$${state.selectedCampaign.revenue.toLocaleString()}`;
-                
-                // Update trends (random for demo)
-                elements.impressionsTrend.innerHTML = `<i class="fas fa-arrow-up"></i> ${state.selectedCampaign.ctr.toFixed(2)}%`;
-                elements.clicksTrend.innerHTML = `<i class="fas fa-arrow-up"></i> ${(state.selectedCampaign.ctr * 0.8).toFixed(2)}%`;
-                elements.conversionsTrend.innerHTML = `<i class="fas fa-arrow-up"></i> ${state.selectedCampaign.cr.toFixed(2)}%`;
-                elements.revenueTrend.innerHTML = `<i class="fas fa-arrow-up"></i> ${(state.selectedCampaign.cr * 1.2).toFixed(2)}%`;
-                
-                // Update top content
-                elements.topContentList.innerHTML = '';
-                state.selectedCampaign.topContent.forEach(item => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <div class="content-item">
-                            <div class="content-title">${item.title}</div>
-                            <div class="content-stats">
-                                <span>${item.clicks} clicks</span>
-                                <span>${item.ctr}% CTR</span>
+                    row.innerHTML = `
+                        <td>
+                            <div class="campaign-name">
+                                <i class="${getCampaignTypeIcon(campaign.campaign_type)}"></i>
+                                <span>${campaign.name}</span>
                             </div>
-                        </div>
+                        </td>
+                        <td>
+                            <span class="campaign-type ${campaign.campaign_type}">
+                                ${getCampaignTypeLabel(campaign.campaign_type)}
+                            </span>
+                        </td>
+                        <td><span class="status-badge ${campaign.status}">${campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}</span></td>
+                        <td>${formatNumber(campaign.impressions)}</td>
+                        <td>
+                            <div class="metric-with-trend">
+                                <span class="value">${ctr}</span>
+                                <span class="trend ${campaign.ctr > 5 ? 'up' : 'down'}">
+                                    <i class="fas fa-arrow-${campaign.ctr > 5 ? 'up' : 'down'}"></i>
+                                </span>
+                            </div>
+                        </td>
+                        <td>${formatCurrency(campaign.revenue)}</td>
+                        <td>${formatDate(campaign.start_date)}</td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="action-btn view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn ${campaign.status === 'draft' ? 'edit' : 'duplicate'}">
+                                    <i class="fas ${campaign.status === 'draft' ? 'fa-pencil-alt' : 'fa-copy'}"></i>
+                                </button>
+                                <button class="action-btn more">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </td>
                     `;
-                    elements.topContentList.appendChild(li);
+                    
+                    tableBody.appendChild(row);
                 });
                 
-                // Initialize charts
-                initCharts();
+                // Add event listeners to view buttons
+                document.querySelectorAll('.table-actions .action-btn.view').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const row = e.target.closest('tr');
+                        const campaignId = row.dataset.id;
+                        await showCampaignDetails(campaignId);
+                    });
+                });
             }
-
-            function initCharts() {
+            
+            async function renderAnalyticsView() {
+                // Show loading state
+                elements.statsGrid.innerHTML = '<div class="loading-spinner"></div><p>Loading analytics...</p>';
+                elements.topCampaignsList.innerHTML = '<div class="loading-spinner"></div><p>Loading top campaigns...</p>';
+                
+                const campaigns = await fetchCampaigns();
+                
+                // Calculate stats
+                const totalCampaigns = campaigns.length;
+                const emailCampaigns = campaigns.filter(c => c.campaign_type === 'email');
+                const socialCampaigns = campaigns.filter(c => c.campaign_type === 'social_media');
+                const adCampaigns = campaigns.filter(c => c.campaign_type === 'in_app_ad');
+                
+                // Avg open rate (for email campaigns)
+                const avgOpenRate = emailCampaigns.length > 0 
+                    ? emailCampaigns.reduce((sum, c) => sum + (c.ctr || 0), 0) / emailCampaigns.length
+                    : 0;
+                
+                // Avg click rate (for all campaigns)
+                const avgClickRate = campaigns.length > 0
+                    ? campaigns.reduce((sum, c) => sum + (c.ctr || 0), 0) / campaigns.length
+                    : 0;
+                
+                // Total revenue
+                const totalRevenue = campaigns.reduce((sum, c) => sum + (c.revenue || 0), 0);
+                
+                // Update stats cards
+                elements.statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #FFEE58;">
+                            <i class="fas fa-bullhorn" style="color: #FBC02D;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value">${totalCampaigns}</div>
+                            <div class="stat-label">Total Campaigns</div>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> ${Math.floor(Math.random() * 15) + 5}%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #B3E5FC;">
+                            <i class="fas fa-envelope-open" style="color: #03A9F4;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value">${avgOpenRate.toFixed(2)}%</div>
+                            <div class="stat-label">Avg Open Rate</div>
+                        </div>
+                        <div class="stat-trend ${avgOpenRate > 5 ? 'up' : 'down'}">
+                            <i class="fas fa-arrow-${avgOpenRate > 5 ? 'up' : 'down'}"></i> ${Math.floor(Math.random() * 5) + 1}%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #C8E6C9;">
+                            <i class="fas fa-mouse-pointer" style="color: #4CAF50;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value">${avgClickRate.toFixed(2)}%</div>
+                            <div class="stat-label">Avg Click Rate</div>
+                        </div>
+                        <div class="stat-trend ${avgClickRate > 3 ? 'up' : 'down'}">
+                            <i class="fas fa-arrow-${avgClickRate > 3 ? 'up' : 'down'}"></i> ${Math.floor(Math.random() * 3) + 1}%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #FFCDD2;">
+                            <i class="fas fa-dollar-sign" style="color: #F44336;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value">${formatCurrency(totalRevenue)}</div>
+                            <div class="stat-label">Total Revenue</div>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> ${Math.floor(Math.random() * 20) + 5}%
+                        </div>
+                    </div>
+                `;
+                
+                // Render charts
+                initCharts(campaigns);
+                
+                // Render top campaigns
+                renderTopCampaigns(campaigns);
+            }
+            
+            function initCharts(campaigns) {
                 // Destroy existing charts if they exist
-                if (state.performanceChart) {
-                    state.performanceChart.destroy();
-                }
-                if (state.trafficChart) {
-                    state.trafficChart.destroy();
-                }
-                if (state.demographicsChart) {
-                    state.demographicsChart.destroy();
-                }
+                if (performanceChart) performanceChart.destroy();
+                if (typeChart) typeChart.destroy();
+                
+                // Group campaigns by month for performance chart
+                const monthlyData = {};
+                campaigns.forEach(campaign => {
+                    const date = new Date(campaign.start_date);
+                    const month = date.toLocaleString('default', { month: 'short' });
+                    const year = date.getFullYear();
+                    const key = `${month} ${year}`;
+                    
+                    if (!monthlyData[key]) {
+                        monthlyData[key] = {
+                            email: 0,
+                            social_media: 0,
+                            in_app_ad: 0
+                        };
+                    }
+                    
+                    monthlyData[key][campaign.campaign_type]++;
+                });
+                
+                const months = Object.keys(monthlyData);
+                const emailData = months.map(m => monthlyData[m].email || 0);
+                const socialData = months.map(m => monthlyData[m].social_media || 0);
+                const adData = months.map(m => monthlyData[m].in_app_ad || 0);
                 
                 // Performance Chart
                 const performanceCtx = document.getElementById('performanceChart').getContext('2d');
-                state.performanceChart = new Chart(performanceCtx, {
+                performanceChart = new Chart(performanceCtx, {
                     type: 'line',
                     data: {
-                        labels: state.selectedCampaign.dailyData.map(data => formatShortDate(data.date)),
+                        labels: months,
                         datasets: [
                             {
-                                label: 'Impressions',
-                                data: state.selectedCampaign.dailyData.map(data => data.impressions),
-                                borderColor: '#FBC02D',
-                                backgroundColor: 'rgba(251, 192, 45, 0.1)',
+                                label: 'Email Campaigns',
+                                data: emailData,
+                                borderColor: '#9C27B0',
+                                backgroundColor: 'rgba(156, 39, 176, 0.1)',
                                 tension: 0.3,
                                 fill: true
                             },
                             {
-                                label: 'Clicks',
-                                data: state.selectedCampaign.dailyData.map(data => data.clicks),
-                                borderColor: '#03A9F4',
-                                backgroundColor: 'rgba(3, 169, 244, 0.1)',
+                                label: 'Social Campaigns',
+                                data: socialData,
+                                borderColor: '#2196F3',
+                                backgroundColor: 'rgba(33, 150, 243, 0.1)',
                                 tension: 0.3,
                                 fill: true
                             },
                             {
-                                label: 'Conversions',
-                                data: state.selectedCampaign.dailyData.map(data => data.conversions),
+                                label: 'In-App Ads',
+                                data: adData,
                                 borderColor: '#4CAF50',
                                 backgroundColor: 'rgba(76, 175, 80, 0.1)',
                                 tension: 0.3,
@@ -725,10 +1596,6 @@
                         plugins: {
                             legend: {
                                 position: 'top',
-                            },
-                            tooltip: {
-                                mode: 'index',
-                                intersect: false,
                             }
                         },
                         scales: {
@@ -739,26 +1606,22 @@
                     }
                 });
                 
-                // Traffic Chart
-                const trafficCtx = document.getElementById('trafficChart').getContext('2d');
-                state.trafficChart = new Chart(trafficCtx, {
+                // Type Chart
+                const emailCount = campaigns.filter(c => c.campaign_type === 'email').length;
+                const socialCount = campaigns.filter(c => c.campaign_type === 'social_media').length;
+                const adCount = campaigns.filter(c => c.campaign_type === 'in_app_ad').length;
+                
+                const typeCtx = document.getElementById('typeChart').getContext('2d');
+                typeChart = new Chart(typeCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Organic Search', 'Social Media', 'Email', 'Direct', 'Referral'],
+                        labels: ['Email', 'Social Media', 'In-App Ads'],
                         datasets: [{
-                            data: [
-                                state.selectedCampaign.trafficSources.organic,
-                                state.selectedCampaign.trafficSources.social,
-                                state.selectedCampaign.trafficSources.email,
-                                state.selectedCampaign.trafficSources.direct,
-                                state.selectedCampaign.trafficSources.referral
-                            ],
+                            data: [emailCount, socialCount, adCount],
                             backgroundColor: [
-                                '#4CAF50',
-                                '#2196F3',
                                 '#9C27B0',
-                                '#FF9800',
-                                '#F44336'
+                                '#2196F3',
+                                '#4CAF50'
                             ],
                             borderWidth: 0
                         }]
@@ -773,97 +1636,520 @@
                         cutout: '70%'
                     }
                 });
+            }
+            
+            function renderTopCampaigns(campaigns) {
+                // Sort campaigns by revenue descending
+                const sortedCampaigns = [...campaigns].sort((a, b) => (b.revenue || 0) - (a.revenue || 0));
+                const topCampaigns = sortedCampaigns.slice(0, 3); // Top 3 campaigns
                 
-                // Demographics Chart
-                const demographicsCtx = document.getElementById('demographicsChart').getContext('2d');
-                state.demographicsChart = new Chart(demographicsCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: Object.keys(state.selectedCampaign.demographics.age),
-                        datasets: [
-                            {
-                                label: 'Age Distribution',
-                                data: Object.values(state.selectedCampaign.demographics.age),
-                                backgroundColor: '#03A9F4',
-                                borderRadius: 4
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            function updatePerformanceChart() {
-                // In a real app, this would fetch new data based on the time range
-                // For this demo, we'll just regenerate the chart with the same data
-                if (state.selectedCampaign) {
-                    initCharts();
+                if (topCampaigns.length === 0) {
+                    elements.topCampaignsList.innerHTML = '<p>No campaigns found</p>';
+                    return;
                 }
-            }
-
-            // Helper functions
-            function getCampaignTypeIcon(type) {
-                switch(type) {
-                    case 'email': return '<i class="fas fa-envelope"></i>';
-                    case 'social': return '<i class="fas fa-share-alt"></i>';
-                    case 'paid': return '<i class="fas fa-ad"></i>';
-                    default: return '<i class="fas fa-campaign"></i>';
-                }
-            }
-
-            function formatCampaignType(type) {
-                switch(type) {
-                    case 'email': return 'Email';
-                    case 'social': return 'Social';
-                    case 'paid': return 'Paid';
-                    default: return 'Campaign';
-                }
-            }
-
-            function formatDate(dateString) {
-                const options = { year: 'numeric', month: 'short', day: 'numeric' };
-                return new Date(dateString).toLocaleDateString('en-US', options);
-            }
-
-            function formatShortDate(dateString) {
-                const options = { month: 'short', day: 'numeric' };
-                return new Date(dateString).toLocaleDateString('en-US', options);
-            }
-
-            function updateBreadcrumb(items) {
-                elements.breadcrumb.innerHTML = '';
-                items.forEach((item, index) => {
-                    const span = document.createElement(index === items.length - 1 ? 'span' : 'a');
-                    if (index !== items.length - 1) {
-                        span.href = '#';
-                    }
-                    span.textContent = item;
-                    elements.breadcrumb.appendChild(span);
+                
+                elements.topCampaignsList.innerHTML = '';
+                
+                topCampaigns.forEach(campaign => {
+                    const item = document.createElement('div');
+                    item.className = 'top-campaign-item';
                     
-                    if (index < items.length - 1) {
-                        const separator = document.createElement('span');
-                        separator.textContent = '/';
-                        elements.breadcrumb.appendChild(separator);
+                    const icon = getCampaignTypeIcon(campaign.campaign_type);
+                    const typeLabel = getCampaignTypeLabel(campaign.campaign_type);
+                    const revenue = formatCurrency(campaign.revenue);
+                    const ctr = formatPercentage(campaign.ctr || 0);
+                    const conversionRate = formatPercentage(campaign.conversion_rate || 0);
+                    
+                    // Type-specific stats
+                    let statsHtml = '';
+                    if (campaign.campaign_type === 'email') {
+                        statsHtml = `
+                            <div class="stat">
+                                <div class="value">${ctr}</div>
+                                <div class="label">Open Rate</div>
+                            </div>
+                            <div class="stat">
+                                <div class="value">${conversionRate}</div>
+                                <div class="label">Click Rate</div>
+                            </div>
+                        `;
+                    } else if (campaign.campaign_type === 'social_media') {
+                        statsHtml = `
+                            <div class="stat">
+                                <div class="value">${formatNumber(campaign.impressions)}</div>
+                                <div class="label">Impressions</div>
+                            </div>
+                            <div class="stat">
+                                <div class="value">${formatNumber(campaign.clicks)}</div>
+                                <div class="label">Engagements</div>
+                            </div>
+                        `;
+                    } else {
+                        statsHtml = `
+                            <div class="stat">
+                                <div class="value">${formatNumber(campaign.impressions)}</div>
+                                <div class="label">Impressions</div>
+                            </div>
+                            <div class="stat">
+                                <div class="value">${formatNumber(campaign.clicks)}</div>
+                                <div class="label">Clicks</div>
+                            </div>
+                        `;
                     }
+                    
+                    item.innerHTML = `
+                        <div class="campaign-info">
+                            <div class="campaign-type ${campaign.campaign_type}">
+                                <i class="${icon}"></i> ${typeLabel}
+                            </div>
+                            <h4>${campaign.name}</h4>
+                            <div class="campaign-meta">
+                                <span>${formatDate(campaign.start_date)} - ${formatDate(campaign.end_date)}</span>
+                                <span class="status-badge ${campaign.status}">${campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}</span>
+                            </div>
+                        </div>
+                        <div class="campaign-stats">
+                            ${statsHtml}
+                            <div class="stat">
+                                <div class="value">${revenue}</div>
+                                <div class="label">Revenue</div>
+                            </div>
+                        </div>
+                        <div class="campaign-actions">
+                            <button class="action-btn view" data-id="${campaign.campaign_id}">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </div>
+                    `;
+                    
+                    elements.topCampaignsList.appendChild(item);
+                });
+                
+                // Add event listeners to view buttons
+                document.querySelectorAll('.top-campaign-item .action-btn.view').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const campaignId = e.target.closest('button').dataset.id;
+                        await showCampaignDetails(campaignId);
+                    });
                 });
             }
+            
+            async function showCampaignDetails(id) {
+                // Show loading state
+                elements.campaignDetailsModal.style.display = 'flex';
+                document.getElementById('detailsCampaignName').textContent = 'Loading...';
+                
+                const campaign = await fetchCampaignDetails(id);
+                if (!campaign) {
+                    elements.campaignDetailsModal.style.display = 'none';
+                    return;
+                }
+                
+                currentCampaignDetails = campaign;
+                
+                // Update basic info
+                document.getElementById('detailsCampaignName').textContent = campaign.name;
+                document.getElementById('detailsTypeBadge').innerHTML = `
+                    <i class="${getCampaignTypeIcon(campaign.campaign_type)}"></i>
+                    <span>${getCampaignTypeLabel(campaign.campaign_type)}</span>
+                `;
+                document.getElementById('detailsTypeBadge').className = `details-type-badge ${campaign.campaign_type}`;
+                document.getElementById('detailsStatusBadge').textContent = campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1);
+                document.getElementById('detailsStatusBadge').className = `details-status-badge ${campaign.status}`;
+                
+                // Update overview
+                document.getElementById('detailsStartDate').textContent = formatDate(campaign.start_date);
+                document.getElementById('detailsEndDate').textContent = formatDate(campaign.end_date);
+                document.getElementById('detailsCreatedAt').textContent = formatDate(campaign.created_at);
+                document.getElementById('detailsUpdatedAt').textContent = formatDate(campaign.updated_at);
+                document.getElementById('detailsDescription').textContent = campaign.description || '-';
+                
+                // Hide all type-specific sections
+                document.getElementById('emailDetailsSection').style.display = 'none';
+                document.getElementById('socialDetailsSection').style.display = 'none';
+                document.getElementById('adDetailsSection').style.display = 'none';
+                
+                // Show type-specific details
+                if (campaign.campaign_type === 'email') {
+                    document.getElementById('emailDetailsSection').style.display = 'block';
+                    document.getElementById('detailsEmailSubject').textContent = campaign.email_subject || '-';
+                    document.getElementById('detailsRecipientCount').textContent = formatNumber(campaign.recipient_count);
+                    document.getElementById('detailsSenderName').textContent = campaign.sender_name || '-';
+                    document.getElementById('detailsTemplateId').textContent = campaign.template_id || '-';
+                } 
+                else if (campaign.campaign_type === 'social_media') {
+                    document.getElementById('socialDetailsSection').style.display = 'block';
+                    document.getElementById('detailsSocialPlatform').textContent = campaign.social_platform ? 
+                        campaign.social_platform.charAt(0).toUpperCase() + campaign.social_platform.slice(1) : '-';
+                    document.getElementById('detailsPostId').textContent = campaign.post_id || '-';
+                    document.getElementById('detailsAdSpend').textContent = campaign.ad_spend ? 
+                        formatCurrency(campaign.ad_spend) : '-';
+                    
+                    const discountText = campaign.discount_amount ? 
+                        `${campaign.discount_amount}${campaign.discount_type === 'percentage' ? '%' : '$'}` : '-';
+                    document.getElementById('detailsSocialDiscount').textContent = discountText;
+                } 
+                else if (campaign.campaign_type === 'in_app_ad') {
+                    document.getElementById('adDetailsSection').style.display = 'block';
+                    document.getElementById('detailsBannerImageUrl').textContent = campaign.banner_image_url || '-';
+                    document.getElementById('detailsTargetUrl').textContent = campaign.target_url || '-';
+                    document.getElementById('detailsLocations').textContent = campaign.locations ? 
+                        JSON.parse(campaign.locations).join(', ') : '-';
+                    
+                    const discountText = campaign.discount_amount ? 
+                        `${campaign.discount_amount}${campaign.discount_type === 'percentage' ? '%' : '$'}` : '-';
+                    document.getElementById('detailsAdDiscount').textContent = discountText;
+                }
+                
+                // Update performance stats
+                document.getElementById('detailsImpressions').textContent = formatNumber(campaign.impressions);
+                document.getElementById('detailsClicks').textContent = formatNumber(campaign.clicks);
+                document.getElementById('detailsConversions').textContent = formatNumber(campaign.conversions);
+                document.getElementById('detailsRevenue').textContent = formatCurrency(campaign.revenue);
+                document.getElementById('detailsCTR').textContent = formatPercentage(campaign.ctr || 0);
+                document.getElementById('detailsConversionRate').textContent = formatPercentage(campaign.conversion_rate || 0);
+            }
+            
+            // Form Handling
+            function setupFormNavigation() {
+                // Next buttons
+                elements.nextBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const currentStep = btn.closest('.form-step');
+                        const nextStepNum = btn.dataset.next;
+                        
+                        // Validate current step before proceeding
+                        if (!validateFormStep(currentStep)) {
+                            return;
+                        }
+                        
+                        currentStep.classList.remove('active');
+                        document.querySelector(`.form-step[data-step="${nextStepNum}"]`).classList.add('active');
+                        
+                        // Update review section if we're going to the final step
+                        if (nextStepNum === '3') {
+                            updateReviewSection();
+                        }
+                    });
+                });
+                
+                // Back buttons
+                elements.backBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const currentStep = btn.closest('.form-step');
+                        const prevStepNum = btn.dataset.back;
+                        
+                        currentStep.classList.remove('active');
+                        document.querySelector(`.form-step[data-step="${prevStepNum}"]`).classList.add('active');
+                    });
+                });
+            }
+            
+            function validateFormStep(step) {
+                // Basic validation - in a real app you'd want more robust validation
+                const inputs = step.querySelectorAll('input[required], select[required], textarea[required]');
+                let isValid = true;
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.style.borderColor = 'red';
+                        isValid = false;
+                    } else {
+                        input.style.borderColor = '';
+                    }
+                });
+                
+                if (!isValid) {
+                    showError('Please fill in all required fields');
+                }
+                
+                return isValid;
+            }
+            
+            function updateReviewSection() {
+                const activeForm = document.querySelector('.campaign-form[style="display: block;"]');
+                
+                if (activeForm.id === 'emailCampaignForm') {
+                    // Email campaign review
+                    document.getElementById('reviewCampaignName').textContent = 
+                        document.getElementById('emailCampaignName').value || '-';
+                    document.getElementById('reviewDescription').textContent = 
+                        document.getElementById('emailDescription').value || '-';
+                    document.getElementById('reviewSubject').textContent = 
+                        document.getElementById('emailSubject').value || '-';
+                    document.getElementById('reviewAudience').textContent = 
+                        document.getElementById('emailAudience').options[document.getElementById('emailAudience').selectedIndex].text;
+                    document.getElementById('reviewRecipients').textContent = 
+                        document.getElementById('emailRecipientCount').value || '-';
+                    document.getElementById('reviewSender').textContent = 
+                        document.getElementById('emailSenderName').value || '-';
+                    document.getElementById('reviewStatus').textContent = 
+                        document.getElementById('emailStatus').options[document.getElementById('emailStatus').selectedIndex].text;
+                    
+                    const scheduleValue = document.getElementById('emailSchedule').value;
+                    let scheduleText = '';
+                    if (scheduleValue === 'now') {
+                        scheduleText = 'Send immediately';
+                    } else if (scheduleValue === 'scheduled') {
+                        scheduleText = `Schedule for ${document.getElementById('emailSendTime').value}`;
+                    } else {
+                        scheduleText = 'Save as draft';
+                    }
+                    document.getElementById('reviewSchedule').textContent = scheduleText;
+                    
+                    // Update preview
+                    document.getElementById('previewSubject').textContent = 
+                        document.getElementById('emailSubject').value || 'Your Email Subject Here';
+                    document.getElementById('previewSender').textContent = 
+                        document.getElementById('emailSenderName').value || 'WFFE Connect';
+                } 
+                else if (activeForm.id === 'socialCampaignForm') {
+                    // Social campaign review
+                    document.getElementById('reviewSocialCampaignName').textContent = 
+                        document.getElementById('socialCampaignName').value || '-';
+                    document.getElementById('reviewSocialPlatform').textContent = 
+                        document.getElementById('socialPlatform').options[document.getElementById('socialPlatform').selectedIndex].text;
+                    document.getElementById('reviewSocialStatus').textContent = 
+                        document.getElementById('socialStatus').options[document.getElementById('socialStatus').selectedIndex].text;
+                    document.getElementById('reviewSocialStartDate').textContent = 
+                        formatDate(document.getElementById('socialStartDate').value) || '-';
+                    document.getElementById('reviewSocialEndDate').textContent = 
+                        formatDate(document.getElementById('socialEndDate').value) || '-';
+                    
+                    // Update preview
+                    document.getElementById('previewSocialText').textContent = 
+                        document.getElementById('socialPostText').value || 'Your post content will appear here...';
+                } 
+                else if (activeForm.id === 'inAppAdCampaignForm') {
+                    // Ad campaign review
+                    document.getElementById('reviewAdCampaignName').textContent = 
+                        document.getElementById('adCampaignName').value || '-';
+                    document.getElementById('reviewAdStatus').textContent = 
+                        document.getElementById('adStatus').options[document.getElementById('adStatus').selectedIndex].text;
+                    
+                    const discountAmount = document.getElementById('adDiscountAmount').value;
+                    const discountType = document.getElementById('adDiscountType').value;
+                    document.getElementById('reviewAdDiscount').textContent = 
+                        discountAmount ? `${discountAmount}${discountType === 'percentage' ? '%' : '$'}` : '-';
+                    
+                    document.getElementById('reviewAdStartDate').textContent = 
+                        formatDate(document.getElementById('adStartDate').value) || '-';
+                    document.getElementById('reviewAdEndDate').textContent = 
+                        formatDate(document.getElementById('adEndDate').value) || '-';
+                    document.getElementById('reviewAdLocations').textContent = 
+                        document.getElementById('adLocations').value || '-';
+                    
+                    // Update preview
+                    document.getElementById('adPreviewTitle').textContent = 
+                        document.getElementById('adCampaignName').value || 'Campaign Name';
+                    document.getElementById('adPreviewDiscount').textContent = 
+                        discountAmount ? `${discountAmount}${discountType === 'percentage' ? '% OFF' : '$ OFF'}` : 'SPECIAL OFFER';
+                    
+                    const bannerUrl = document.getElementById('adBannerImageUrl').value;
+                    if (bannerUrl) {
+                        document.getElementById('adPreviewImage').src = bannerUrl;
+                    }
+                }
+            }
+            
+            async function submitEmailCampaign() {
+                const campaignData = {
+                    name: document.getElementById('emailCampaignName').value,
+                    description: document.getElementById('emailDescription').value,
+                    campaign_type: 'email',
+                    status: document.getElementById('emailStatus').value,
+                    email_subject: document.getElementById('emailSubject').value,
+                    recipient_count: parseInt(document.getElementById('emailRecipientCount').value) || null,
+                    sender_name: document.getElementById('emailSenderName').value,
+                    template_id: parseInt(document.getElementById('emailTemplateId').value) || null,
+                    start_date: document.getElementById('emailSchedule').value === 'scheduled' ? 
+                        document.getElementById('emailSendTime').value : new Date().toISOString(),
+                    discount_amount: null,
+                    discount_type: null
+                };
+                
+                const result = await createCampaign(campaignData);
+                if (result) {
+                    showSuccess('Email campaign created successfully!');
+                    elements.newCampaignModal.style.display = 'none';
+                    refreshCampaigns();
+                }
+            }
+            
+            async function submitSocialCampaign() {
+                const campaignData = {
+                    name: document.getElementById('socialCampaignName').value,
+                    description: document.getElementById('socialDescription').value,
+                    campaign_type: 'social_media',
+                    status: document.getElementById('socialStatus').value,
+                    social_platform: document.getElementById('socialPlatform').value,
+                    post_id: document.getElementById('socialPostId').value || null,
+                    target_url: document.getElementById('socialTargetUrl').value || null,
+                    start_date: document.getElementById('socialStartDate').value,
+                    end_date: document.getElementById('socialEndDate').value,
+                    ad_spend: parseFloat(document.getElementById('socialAdSpend').value) || null,
+                    discount_amount: parseFloat(document.getElementById('socialDiscountAmount').value) || null,
+                    discount_type: document.getElementById('socialDiscountType').value
+                };
+                
+                const result = await createCampaign(campaignData);
+                if (result) {
+                    showSuccess('Social campaign created successfully!');
+                    elements.newCampaignModal.style.display = 'none';
+                    refreshCampaigns();
+                }
+            }
+            
+            async function submitInAppAdCampaign() {
+                const campaignData = {
+                    name: document.getElementById('adCampaignName').value,
+                    description: document.getElementById('adDescription').value,
+                    campaign_type: 'in_app_ad',
+                    status: document.getElementById('adStatus').value,
+                    banner_image_url: document.getElementById('adBannerImageUrl').value,
+                    target_url: document.getElementById('adTargetUrl').value,
+                    locations: JSON.stringify(document.getElementById('adLocations').value.split(',').map(s => s.trim())),
+                    start_date: document.getElementById('adStartDate').value,
+                    end_date: document.getElementById('adEndDate').value,
+                    ad_spend: parseFloat(document.getElementById('adAdSpend').value) || null,
+                    discount_amount: parseFloat(document.getElementById('adDiscountAmount').value) || null,
+                    discount_type: document.getElementById('adDiscountType').value
+                };
+                
+                const result = await createCampaign(campaignData);
+                if (result) {
+                    showSuccess('In-App Ad campaign created successfully!');
+                    elements.newCampaignModal.style.display = 'none';
+                    refreshCampaigns();
+                }
+            }
+            
+            function refreshCampaigns() {
+                if (currentView === 'grid') {
+                    renderCampaignGrid(currentFilter);
+                } else if (currentView === 'table') {
+                    renderCampaignTable(currentFilter);
+                } else if (currentView === 'analytics') {
+                    renderAnalyticsView();
+                }
+            }
+            
+            // Event Listeners
+            elements.newCampaignBtn.addEventListener('click', () => {
+                elements.newCampaignModal.style.display = 'flex';
+            });
+            
+            elements.closeModal.addEventListener('click', () => {
+                elements.newCampaignModal.style.display = 'none';
+                // Reset forms
+                document.querySelectorAll('.campaign-form').forEach(form => {
+                    form.style.display = 'none';
+                });
+                document.querySelectorAll('.form-step').forEach(step => {
+                    if (step.dataset.step === '1') {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                });
+            });
+            
+            elements.closeDetailsModal.addEventListener('click', () => {
+                elements.campaignDetailsModal.style.display = 'none';
+            });
+            
+            // Campaign type selection
+            elements.campaignTypeOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const type = option.dataset.type;
+                    
+                    // Hide all forms first
+                    document.querySelectorAll('.campaign-form').forEach(form => {
+                        form.style.display = 'none';
+                    });
+                    
+                    // Show selected form
+                    if (type === 'email') {
+                        elements.emailCampaignForm.style.display = 'block';
+                    } else if (type === 'social_media') {
+                        elements.socialCampaignForm.style.display = 'block';
+                    } else if (type === 'in_app_ad') {
+                        elements.inAppAdCampaignForm.style.display = 'block';
+                    }
+                    
+                    // Highlight selected option
+                    elements.campaignTypeOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                });
+            });
+            
+            // View selector
+            elements.viewBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const view = btn.dataset.view;
+                    currentView = view;
+                    
+                    // Update active button
+                    elements.viewBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Show selected view
+                    elements.gridView.style.display = 'none';
+                    elements.tableView.style.display = 'none';
+                    elements.analyticsView.style.display = 'none';
+                    
+                    if (view === 'grid') {
+                        elements.gridView.style.display = 'block';
+                        renderCampaignGrid(currentFilter);
+                    } else if (view === 'table') {
+                        elements.tableView.style.display = 'block';
+                        renderCampaignTable(currentFilter);
+                    } else if (view === 'analytics') {
+                        elements.analyticsView.style.display = 'block';
+                        renderAnalyticsView();
+                    }
+                });
+            });
+            
+            // Tab selector
+            elements.tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.dataset.type;
+                    currentFilter = type;
+                    
+                    // Update active tab
+                    elements.tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Filter campaigns
+                    if (currentView === 'grid') {
+                        renderCampaignGrid(type);
+                    } else if (currentView === 'table') {
+                        renderCampaignTable(type);
+                    }
+                });
+            });
+            
+            // Schedule datetime toggle
+            elements.emailSchedule.addEventListener('change', (e) => {
+                elements.scheduleDateTime.style.display = e.target.value === 'scheduled' ? 'block' : 'none';
+            });
+            
+            // Form submission
+            elements.sendEmailCampaign.addEventListener('click', submitEmailCampaign);
+            elements.publishSocialCampaign.addEventListener('click', submitSocialCampaign);
+            elements.publishAdCampaign.addEventListener('click', submitInAppAdCampaign);
+            
+            // Apply filters
+            elements.applyFilters.addEventListener('click', () => {
+                refreshCampaigns();
+            });
+            
+            // Initialize form navigation
+            setupFormNavigation();
+            
+            // Initialize the page
+            renderCampaignGrid();
         });
     </script>
 </body>
