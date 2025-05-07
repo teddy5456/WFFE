@@ -33,7 +33,7 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="product-landing.css">
-    <link rel="stylesheet" href="css/responsive.css">
+
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://www.waikasfurniture.com">
@@ -76,6 +76,27 @@
       "priceRange": "$$$"
     }
     </script>
+    <style>
+        .auth-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 180px;
+}
+
+.auth-loading .spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0,0,0,0.1);
+  border-radius: 50%;
+  border-top-color: #333;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+    </style>
 </head>
 <body>    
     <!-- Announcement Bar -->
@@ -103,8 +124,8 @@
                 <a href="#categories">Categories</a>
                 <a href="#feedback">Newsletter</a>
                 <a href="/">About Us</a>
-                <a href="/dashboard/index.html">Main</a>
-            </div>
+                <a href="/dashboard/index.html" class="main-nav-link" style="display: none;">Main</a>
+              </div>
             <div class="nav-btns">
                 <button class="btn btn-outline"><a href="/auth/login.html">Login</a></button>
                 <button class="btn btn-primary"><a href="/auth/register.html">Get Started</a></button>
@@ -971,6 +992,8 @@
 
     <!-- Add this script right before your closing </body> tag -->
 <script>
+   
+
 // Function to store category ID in session storage
 function storeCategoryId(categoryId) {
     sessionStorage.setItem('selectedCategoryId', categoryId);

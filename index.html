@@ -97,6 +97,7 @@
         .nav-btns {
             display: flex;
             gap: 1rem;
+            align-items: center;
         }
 
         .btn {
@@ -127,6 +128,38 @@
         .btn-primary:hover {
             background: var(--dark);
             transform: translateY(-2px);
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
+            position: relative;
+            display: none;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-width: 200px;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--light);
+            color: var(--primary);
         }
 
         /* Hero Section */
@@ -445,6 +478,26 @@
                 font-size: 2rem;
             }
         }
+
+        .auth-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0,0,0,0.1);
+  border-radius: 50%;
+  border-top-color: #333;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
     </style>
 </head>
 <body>
@@ -463,18 +516,18 @@
         </div>
         <div class="nav-btns" id="auth-buttons">
             <!-- Default state (will be replaced if logged in) -->
-            <button class="btn btn-outline" id="login-btn"><a href="/auth/login.html">Login</a></button>
-            <button class="btn btn-primary" id="register-btn"><a href="/auth/register.html">Get Started</a></button>
+            <button class="btn btn-outline" id="login-btn"><a href="/auth/login.html" style="text-decoration: none; color: inherit;">Login</a></button>
+            <button class="btn btn-primary" id="register-btn"><a href="/auth/register.html" style="text-decoration: none; color: inherit;">Get Started</a></button>
             
             <!-- Logged in state (hidden by default) -->
-            <div class="profile-dropdown" id="profile-dropdown" style="display: none; position: relative;">
+            <div class="profile-dropdown" id="profile-dropdown" style="display: none;">
                 <button class="btn btn-primary" id="profile-btn">
                     <i class="fas fa-user"></i> Profile
                 </button>
-                <div class="dropdown-menu" style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-width: 200px; z-index: 1000;">
-                    <a href="/dashboard/profile.html" style="display: block; padding: 10px 15px; color: var(--text); text-decoration: none;">My Profile</a>
-                    <a href="/dashboard/settings.html" style="display: block; padding: 10px 15px; color: var(--text); text-decoration: none;">Settings</a>
-                    <a href="#" id="logout-btn" style="display: block; padding: 10px 15px; color: var(--text); text-decoration: none;">Logout</a>
+                <div class="dropdown-menu">
+                    <a href="/dashboard/profile.html">My Profile</a>
+                    <a href="/dashboard/settings.html">Settings</a>
+                    <a href="#" id="logout-btn">Logout</a>
                 </div>
             </div>
         </div>
@@ -492,6 +545,8 @@
         </div>
         <div class="hero-img"></div>
     </section>
+
+    
 
     <!-- Features Section -->
     <section class="features" id="features">
@@ -604,112 +659,218 @@
         </div>
     </footer>
 
-    <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-      <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Check authentication status
+    <script>// Auth State Management
+        let authState = {
+          isChecking: true,
+          isAuthenticated: false,
+          user: null
+        };
+        
+        // DOM Elements cache
+        const domElements = {
+          authButtons: document.getElementById('auth-buttons'),
+          heroContent: document.querySelector('.hero-content'),
+          ctaSection: document.querySelector('.cta'),
+          navbar: document.getElementById('navbar')
+        };
+        
+        // UI Templates
+        const templates = {
+          loading: `
+            <div class="auth-loading">
+              <div class="spinner"></div>
+            </div>
+          `,
+          authenticated: (user) => `
+            <div class="profile-dropdown">
+              <button class="btn btn-primary" id="profile-btn">
+                <i class="fas fa-user"></i> ${user?.full_name || 'Profile'}
+              </button>
+              <div class="dropdown-menu">
+                <a href="/dashboard/profile.html">My Profile</a>
+                <a href="/dashboard/settings.html">Settings</a>
+                <a href="#" id="logout-btn">Logout</a>
+              </div>
+            </div>
+          `,
+          unauthenticated: `
+            <button class="btn btn-outline" id="login-btn">
+              <a href="/auth/login.html">Login</a>
+            </button>
+            <button class="btn btn-primary" id="register-btn">
+              <a href="/auth/register.html">Get Started</a>
+            </button>
+          `,
+          heroAuthenticated: (user) => `
+            <h1>Welcome Back, ${user?.full_name || ''}!</h1>
+            <p>Ready to create your next marketing campaign?</p>
+            <div class="hero-btns">
+              <button class="btn btn-primary">
+                <a href="/dashboard/index.html">Go to Dashboard</a>
+              </button>
+              <button class="btn btn-outline">
+                <a href="/dashboard/campaigns.html">Create Campaign</a>
+              </button>
+            </div>
+          `
+        };
+        
+        // Auth Functions
         async function checkAuthStatus() {
-            try {
-                const response = await fetch('htt://localhost:8000/api/check-session', {
-                    credentials: 'include' // Important for cookies
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.authenticated) {
-                        // User is logged in
-                        document.getElementById('login-btn').style.display = 'none';
-                        document.getElementById('register-btn').style.display = 'none';
-                        document.getElementById('profile-dropdown').style.display = 'block';
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking auth status:', error);
-            }
+          try {
+            const sessionId = getCookieValue('session_id');
+            const response = await fetch('http://localhost:8000/api/check-auth', {
+              method: 'GET',
+              headers: {
+                'Authorization': sessionId || '',
+                'Content-Type': 'application/json'
+              },
+              credentials: 'include'
+            });
+        
+            if (!response.ok) throw new Error('Authentication check failed');
+            return await response.json();
+          } catch (error) {
+            console.error('Error checking authentication:', error);
+            return { authenticated: false };
+          }
         }
-
-        // Logout functionality
+        
         async function logout() {
-            try {
-                const response = await fetch('http:localhost:8000/api/logout', {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    // Reload the page to update the UI
-                    window.location.reload();
-                }
-            } catch (error) {
-                console.error('Error logging out:', error);
+          try {
+            const response = await fetch('http://localhost:8000/api/logout', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getCookieValue('session_id') || ''
+              },
+              credentials: 'include'
+            });
+            
+            if (response.ok) {
+              document.cookie = 'session_id=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+              return true;
             }
+            return false;
+          } catch (error) {
+            console.error('Logout failed:', error);
+            return false;
+          }
         }
-
-        // Profile dropdown toggle
-        document.getElementById('profile-btn')?.addEventListener('click', function() {
+        
+        // UI Update Functions
+        function showLoadingState() {
+          if (domElements.authButtons) {
+            domElements.authButtons.innerHTML = templates.loading;
+          }
+        }
+        
+        async function updateUI() {
+          showLoadingState();
+          
+          authState = {
+            isChecking: true,
+            isAuthenticated: false,
+            user: null
+          };
+        
+          const authStatus = await checkAuthStatus();
+          
+          authState = {
+            isChecking: false,
+            isAuthenticated: authStatus.authenticated,
+            user: authStatus.user
+          };
+        
+          renderUI();
+        }
+        
+        function renderUI() {
+          // Update auth buttons
+          if (domElements.authButtons) {
+            domElements.authButtons.innerHTML = authState.isAuthenticated 
+              ? templates.authenticated(authState.user)
+              : templates.unauthenticated;
+          }
+        
+          // Update hero section if needed
+          if (domElements.heroContent && authState.isAuthenticated) {
+            domElements.heroContent.querySelector('h1').textContent = `Welcome Back, ${authState.user?.full_name || ''}!`;
+            domElements.heroContent.querySelector('p').textContent = 'Ready to create your next marketing campaign?';
+            domElements.heroContent.querySelector('.hero-btns').innerHTML = `
+              <button class="btn btn-primary">
+                <a href="/dashboard/index.html">Go to Dashboard</a>
+              </button>
+              <button class="btn btn-outline">
+                <a href="/dashboard/campaigns.html">Create Campaign</a>
+              </button>
+            `;
+          }
+        
+          // Add event listeners
+          setupEventListeners();
+        }
+        
+        function setupEventListeners() {
+          // Profile dropdown
+          document.getElementById('profile-btn')?.addEventListener('click', function(e) {
+            e.stopPropagation();
             const dropdown = this.nextElementSibling;
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.querySelector('.dropdown-menu');
-            const profileBtn = document.getElementById('profile-btn');
-            
-            if (dropdown && profileBtn && 
-                !event.target.closest('.profile-dropdown') && 
-                dropdown.style.display === 'block') {
-                dropdown.style.display = 'none';
-            }
-        });
-
-        // Logout button click
-        document.getElementById('logout-btn')?.addEventListener('click', function(e) {
+          });
+        
+          // Logout button
+          document.getElementById('logout-btn')?.addEventListener('click', async function(e) {
             e.preventDefault();
-            logout();
+            const success = await logout();
+            if (success) {
+              await updateUI(); // Soft refresh instead of page reload
+            }
+          });
+        
+          // Close dropdown when clicking outside
+          document.addEventListener('click', function() {
+            const dropdown = document.querySelector('.dropdown-menu');
+            if (dropdown) {
+              dropdown.style.display = 'none';
+            }
+          });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+          // Initial UI update
+          updateUI();
+        
+          // Navbar scroll effect
+          window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+              domElements.navbar?.classList.add('scrolled');
+            } else {
+              domElements.navbar?.classList.remove('scrolled');
+            }
+          });
+        
+          // Smooth scrolling for anchor links
+          document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+              e.preventDefault();
+              const target = document.querySelector(this.getAttribute('href'));
+              target?.scrollIntoView({ behavior: 'smooth' });
+            });
+          });
         });
-
-        // Check auth status when page loads
-        document.addEventListener('DOMContentLoaded', checkAuthStatus);
-    </script>
+        
+        // Utility function to get cookie by name
+        function getCookieValue(name) {
+          const cookies = document.cookie.split('; ');
+          for (let cookie of cookies) {
+            const [key, value] = cookie.split('=');
+            if (key === name) {
+              return value;
+            }
+          }
+          return null;
+        }</script>
 </body>
 </html>

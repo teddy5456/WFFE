@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | WFFE Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Add jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* Reports Section Styles */
+        .reports-container {
+            display: flex;
+            gap: 30px;
+        }
+
+        .report-filters {
+            flex: 1;
+            max-width: 350px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .report-preview {
+            flex: 2;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .filter-select, .date-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #999;
+            text-align: center;
+        }
+
+        .preview-placeholder i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        .report-content {
+            display: none;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .report-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .report-header .report-meta {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .report-section {
+            margin-bottom: 30px;
+        }
+
+        .report-section h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            color: #444;
+        }
+
+        .report-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .report-stat {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .report-stat .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .report-stat .label {
+            font-size: 12px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .report-table th, .report-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .report-table th {
+            background: #f5f5f5;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .report-chart {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        .report-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #777;
+            font-size: 12px;
+            text-align: right;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .status-badge.active { background-color: #4CAF50; }
+        .status-badge.completed { background-color: #607D8B; }
+        .status-badge.draft { background-color: #9E9E9E; }
+        .status-badge.scheduled { background-color: #FFC107; color: #000; }
+
+        /* Loading states */
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #f44336;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-couch"></i>
+                    <span>WFFE Connect</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Main</div>
+                    <ul>
+                        <li>
+                            <a href="/dashboard/index.html">
+                                <i class="fas fa-bullhorn"></i>
+                                <span>Campaigns</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/dashboard/campaigns/products/products.html">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Products</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-users"></i>
+                                <span>Customers</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Analytics</div>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Performance</span>
+                            </a>
+                        </li>
+
+                        <li class="active">
+                            <a href="#">
+                                <i class="fas fa-poll"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">Settings</div>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-cog"></i>
+                                <span>Account</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-question-circle"></i>
+                                <span>Help Center</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
+                    </div>
+                    <div class="user-info">
+                        <div class="name">Sarah Johnson</div>
+                        <div class="role">Marketing Manager</div>
+                    </div>
+                    <button class="user-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Reports</h1>
+                    <div class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span>/</span>
+                        <a href="#">Analytics</a>
+                        <span>/</span>
+                        <a href="#">Reports</a>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Reports Content -->
+            <div class="content-wrapper">
+                <div class="reports-container">
+                    <div class="report-filters">
+                        <h2>Generate Campaign Report</h2>
+                        
+                        <div class="filter-group">
+                            <label>Report Type:</label>
+                            <select class="filter-select" id="reportType">
+                                <option value="summary">Summary Report</option>
+                                <option value="performance">Performance Report</option>
+                                <option value="detailed">Detailed Campaign Report</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Timeframe:</label>
+                            <select class="filter-select" id="timeframeSelect">
+                                <option value="last7">Last 7 Days</option>
+                                <option value="last30" selected>Last 30 Days</option>
+                                <option value="last90">Last 90 Days</option>
+                                <option value="month">This Month</option>
+                                <option value="quarter">This Quarter</option>
+                                <option value="year">This Year</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        
+                        <div class="custom-date-range" id="customDateRange" style="display: none;">
+                            <div class="filter-group">
+                                <label>From:</label>
+                                <input type="date" id="startDate" class="date-input">
+                            </div>
+                            <div class="filter-group">
+                                <label>To:</label>
+                                <input type="date" id="endDate" class="date-input">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Campaign Type:</label>
+                            <select class="filter-select" id="reportCampaignType">
+                                <option value="all">All Types</option>
+                                <option value="email">Email</option>
+                                <option value="social_media">Social Media</option>
+                                <option value="in_app_ad">In-App Ads</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Status:</label>
+                            <select class="filter-select" id="reportStatus">
+                                <option value="all">All Statuses</option>
+                                <option value="active">Active</option>
+                                <option value="completed">Completed</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="draft">Draft</option>
+                            </select>
+                        </div>
+                        
+                        <div class="report-actions">
+                            <button class="btn secondary" id="previewReportBtn">
+                                <i class="fas fa-eye"></i> Preview Report
+                            </button>
+                            <button class="btn primary" id="generatePdfBtn">
+                                <i class="fas fa-file-pdf"></i> Generate PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-preview" id="reportPreview">
+                        <div class="preview-placeholder">
+                            <i class="fas fa-chart-pie"></i>
+                            <p>Configure your report and click "Preview Report" to see results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const elements = {
+                sidebarToggle: document.getElementById('sidebarToggle'),
+                sidebar: document.querySelector('.sidebar'),
+                timeframeSelect: document.getElementById('timeframeSelect'),
+                customDateRange: document.getElementById('customDateRange'),
+                startDate: document.getElementById('startDate'),
+                endDate: document.getElementById('endDate'),
+                reportType: document.getElementById('reportType'),
+                reportCampaignType: document.getElementById('reportCampaignType'),
+                reportStatus: document.getElementById('reportStatus'),
+                previewReportBtn: document.getElementById('previewReportBtn'),
+                generatePdfBtn: document.getElementById('generatePdfBtn'),
+                reportPreview: document.getElementById('reportPreview')
+            };
+
+            // Charts for reports
+            let reportTypeChart = null;
+            let reportPerformanceChart = null;
+            let reportCampaignPerformanceChart = null;
+
+            // Initialize the page
+            initReportsPage();
+
+            function initReportsPage() {
+                // Set default dates for custom range
+                const today = new Date();
+                const lastMonth = new Date();
+                lastMonth.setMonth(lastMonth.getMonth() - 1);
+                
+                elements.endDate.value = today.toISOString().split('T')[0];
+                elements.startDate.value = lastMonth.toISOString().split('T')[0];
+                
+                // Set up event listeners
+                setupEventListeners();
+            }
+
+            function setupEventListeners() {
+                // Sidebar toggle
+                elements.sidebarToggle.addEventListener('click', () => {
+                    elements.sidebar.classList.toggle('collapsed');
+                });
+
+                // Timeframe selector
+                elements.timeframeSelect.addEventListener('change', function() {
+                    elements.customDateRange.style.display = this.value === 'custom' ? 'block' : 'none';
+                });
+
+                // Preview report button
+                elements.previewReportBtn.addEventListener('click', generateReportPreview);
+
+                // Generate PDF button
+                elements.generatePdfBtn.addEventListener('click', generatePdfReport);
+            }
+
+            // Helper function to format dates
+            function formatDate(dateString) {
+                if (!dateString) return '-';
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric'
+                });
+            }
+
+            // Helper function to format numbers
+            function formatNumber(num) {
+                if (num === null || num === undefined) return '-';
+                return new Intl.NumberFormat('en-US').format(num);
+            }
+
+            // Helper function to format currency
+            function formatCurrency(amount) {
+                if (amount === null || amount === undefined) return '-';
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(amount);
+            }
+
+            // Helper function to get campaign type label
+            function getCampaignTypeLabel(type) {
+                switch(type) {
+                    case 'email': return 'Email';
+                    case 'social_media': return 'Social';
+                    case 'in_app_ad': return 'In-App Ad';
+                    default: return type;
+                }
+            }
+
+            // Helper function to get date range based on selection
+            function getDateRange() {
+                const timeframe = elements.timeframeSelect.value;
+                const today = new Date();
+                const startDate = new Date();
+                const endDate = new Date();
+                
+                switch(timeframe) {
+                    case 'last7':
+                        startDate.setDate(today.getDate() - 7);
+                        break;
+                    case 'last30':
+                        startDate.setDate(today.getDate() - 30);
+                        break;
+                    case 'last90':
+                        startDate.setDate(today.getDate() - 90);
+                        break;
+                    case 'month':
+                        startDate.setDate(1);
+                        break;
+                    case 'quarter':
+                        const quarter = Math.floor(today.getMonth() / 3);
+                        startDate.setMonth(quarter * 3);
+                        startDate.setDate(1);
+                        break;
+                    case 'year':
+                        startDate.setMonth(0);
+                        startDate.setDate(1);
+                        break;
+                    case 'custom':
+                        return {
+                            start: elements.startDate.value,
+                            end: elements.endDate.value
+                        };
+                }
+                
+                return {
+                    start: startDate.toISOString().split('T')[0],
+                    end: endDate.toISOString().split('T')[0]
+                };
+            }
+
+            // Function to show error message
+            function showError(message) {
+                elements.reportPreview.innerHTML = `<div class="error-message">${message}</div>`;
+            }
+
+            // Function to fetch campaigns with filters
+            async function fetchCampaignsWithFilters(startDate, endDate, campaignType, status) {
+                try {
+                    // In a real application, this would be an API call
+                    // For this example, we'll simulate with mock data
+                    console.log(`Fetching campaigns with filters: start=${startDate}, end=${endDate}, type=${campaignType}, status=${status}`);
+                    
+                    // Simulate API delay
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    // Return mock data
+                    return generateMockCampaignData();
+                } catch (error) {
+                    console.error('Error fetching campaigns for report:', error);
+                    throw error;
+                }
+            }
+
+            // Function to generate mock campaign data for demo purposes
+            function generateMockCampaignData() {
+                const campaignTypes = ['email', 'social_media', 'in_app_ad'];
+                const statuses = ['active', 'completed', 'scheduled', 'draft'];
+                const campaigns = [];
+                
+                const today = new Date();
+                const startDate = new Date();
+                startDate.setMonth(today.getMonth() - 3);
+                
+                for (let i = 0; i < 25; i++) {
+                    const campaignDate = new Date(startDate.getTime() + Math.random() * (today.getTime() - startDate.getTime()));
+                    const endDate = new Date(campaignDate);
+                    endDate.setDate(campaignDate.getDate() + Math.floor(Math.random() * 30) + 1);
+                    
+                    const type = campaignTypes[Math.floor(Math.random() * campaignTypes.length)];
+                    const status = statuses[Math.floor(Math.random() * statuses.length)];
+                    
+                    let impressions = 0, clicks = 0, revenue = 0;
+                    
+                    if (status !== 'draft') {
+                        impressions = Math.floor(Math.random() * 100000) + 1000;
+                        clicks = Math.floor(impressions * (Math.random() * 0.1 + 0.01));
+                        revenue = Math.floor(clicks * (Math.random() * 10 + 1));
+                    }
+                    
+                    campaigns.push({
+                        campaign_id: `camp_${i + 1000}`,
+                        name: `Campaign ${i + 1}`,
+                        campaign_type: type,
+                        status: status,
+                        start_date: campaignDate.toISOString(),
+                        end_date: endDate.toISOString(),
+                        created_at: campaignDate.toISOString(),
+                        updated_at: endDate.toISOString(),
+                        impressions: impressions,
+                        clicks: clicks,
+                        revenue: revenue,
+                        description: `This is a sample ${type} campaign for demonstration purposes.`,
+                        // Type-specific fields
+                        email_subject: type === 'email' ? `Don't miss our special offer!` : null,
+                        recipient_count: type === 'email' ? Math.floor(Math.random() * 50000) + 1000 : null,
+                        sender_name: type === 'email' ? 'Marketing Team' : null,
+                        social_platform: type === 'social_media' ? ['facebook', 'instagram', 'twitter'][Math.floor(Math.random() * 3)] : null,
+                        post_id: type === 'social_media' ? `post_${Math.floor(Math.random() * 10000)}` : null,
+                        banner_image_url: type === 'in_app_ad' ? 'https://example.com/banners/banner' + (Math.floor(Math.random() * 5) + 1) + '.jpg' : null,
+                        target_url: type !== 'email' ? 'https://example.com/special-offer' : null
+                    });
+                }
+                
+                return campaigns;
+            }
+
+            // Function to generate report preview
+            async function generateReportPreview() {
+                // Show loading state
+                elements.reportPreview.innerHTML = '<div class="loading-spinner"></div><p>Generating report...</p>';
+                
+                try {
+                    const dateRange = getDateRange();
+                    const reportType = elements.reportType.value;
+                    const campaignType = elements.reportCampaignType.value;
+                    const status = elements.reportStatus.value;
+                    
+                    // Fetch data for the report
+                    const campaigns = await fetchCampaignsWithFilters(dateRange.start, dateRange.end, campaignType, status);
+                    
+                    // Generate the report HTML
+                    const reportHtml = generateReportHtml(reportType, campaigns, dateRange);
+                    
+                    // Display the report
+                    elements.reportPreview.innerHTML = reportHtml;
+                    
+                    // Render charts
+                    renderReportCharts(reportType, campaigns);
+                    
+                } catch (error) {
+                    console.error('Error generating report:', error);
+                    showError('Failed to generate report. Please try again.');
+                }
+            }
+
+            // Function to generate report HTML
+            function generateReportHtml(reportType, campaigns, dateRange) {
+                // Calculate report statistics
+                const totalCampaigns = campaigns.length;
+                const emailCampaigns = campaigns.filter(c => c.campaign_type === 'email');
+                const socialCampaigns = campaigns.filter(c => c.campaign_type === 'social_media');
+                const adCampaigns = campaigns.filter(c => c.campaign_type === 'in_app_ad');
+                
+                const totalImpressions = campaigns.reduce((sum, c) => sum + (c.impressions || 0), 0);
+                const totalClicks = campaigns.reduce((sum, c) => sum + (c.clicks || 0), 0);
+                const totalRevenue = campaigns.reduce((sum, c) => sum + (c.revenue || 0), 0);
+                const avgCTR = totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
+                
+                // Format dates for display
+                const formattedStartDate = formatDate(dateRange.start);
+                const formattedEndDate = formatDate(dateRange.end);
+                
+                let reportContent = '';
+                
+                if (reportType === 'summary') {
+                    reportContent = `
+                        <div class="report-content">
+                            <div class="report-header">
+                                <h2>Campaign Summary Report</h2>
+                                <div class="report-meta">${formattedStartDate} - ${formattedEndDate}</div>
+                            </div>
+                            
+                            <div class="report-stats">
+                                <div class="report-stat">
+                                    <div class="value">${totalCampaigns}</div>
+                                    <div class="label">Total Campaigns</div>
+                                </div>
+                                <div class="report-stat">
+                                    <div class="value">${formatNumber(totalImpressions)}</div>
+                                    <div class="label">Impressions</div>
+                                </div>
+                                <div class="report-stat">
+                                    <div class="value">${formatNumber(totalClicks)}</div>
+                                    <div class="label">Clicks</div>
+                                </div>
+                                <div class="report-stat">
+                                    <div class="value">${formatCurrency(totalRevenue)}</div>
+                                    <div class="label">Revenue</div>
+                                </div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3>Campaign Types</h3>
+                                <div class="report-chart">
+                                    <canvas id="reportTypeChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3>Performance Over Time</h3>
+                                <div class="report-chart">
+                                    <canvas id="reportPerformanceChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="report-footer">
+                                Report generated on ${formatDate(new Date().toISOString())}
+                            </div>
+                        </div>
+                    `;
+                } else if (reportType === 'performance') {
+                    reportContent = `
+                        <div class="report-content">
+                            <div class="report-header">
+                                <h2>Campaign Performance Report</h2>
+                                <div class="report-meta">${formattedStartDate} - ${formattedEndDate}</div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3>Key Metrics</h3>
+                                <div class="report-stats">
+                                    <div class="report-stat">
+                                        <div class="value">${avgCTR.toFixed(2)}%</div>
+                                        <div class="label">Avg CTR</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="value">${formatCurrency(totalRevenue)}</div>
+                                        <div class="label">Total Revenue</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="value">${emailCampaigns.length}</div>
+                                        <div class="label">Email Campaigns</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="value">${socialCampaigns.length}</div>
+                                        <div class="label">Social Campaigns</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3>Campaign Performance</h3>
+                                <div class="report-chart">
+                                    <canvas id="reportCampaignPerformanceChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3>Top Performing Campaigns</h3>
+                                <table class="report-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Campaign</th>
+                                            <th>Type</th>
+                                            <th>Impressions</th>
+                                            <th>Clicks</th>
+                                            <th>CTR</th>
+                                            <th>Revenue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${campaigns
+                                            .sort((a, b) => (b.revenue || 0) - (a.revenue || 0))
+                                            .slice(0, 5)
+                                            .map(campaign => `
+                                                <tr>
+                                                    <td>${campaign.name}</td>
+                                                    <td>${getCampaignTypeLabel(campaign.campaign_type)}</td>
+                                                    <td>${formatNumber(campaign.impressions)}</td>
+                                                    <td>${formatNumber(campaign.clicks)}</td>
+                                                    <td>${campaign.impressions ? ((campaign.clicks / campaign.impressions) * 100).toFixed(2) + '%' : '-'}</td>
+                                                    <td>${formatCurrency(campaign.revenue)}</td>
+                                                </tr>
+                                            `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="report-footer">
+                                Report generated on ${formatDate(new Date().toISOString())}
+                            </div>
+                        </div>
+                    `;
+                } else if (reportType === 'detailed') {
+                    reportContent = `
+                        <div class="report-content">
+                            <div class="report-header">
+                                <h2>Detailed Campaign Report</h2>
+                                <div class="report-meta">${formattedStartDate} - ${formattedEndDate}</div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3>Campaign Details</h3>
+                                <table class="report-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Impressions</th>
+                                            <th>Clicks</th>
+                                            <th>Revenue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${campaigns.map(campaign => `
+                                            <tr>
+                                                <td>${campaign.name}</td>
+                                                <td>${getCampaignTypeLabel(campaign.campaign_type)}</td>
+                                                <td><span class="status-badge ${campaign.status}">${campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}</span></td>
+                                                <td>${formatDate(campaign.start_date)}</td>
+                                                <td>${formatDate(campaign.end_date)}</td>
+                                                <td>${formatNumber(campaign.impressions)}</td>
+                                                <td>${formatNumber(campaign.clicks)}</td>
+                                                <td>${formatCurrency(campaign.revenue)}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="report-footer">
+                                Report generated on ${formatDate(new Date().toISOString())}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                return reportContent;
+            }
+
+            // Function to render charts for the report
+            function renderReportCharts(reportType, campaigns) {
+                // Destroy existing charts if they exist
+                if (reportTypeChart) reportTypeChart.destroy();
+                if (reportPerformanceChart) reportPerformanceChart.destroy();
+                if (reportCampaignPerformanceChart) reportCampaignPerformanceChart.destroy();
+                
+                // Group campaigns by type for type chart
+                const emailCount = campaigns.filter(c => c.campaign_type === 'email').length;
+                const socialCount = campaigns.filter(c => c.campaign_type === 'social_media').length;
+                const adCount = campaigns.filter(c => c.campaign_type === 'in_app_ad').length;
+                
+                // Render type distribution chart
+                const typeCtx = document.getElementById('reportTypeChart')?.getContext('2d');
+                if (typeCtx) {
+                    reportTypeChart = new Chart(typeCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Email', 'Social Media', 'In-App Ads'],
+                            datasets: [{
+                                data: [emailCount, socialCount, adCount],
+                                backgroundColor: [
+                                    '#9C27B0',
+                                    '#2196F3',
+                                    '#4CAF50'
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                }
+                            },
+                            cutout: '70%'
+                        }
+                    });
+                }
+                
+                // Group campaigns by month for performance chart
+                const monthlyData = {};
+                campaigns.forEach(campaign => {
+                    const date = new Date(campaign.start_date);
+                    const month = date.toLocaleString('default', { month: 'short' });
+                    const year = date.getFullYear();
+                    const key = `${month} ${year}`;
+                    
+                    if (!monthlyData[key]) {
+                        monthlyData[key] = {
+                            email: 0,
+                            social_media: 0,
+                            in_app_ad: 0,
+                            impressions: 0,
+                            clicks: 0,
+                            revenue: 0
+                        };
+                    }
+                    
+                    monthlyData[key][campaign.campaign_type]++;
+                    monthlyData[key].impressions += campaign.impressions || 0;
+                    monthlyData[key].clicks += campaign.clicks || 0;
+                    monthlyData[key].revenue += campaign.revenue || 0;
+                });
+                
+                const months = Object.keys(monthlyData);
+                const emailData = months.map(m => monthlyData[m].email || 0);
+                const socialData = months.map(m => monthlyData[m].social_media || 0);
+                const adData = months.map(m => monthlyData[m].in_app_ad || 0);
+                const impressionsData = months.map(m => monthlyData[m].impressions || 0);
+                const clicksData = months.map(m => monthlyData[m].clicks || 0);
+                
+                // Render performance over time chart
+                const performanceCtx = document.getElementById('reportPerformanceChart')?.getContext('2d');
+                if (performanceCtx) {
+                    reportPerformanceChart = new Chart(performanceCtx, {
+                        type: 'line',
+                        data: {
+                            labels: months,
+                            datasets: [
+                                {
+                                    label: 'Email Campaigns',
+                                    data: emailData,
+                                    borderColor: '#9C27B0',
+                                    backgroundColor: 'rgba(156, 39, 176, 0.1)',
+                                    tension: 0.3,
+                                    fill: true
+                                },
+                                {
+                                    label: 'Social Campaigns',
+                                    data: socialData,
+                                    borderColor: '#2196F3',
+                                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                                    tension: 0.3,
+                                    fill: true
+                                },
+                                {
+                                    label: 'In-App Ads',
+                                    data: adData,
+                                    borderColor: '#4CAF50',
+                                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                                    tension: 0.3,
+                                    fill: true
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Render campaign performance chart (for performance report)
+                const campaignPerformanceCtx = document.getElementById('reportCampaignPerformanceChart')?.getContext('2d');
+                if (campaignPerformanceCtx) {
+                    reportCampaignPerformanceChart = new Chart(campaignPerformanceCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: months,
+                            datasets: [
+                                {
+                                    label: 'Impressions',
+                                    data: impressionsData,
+                                    backgroundColor: 'rgba(255, 152, 0, 0.7)',
+                                    borderColor: 'rgba(255, 152, 0, 1)',
+                                    borderWidth: 1,
+                                    yAxisID: 'y'
+                                },
+                                {
+                                    label: 'Clicks',
+                                    data: clicksData,
+                                    backgroundColor: 'rgba(33, 150, 243, 0.7)',
+                                    borderColor: 'rgba(33, 150, 243, 1)',
+                                    borderWidth: 1,
+                                    yAxisID: 'y'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Function to generate PDF report
+            async function generatePdfReport() {
+                // First generate the preview if not already done
+                if (!document.querySelector('.report-content')) {
+                    await generateReportPreview();
+                }
+                
+                const reportType = elements.reportType.value;
+                const dateRange = getDateRange();
+                const formattedStartDate = formatDate(dateRange.start);
+                const formattedEndDate = formatDate(dateRange.end);
+                
+                // Initialize PDF
+                const doc = new jsPDF();
+                
+                // Add title and metadata
+                doc.setFontSize(18);
+                doc.text(`Campaign ${reportType.charAt(0).toUpperCase() + reportType.slice(1)} Report`, 105, 15, { align: 'center' });
+                doc.setFontSize(10);
+                doc.text(`Date Range: ${formattedStartDate} - ${formattedEndDate}`, 105, 22, { align: 'center' });
+                doc.text(`Generated on: ${formatDate(new Date().toISOString())}`, 105, 27, { align: 'center' });
+                
+                // Add a line separator
+                doc.setDrawColor(200);
+                doc.line(20, 32, 190, 32);
+                
+                let yPosition = 40;
+                
+                // Get the report data
+                const campaigns = await fetchCampaignsWithFilters(
+                    dateRange.start, 
+                    dateRange.end, 
+                    elements.reportCampaignType.value, 
+                    elements.reportStatus.value
+                );
+                
+                // Calculate stats
+                const totalCampaigns = campaigns.length;
+                const totalImpressions = campaigns.reduce((sum, c) => sum + (c.impressions || 0), 0);
+                const totalClicks = campaigns.reduce((sum, c) => sum + (c.clicks || 0), 0);
+                const totalRevenue = campaigns.reduce((sum, c) => sum + (c.revenue || 0), 0);
+                const avgCTR = totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
+                
+                // Add summary stats
+                doc.setFontSize(14);
+                doc.text('Summary Statistics', 20, yPosition);
+                yPosition += 10;
+                
+                doc.setFontSize(10);
+                doc.text(`Total Campaigns: ${totalCampaigns}`, 20, yPosition);
+                doc.text(`Total Impressions: ${formatNumber(totalImpressions)}`, 70, yPosition);
+                doc.text(`Total Clicks: ${formatNumber(totalClicks)}`, 120, yPosition);
+                doc.text(`Total Revenue: ${formatCurrency(totalRevenue)}`, 170, yPosition);
+                yPosition += 10;
+                
+                doc.text(`Average CTR: ${avgCTR.toFixed(2)}%`, 20, yPosition);
+                yPosition += 15;
+                
+                // Add campaign table
+                doc.setFontSize(14);
+                doc.text('Campaign Details', 20, yPosition);
+                yPosition += 10;
+                
+                // Prepare table data
+                const tableData = campaigns.map(campaign => [
+                    campaign.name,
+                    getCampaignTypeLabel(campaign.campaign_type),
+                    campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1),
+                    formatDate(campaign.start_date),
+                    formatDate(campaign.end_date),
+                    formatNumber(campaign.impressions),
+                    formatNumber(campaign.clicks),
+                    formatCurrency(campaign.revenue)
+                ]);
+                
+                // Add the table
+                doc.autoTable({
+                    startY: yPosition,
+                    head: [['Name', 'Type', 'Status', 'Start Date', 'End Date', 'Impressions', 'Clicks', 'Revenue']],
+                    body: tableData,
+                    margin: { top: 20 },
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 2,
+                        overflow: 'linebreak'
+                    },
+                    headStyles: {
+                        fillColor: [41, 128, 185],
+                        textColor: 255,
+                        fontSize: 9
+                    },
+                    alternateRowStyles: {
+                        fillColor: [245, 245, 245]
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 40 },
+                        1: { cellWidth: 20 },
+                        2: { cellWidth: 20 },
+                        3: { cellWidth: 25 },
+                        4: { cellWidth: 25 },
+                        5: { cellWidth: 25 },
+                        6: { cellWidth: 20 },
+                        7: { cellWidth: 25 }
+                    }
+                });
+                
+                // Add page numbers
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.text(`Page ${i} of ${pageCount}`, 190, 285, { align: 'right' });
+                }
+                
+                // Save the PDF
+                doc.save(`Campaign_${reportType}_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+            }
+        });
+    </script>
+</body>
+</html>

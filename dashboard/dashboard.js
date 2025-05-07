@@ -1,68 +1,64 @@
-document.addEventListener('DOMContentLoaded', function () {
-    async function fetchCampaignData() {
-        try {
-            const response = await fetch('http://localhost:8000/api/campaigns');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
+document.getElementById('sendEmailCampaign').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const sendBtn = e.target.closest('button');
+    const loadingSpan = sendBtn.querySelector('.btn-loading');
+    const btnText = sendBtn.querySelector('.btn-text');
 
-            // Fix: Extract the actual campaign array
-            if (!Array.isArray(data) || !Array.isArray(data[0])) {
-                throw new Error('Unexpected API response structure');
-            }
+    try {
+        // Show loading state
+        btnText.style.display = 'none';
+        loadingSpan.style.display = 'inline-block';
 
-            return data[0]; // Extract campaigns array
-        } catch (error) {
-            console.error('Error fetching campaign data:', error);
-            return [];
-        }
-    }
+        // Collect review data
+        const emailData = {
+            campaignName: document.getElementById('reviewCampaignName').textContent,
+            description: document.getElementById('reviewDescription').textContent,
+            subject: document.getElementById('reviewSubject').textContent,
+            audience: document.getElementById('reviewAudience').textContent,
+            recipients: document.getElementById('reviewRecipients').textContent.split(',').map(email => email.trim()),
+            senderName: document.getElementById('reviewSender').textContent,
+            status: document.getElementById('reviewStatus').textContent,
+            schedule: document.getElementById('reviewSchedule').textContent
+        };
 
-    async function init() {
-        const campaigns = await fetchCampaignData();
-        const list = document.getElementById('campaign-list');
+        // Initialize EmailJS with your public key
+        emailjs.init('cy9YL054A1rcf2BH4');
 
-        // Clear existing items
-        list.innerHTML = '';
+        // Send to all recipients
+        const sendPromises = emailData.recipients.map(async (email) => {
+            const templateParams = {
+                receiver_email: email,
+                from_name: emailData.senderName,
+                subject: emailData.subject,
+                dynamic_content: document.getElementById('emailPreviewContent').innerHTML,
+                campaign_name: emailData.campaignName
+            };
 
-        // Populate the list dynamically
-        campaigns.forEach(campaign => {
-            const li = document.createElement('li');
-            li.classList.add('campaign-item');
-
-            li.innerHTML = `
-                <div class="campaign-info">
-                    <div class="campaign-name">${campaign.name}</div>
-                    <div class="campaign-meta">
-                        <span class="campaign-type ${campaign.campaign_type.toLowerCase()}">
-                            <i class="fas fa-share-alt"></i> ${campaign.campaign_type}
-                        </span>
-                        <span class="campaign-date">${new Date(campaign.start_date).toLocaleDateString()}</span>
-                    </div>
-                </div>
-                <div class="campaign-stats">
-                    <div class="stat">
-                        <div class="value">${campaign.impressions.toLocaleString()}</div>
-                        <div class="label">Impressions</div>
-                    </div>
-                    <div class="stat">
-                        <div class="value">${campaign.clicks.toLocaleString()}</div>
-                        <div class="label">Clicks</div>
-                    </div>
-                    <div class="stat">
-                        <div class="value">$${campaign.revenue.toLocaleString()}</div>
-                        <div class="label">Revenue</div>
-                    </div>
-                </div>
-                <button class="campaign-action">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
-            `;
-
-            list.appendChild(li);
+            return emailjs.send(
+                'service_6uu4fwd',
+                'template_ee6393m',
+                templateParams
+            );
         });
-    }
 
-    init();
+        const results = await Promise.allSettled(sendPromises);
+        
+        // Handle results
+        const failedEmails = results.filter((result, index) => 
+            result.status === 'rejected'
+        ).map((_, index) => emailData.recipients[index]);
+
+        if (failedEmails.length > 0) {
+            throw new Error(`Failed to send to: ${failedEmails.join(', ')}`);
+        }
+
+        alert('Campaign sent successfully!');
+    } catch (error) {
+        console.error('Error sending campaign:', error);
+        alert(`Error: ${error.message}`);
+    } finally {
+        // Reset button state
+        btnText.style.display = 'inline-block';
+        loadingSpan.style.display = 'none';
+    }
 });

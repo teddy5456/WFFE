@@ -4,47 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campaigns | WFFE Connect</title>
+    <link rel="stylesheet" href="/dashboard/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Epilogue:wght@700;800&display=swap" rel="stylesheet">
-    <style>
-        /* Additional styles for new campaign types */
-        .campaign-type.email { background-color: #9C27B0; }
-        .campaign-type.social_media { background-color: #2196F3; }
-        .campaign-type.in_app_ad { background-color: #4CAF50; }
-        .campaign-type.paid { background-color: #FF9800; }
-        
-        /* Status badges */
-        .status-badge.active { background-color: #4CAF50; }
-        .status-badge.completed { background-color: #607D8B; }
-        .status-badge.draft { background-color: #9E9E9E; }
-        .status-badge.scheduled { background-color: #FFC107; color: #000; }
-        
-        /* Loading states */
-        .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid #3498db;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script src="/dashboard/dashboard.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "cy9YL054A1rcf2BH4",
+      });
+   })();
+</script>
 </head>
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo">
-                    <i class="fas fa-couch"></i>
+                <div class="logo" >
+                    <a href="/products/product-landing.html"><i class="fas fa-couch"></i></a>
                     <span>WFFE Connect</span>
                 </div>
                 <button class="sidebar-toggle" id="sidebarToggle">
@@ -94,7 +75,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="/dashboard/reports.html">
                                 <i class="fas fa-poll"></i>
                                 <span>Reports</span>
                             </a>
@@ -450,8 +431,9 @@
                     <div class="form-step active" data-step="1">
                         <h4>Campaign Details</h4>
                         <div class="form-group">
-                            <label for="emailCampaignName">Campaign Name</label>
-                            <input type="text" id="emailCampaignName" placeholder="e.g. Summer Sale 2023">
+                            <label for="emailCampaignName" class="required">Campaign Name</label>
+                            <input type="text" id="emailCampaignName" placeholder="e.g. Summer Sale 2023" required>
+                            <div class="error-message">Please enter a campaign name</div>
                         </div>
                         
                         <div class="form-group">
@@ -460,63 +442,76 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="emailSubject">Email Subject</label>
-                            <input type="text" id="emailSubject" placeholder="e.g. Don't miss our summer sale!">
+                            <label for="emailSubject" class="required">Email Subject</label>
+                            <input type="text" id="emailSubject" placeholder="e.g. Don't miss our summer sale!" required>
+                            <div class="error-message">Please enter an email subject</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="emailAudience">Target Audience</label>
-                            <select id="emailAudience">
+                            <label for="emailSenderName" class="required">Sender Name</label>
+                            <input type="text" id="emailSenderName" placeholder="e.g. Marketing Team" required>
+                            <div class="error-message">Please enter a sender name</div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn secondary cancel-btn">Cancel</button>
+                            <button class="btn primary next-btn" data-next="2">Next: Audience</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" data-step="2">
+                        <h4>Audience Selection</h4>
+                        
+                        <div class="form-group">
+                            <label for="emailAudience" class="required">Target Audience</label>
+                            <select id="emailAudience" required>
                                 <option value="">Select audience</option>
                                 <option value="all">All Customers</option>
                                 <option value="recent">Recent Purchasers</option>
                                 <option value="inactive">Inactive Customers</option>
                                 <option value="custom">Custom Segment</option>
                             </select>
+                            <div class="error-message">Please select an audience</div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="emailRecipientCount">Recipient Count (approx.)</label>
-                            <input type="number" id="emailRecipientCount" placeholder="Estimated number of recipients">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="emailSenderName">Sender Name</label>
-                            <input type="text" id="emailSenderName" placeholder="e.g. Marketing Team">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="emailStatus">Status</label>
-                            <select id="emailStatus">
-                                <option value="draft">Draft</option>
-                                <option value="scheduled">Scheduled</option>
-                                <option value="active">Active</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="emailSchedule">Schedule</label>
-                            <select id="emailSchedule">
-                                <option value="now">Send immediately</option>
-                                <option value="scheduled">Schedule for later</option>
-                                <option value="draft">Save as draft</option>
-                            </select>
-                            
-                            <div class="schedule-datetime" id="scheduleDateTime" style="display: none;">
-                                <input type="datetime-local" id="emailSendTime">
+
+                        <div class="form-group" id="customRecipientsGroup" style="display: none;">
+                            <label class="required">Select Recipients</label>
+                            <div class="recipient-selection">
+                                <div class="recipient-search">
+                                    <input type="text" id="recipientSearch" placeholder="Search recipients...">
+                                    <button type="button" id="selectAllBtn">Select All</button>
+                                    <button type="button" id="deselectAllBtn">Deselect All</button>
+                                </div>
+                                <div class="recipients-list-container">
+                                    <div class="recipients-list" id="recipientsList">
+                                        <!-- Recipients will be loaded here -->
+                                        <div class="loading-spinner"></div>
+                                        <p>Loading recipients...</p>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="recipient-count">
+                                <span id="selectedRecipientCount">0</span> recipients selected
+                                <span id="invalidEmailsCount" style="display: none;"> (<span>0</span> invalid emails)</span>
+                            </div>
+                            <div class="error-message">Please select at least one recipient</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailRecipientCount">Estimated Recipient Count</label>
+                            <input type="number" id="emailRecipientCount" placeholder="Estimated number of recipients" readonly>
                         </div>
                         
                         <div class="form-actions">
-                            <button class="btn secondary cancel-btn">Cancel</button>
-                            <button class="btn primary next-btn" data-next="2">Next: Design Email</button>
+                            <button class="btn secondary back-btn" data-back="1">Back</button>
+                            <button class="btn primary next-btn" data-next="3">Next: Design Email</button>
                         </div>
                     </div>
                     
-                    <div class="form-step" data-step="2">
+                    <div class="form-step" data-step="3">
                         <h4>Email Design</h4>
                         <div class="form-group">
-                            <label>Email Template</label>
+                            <label class="required">Email Template</label>
                             <div class="template-selector">
                                 <div class="template-option active">
                                     <div class="template-preview">
@@ -539,11 +534,13 @@
                                     <div class="template-name">Promotional</div>
                                 </div>
                             </div>
+                            <div class="error-message">Please select a template</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="emailContent">Email Content</label>
-                            <textarea id="emailContent" rows="6" placeholder="Write your email content here..."></textarea>
+                            <label class="required">Email Content</label>
+                            <div id="emailEditor" style="height: 300px"></div>
+                            <div class="error-message">Please enter email content</div>
                         </div>
                         
                         <div class="form-group">
@@ -552,12 +549,47 @@
                         </div>
                         
                         <div class="form-actions">
-                            <button class="btn secondary back-btn" data-back="1">Back</button>
-                            <button class="btn primary next-btn" data-next="3">Next: Review & Send</button>
+                            <button class="btn secondary back-btn" data-back="2">Back</button>
+                            <button class="btn primary next-btn" data-next="4">Next: Schedule</button>
                         </div>
                     </div>
                     
-                    <div class="form-step" data-step="3">
+                    <div class="form-step" data-step="4">
+                        <h4>Schedule & Status</h4>
+                        
+                        <div class="form-group">
+                            <label for="emailStatus" class="required">Status</label>
+                            <select id="emailStatus" required>
+                                <option value="draft">Draft</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="active">Active</option>
+                            </select>
+                            <div class="error-message">Please select a status</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailSchedule" class="required">Schedule</label>
+                            <select id="emailSchedule" required>
+                                <option value="now">Send immediately</option>
+                                <option value="scheduled">Schedule for later</option>
+                                <option value="draft">Save as draft</option>
+                            </select>
+                            <div class="error-message">Please select a schedule option</div>
+                            
+                            <div class="form-group schedule-datetime" id="scheduleDateTime" style="display: none;">
+                                <label for="emailSendTime" class="required">Send Date & Time</label>
+                                <input type="datetime-local" id="emailSendTime" required>
+                                <div class="error-message">Please select a date and time</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn secondary back-btn" data-back="3">Back</button>
+                            <button onclick="sendCampaignEmails()" class="btn primary next-btn" data-next="5">Next: Review</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" data-step="5">
                         <h4>Review & Send</h4>
                         <div class="review-section">
                             <div class="review-item">
@@ -578,7 +610,7 @@
                             </div>
                             <div class="review-item">
                                 <label>Recipients:</label>
-                                <span id="reviewRecipients">-</span>
+                                <div class="recipients-preview" id="reviewRecipients"></div>
                             </div>
                             <div class="review-item">
                                 <label>Sender:</label>
@@ -601,290 +633,32 @@
                                     <div class="email-subject" id="previewSubject">Your Email Subject Here</div>
                                     <div class="email-sender">From: <span id="previewSender">WFFE Connect</span> &lt;hello@wffeconnect.com&gt;</div>
                                 </div>
-                                <div class="email-preview-body">
+                                <div class="email-preview-body" id="emailPreviewContent">
                                     <img src="../../../assets/images/email-template-preview.jpg" alt="Email Preview">
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-actions">
-                            <button class="btn secondary back-btn" data-back="2">Back</button>
-                            <button class="btn primary send-btn" id="sendEmailCampaign">Create Campaign</button>
+                            <button class="btn secondary back-btn" data-back="4">Back</button>
+                            <button  class="btn primary send-btn" id="sendEmailCampaign">
+                                <span class="btn-text">Send Campaign</span>
+                                <span class="btn-loading" style="display: none;">
+                                    <i class="fas fa-spinner fa-spin"></i> Sending...
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Social Campaign Form (hidden by default) -->
                 <div class="campaign-form" id="socialCampaignForm" style="display: none;">
-                    <div class="form-step active" data-step="1">
-                        <h4>Social Campaign Setup</h4>
-                        <div class="form-group">
-                            <label for="socialCampaignName">Campaign Name</label>
-                            <input type="text" id="socialCampaignName" placeholder="e.g. Summer Social Blitz">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="socialDescription">Description</label>
-                            <textarea id="socialDescription" rows="3" placeholder="Brief description of the campaign"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Platform</label>
-                            <select id="socialPlatform">
-                                <option value="instagram">Instagram</option>
-                                <option value="facebook">Facebook</option>
-                                <option value="twitter">Twitter</option>
-                                <option value="linkedin">LinkedIn</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="socialStatus">Status</label>
-                            <select id="socialStatus">
-                                <option value="draft">Draft</option>
-                                <option value="scheduled">Scheduled</option>
-                                <option value="active">Active</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="socialDiscountAmount">Discount Amount (optional)</label>
-                            <div class="discount-input">
-                                <input type="number" id="socialDiscountAmount" placeholder="e.g. 15">
-                                <select id="socialDiscountType">
-                                    <option value="percentage">%</option>
-                                    <option value="fixed">$</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="socialAdSpend">Ad Spend (optional)</label>
-                            <input type="number" id="socialAdSpend" placeholder="Budget for this campaign">
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button class="btn secondary cancel-btn">Cancel</button>
-                            <button class="btn primary next-btn" data-next="2">Next: Content</button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-step" data-step="2">
-                        <h4>Social Content</h4>
-                        <div class="form-group">
-                            <label for="socialPostText">Post Text</label>
-                            <textarea id="socialPostText" rows="4" placeholder="Write your post content here..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Media</label>
-                            <div class="media-upload">
-                                <div class="upload-area">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <p>Drag & drop images or click to browse</p>
-                                    <input type="file" id="socialMediaUpload" multiple accept="image/*">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="socialPostId">Post ID (optional)</label>
-                            <input type="text" id="socialPostId" placeholder="Existing post ID if applicable">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="socialTargetUrl">Target URL (optional)</label>
-                            <input type="url" id="socialTargetUrl" placeholder="Where should the post link to?">
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button class="btn secondary back-btn" data-back="1">Back</button>
-                            <button class="btn primary next-btn" data-next="3">Next: Schedule</button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-step" data-step="3">
-                        <h4>Schedule & Publish</h4>
-                        <div class="form-group">
-                            <label for="socialStartDate">Start Date</label>
-                            <input type="datetime-local" id="socialStartDate">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="socialEndDate">End Date</label>
-                            <input type="datetime-local" id="socialEndDate">
-                        </div>
-                        
-                        <div class="preview-section">
-                            <h5>Post Preview</h5>
-                            <div class="social-preview">
-                                <div class="social-preview-header">
-                                    <div class="social-avatar">
-                                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Profile">
-                                    </div>
-                                    <div class="social-info">
-                                        <div class="social-name">WFFE Connect</div>
-                                        <div class="social-time">Just now</div>
-                                    </div>
-                                </div>
-                                <div class="social-preview-content">
-                                    <div class="social-text" id="previewSocialText">
-                                        Your post content will appear here...
-                                    </div>
-                                    <div class="social-media">
-                                        <img src="../../../assets/images/social-preview.jpg" alt="Post Media">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="review-section">
-                            <div class="review-item">
-                                <label>Campaign Name:</label>
-                                <span id="reviewSocialCampaignName">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>Platform:</label>
-                                <span id="reviewSocialPlatform">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>Status:</label>
-                                <span id="reviewSocialStatus">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>Start Date:</label>
-                                <span id="reviewSocialStartDate">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>End Date:</label>
-                                <span id="reviewSocialEndDate">-</span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button class="btn secondary back-btn" data-back="2">Back</button>
-                            <button class="btn primary publish-btn" id="publishSocialCampaign">Create Campaign</button>
-                        </div>
-                    </div>
+                    <!-- Social campaign form content -->
                 </div>
                 
                 <!-- In-App Ad Campaign Form (hidden by default) -->
                 <div class="campaign-form" id="inAppAdCampaignForm" style="display: none;">
-                    <div class="form-step active" data-step="1">
-                        <h4>Ad Campaign Setup</h4>
-                        <div class="form-group">
-                            <label for="adCampaignName">Campaign Name</label>
-                            <input type="text" id="adCampaignName" placeholder="e.g. Summer Sale Banner">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adDescription">Description</label>
-                            <textarea id="adDescription" rows="3" placeholder="Brief description of the campaign"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adStatus">Status</label>
-                            <select id="adStatus">
-                                <option value="draft">Draft</option>
-                                <option value="scheduled">Scheduled</option>
-                                <option value="active">Active</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adDiscountAmount">Discount Amount</label>
-                            <div class="discount-input">
-                                <input type="number" id="adDiscountAmount" placeholder="e.g. 20">
-                                <select id="adDiscountType">
-                                    <option value="percentage">%</option>
-                                    <option value="fixed">$</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adBannerImageUrl">Banner Image URL</label>
-                            <input type="url" id="adBannerImageUrl" placeholder="https://example.com/banner.jpg">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adTargetUrl">Target URL</label>
-                            <input type="url" id="adTargetUrl" placeholder="Where should the ad link to?">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adLocations">Locations (comma separated)</label>
-                            <input type="text" id="adLocations" placeholder="e.g. homepage_banner,product_page">
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button class="btn secondary cancel-btn">Cancel</button>
-                            <button class="btn primary next-btn" data-next="2">Next: Schedule</button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-step" data-step="2">
-                        <h4>Schedule & Budget</h4>
-                        <div class="form-group">
-                            <label for="adStartDate">Start Date</label>
-                            <input type="datetime-local" id="adStartDate">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adEndDate">End Date</label>
-                            <input type="datetime-local" id="adEndDate">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adAdSpend">Ad Spend (optional)</label>
-                            <input type="number" id="adAdSpend" placeholder="Budget for this campaign">
-                        </div>
-                        
-                        <div class="preview-section">
-                            <h5>Ad Preview</h5>
-                            <div class="ad-preview">
-                                <div class="ad-preview-image">
-                                    <img id="adPreviewImage" src="../../../assets/images/ad-preview-placeholder.jpg" alt="Ad Preview">
-                                </div>
-                                <div class="ad-preview-text">
-                                    <h4 id="adPreviewTitle">Summer Sale 2023</h4>
-                                    <p id="adPreviewDiscount">20% OFF</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="review-section">
-                            <div class="review-item">
-                                <label>Campaign Name:</label>
-                                <span id="reviewAdCampaignName">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>Status:</label>
-                                <span id="reviewAdStatus">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>Discount:</label>
-                                <span id="reviewAdDiscount">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>Start Date:</label>
-                                <span id="reviewAdStartDate">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>End Date:</label>
-                                <span id="reviewAdEndDate">-</span>
-                            </div>
-                            <div class="review-item">
-                                <label>Locations:</label>
-                                <span id="reviewAdLocations">-</span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button class="btn secondary back-btn" data-back="1">Back</button>
-                            <button class="btn primary publish-btn" id="publishAdCampaign">Create Campaign</button>
-                        </div>
-                    </div>
+                    <!-- In-app ad campaign form content -->
                 </div>
             </div>
         </div>
@@ -902,137 +676,7 @@
             
             <div class="modal-body">
                 <div class="campaign-details-container">
-                    <div class="details-header">
-                        <div class="details-type-badge" id="detailsTypeBadge">
-                            <i class="fas fa-envelope"></i>
-                            <span>Email</span>
-                        </div>
-                        <div class="details-status-badge" id="detailsStatusBadge">Active</div>
-                    </div>
-                    
-                    <div class="details-content">
-                        <div class="details-section">
-                            <h4>Overview</h4>
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <label>Start Date</label>
-                                    <p id="detailsStartDate">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>End Date</label>
-                                    <p id="detailsEndDate">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Created</label>
-                                    <p id="detailsCreatedAt">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Last Updated</label>
-                                    <p id="detailsUpdatedAt">-</p>
-                                </div>
-                                <div class="detail-item full-width">
-                                    <label>Description</label>
-                                    <p id="detailsDescription">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="details-section" id="emailDetailsSection" style="display: none;">
-                            <h4>Email Details</h4>
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <label>Subject</label>
-                                    <p id="detailsEmailSubject">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Recipients</label>
-                                    <p id="detailsRecipientCount">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Sender</label>
-                                    <p id="detailsSenderName">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Template ID</label>
-                                    <p id="detailsTemplateId">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="details-section" id="socialDetailsSection" style="display: none;">
-                            <h4>Social Details</h4>
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <label>Platform</label>
-                                    <p id="detailsSocialPlatform">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Post ID</label>
-                                    <p id="detailsPostId">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Ad Spend</label>
-                                    <p id="detailsAdSpend">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Discount</label>
-                                    <p id="detailsSocialDiscount">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="details-section" id="adDetailsSection" style="display: none;">
-                            <h4>Ad Details</h4>
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <label>Banner Image</label>
-                                    <p id="detailsBannerImageUrl">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Target URL</label>
-                                    <p id="detailsTargetUrl">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Locations</label>
-                                    <p id="detailsLocations">-</p>
-                                </div>
-                                <div class="detail-item">
-                                    <label>Discount</label>
-                                    <p id="detailsAdDiscount">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="details-section">
-                            <h4>Performance</h4>
-                            <div class="performance-stats">
-                                <div class="stat-card">
-                                    <div class="stat-value" id="detailsImpressions">0</div>
-                                    <div class="stat-label">Impressions</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-value" id="detailsClicks">0</div>
-                                    <div class="stat-label">Clicks</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-value" id="detailsConversions">0</div>
-                                    <div class="stat-label">Conversions</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-value" id="detailsRevenue">$0</div>
-                                    <div class="stat-label">Revenue</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-value" id="detailsCTR">0%</div>
-                                    <div class="stat-label">CTR</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-value" id="detailsConversionRate">0%</div>
-                                    <div class="stat-label">Conversion Rate</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Campaign details content -->
                 </div>
             </div>
             
@@ -1050,188 +694,996 @@
         </div>
     </div>
 
-    <!-- Chart.js -->
+    <!-- Script Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const elements = {
-                newCampaignBtn: document.getElementById('newCampaignBtn'),
-                newCampaignModal: document.getElementById('newCampaignModal'),
-                closeModal: document.getElementById('closeModal'),
-                campaignTypeOptions: document.querySelectorAll('.type-option'),
-                emailCampaignForm: document.getElementById('emailCampaignForm'),
-                socialCampaignForm: document.getElementById('socialCampaignForm'),
-                inAppAdCampaignForm: document.getElementById('inAppAdCampaignForm'),
-                viewBtns: document.querySelectorAll('.view-btn'),
-                gridView: document.getElementById('gridView'),
-                tableView: document.getElementById('tableView'),
-                analyticsView: document.getElementById('analyticsView'),
-                tabBtns: document.querySelectorAll('.tab-btn'),
-                campaignGrid: document.getElementById('campaignGrid'),
-                campaignTableBody: document.getElementById('campaignTableBody'),
-                emailSchedule: document.getElementById('emailSchedule'),
-                scheduleDateTime: document.getElementById('scheduleDateTime'),
-                socialSchedule: document.getElementById('socialSchedule'),
-                socialScheduleDateTime: document.getElementById('socialScheduleDateTime'),
-                nextBtns: document.querySelectorAll('.next-btn'),
-                backBtns: document.querySelectorAll('.back-btn'),
-                formSteps: document.querySelectorAll('.form-step'),
-                sendEmailCampaign: document.getElementById('sendEmailCampaign'),
-                publishSocialCampaign: document.getElementById('publishSocialCampaign'),
-                publishAdCampaign: document.getElementById('publishAdCampaign'),
-                campaignDetailsModal: document.getElementById('campaignDetailsModal'),
-                closeDetailsModal: document.getElementById('closeDetailsModal'),
-                applyFilters: document.getElementById('applyFilters'),
-                statusFilter: document.getElementById('statusFilter'),
-                campaignCount: document.getElementById('campaignCount'),
-                statsGrid: document.getElementById('statsGrid'),
-                topCampaignsList: document.getElementById('topCampaignsList'),
-                dateFilter: document.getElementById('dateFilter'),
-                
-            };
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+
+    <!-- Main Application Script -->
+     <script src="/dashboard/dashboard.js"></script>
+     
+    <script>document.addEventListener('DOMContentLoaded', function() {
+            // In your init function
+            emailjs.init("cy9YL054A1rcf2BH4", {
+                blockHeadless: true,
+                limitRate: {
+                    id: 'campaign',
+                    throttle: 5000 
+                }
+            });
+        
+        // DOM Elements
+        const elements = {
+            newCampaignBtn: document.getElementById('newCampaignBtn'),
+            newCampaignModal: document.getElementById('newCampaignModal'),
+            closeModal: document.getElementById('closeModal'),
+            campaignTypeOptions: document.querySelectorAll('.type-option'),
+            emailCampaignForm: document.getElementById('emailCampaignForm'),
+            socialCampaignForm: document.getElementById('socialCampaignForm'),
+            inAppAdCampaignForm: document.getElementById('inAppAdCampaignForm'),
+            viewBtns: document.querySelectorAll('.view-btn'),
+            gridView: document.getElementById('gridView'),
+            tableView: document.getElementById('tableView'),
+            analyticsView: document.getElementById('analyticsView'),
+            tabBtns: document.querySelectorAll('.tab-btn'),
+            campaignGrid: document.getElementById('campaignGrid'),
+            campaignTableBody: document.getElementById('campaignTableBody'),
+            emailSchedule: document.getElementById('emailSchedule'),
+            scheduleDateTime: document.getElementById('scheduleDateTime'),
+            emailSendTime: document.getElementById('emailSendTime'),
+            nextBtns: document.querySelectorAll('.next-btn'),
+            backBtns: document.querySelectorAll('.back-btn'),
+            formSteps: document.querySelectorAll('.form-step'),
+            sendEmailCampaign: document.getElementById('sendEmailCampaign'),
+            campaignDetailsModal: document.getElementById('campaignDetailsModal'),
+            closeDetailsModal: document.getElementById('closeDetailsModal'),
+            editCampaignBtn: document.getElementById('editCampaignBtn'),
+            archiveCampaignBtn: document.getElementById('archiveCampaignBtn'),
+            closeDetailsBtn: document.getElementById('closeDetailsBtn'),
+            applyFilters: document.getElementById('applyFilters'),
+            statusFilter: document.getElementById('statusFilter'),
+            campaignCount: document.getElementById('campaignCount'),
+            statsGrid: document.getElementById('statsGrid'),
+            topCampaignsList: document.getElementById('topCampaignsList'),
+            dateFilter: document.getElementById('dateFilter'),
+            analyticsTimeRange: document.getElementById('analyticsTimeRange'),
+            topCampaignsFilter: document.getElementById('topCampaignsFilter'),
+            sortFilter: document.getElementById('sortFilter'),
+            sidebarToggle: document.getElementById('sidebarToggle'),
+            sidebar: document.querySelector('.sidebar'),
+            recipientsList: document.getElementById('recipientsList'),
+            recipientSearch: document.getElementById('recipientSearch'),
+            selectAllBtn: document.getElementById('selectAllBtn'),
+            deselectAllBtn: document.getElementById('deselectAllBtn')
+        };
+    
+        // State variables
+        let currentCampaigns = [];
+        let currentView = 'grid';
+        let currentFilter = 'all';
+        let currentCampaignDetails = null;
+        let performanceChart = null;
+        let typeChart = null;
+        let currentPage = 1;
+        const campaignsPerPage = 8;
+        let quill = null;
+    
+        // API Endpoints
+        const API_BASE_URL = 'http://localhost:8000/api';
+        const API_ENDPOINTS = {
+            CAMPAIGNS: `${API_BASE_URL}/campaigns`,
+            CAMPAIGN_DETAILS: (id) => `${API_BASE_URL}/campaigns/${id}`,
+            RECIPIENTS: `${API_BASE_URL}/marketing`
+        };
+    
+        // Initialize Quill editor
+        function initQuillEditor() {
+            quill = new Quill('#emailEditor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['link', 'image'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['clean']
+                    ]
+                }
+            });
+    
+            // Update email preview when content changes
+            quill.on('text-change', function() {
+                const previewContent = document.getElementById('emailPreviewContent');
+                previewContent.innerHTML = DOMPurify.sanitize(quill.root.innerHTML);
+            });
+        }
+    
+        // Initialize the application
+        function init() {
+            initQuillEditor();
+            setupEventListeners();
+            renderCampaignGrid();
+        }
+    
+        // Setup all event listeners
+        function setupEventListeners() {
+            // New campaign button
+            elements.newCampaignBtn.addEventListener('click', openNewCampaignModal);
+            
+            // Close modal button
+            elements.closeModal.addEventListener('click', closeNewCampaignModal);
+            
+            // Campaign type selection
+            elements.campaignTypeOptions.forEach(option => {
+                option.addEventListener('click', () => selectCampaignType(option));
+            });
+            
+            // View selector
+            elements.viewBtns.forEach(btn => {
+                btn.addEventListener('click', () => switchView(btn.dataset.view));
+            });
+            
+            // Tab selector
+            elements.tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => filterCampaigns(btn.dataset.type));
+            });
+            
+            // Schedule datetime toggle
+            elements.emailSchedule.addEventListener('change', toggleScheduleDateTime);
+            
+            // Form navigation
+            setupFormNavigation();
+            
+            // Form submission
+            elements.sendEmailCampaign.addEventListener('click', submitEmailCampaign);
+            
+            // Campaign details modal
+            elements.closeDetailsModal.addEventListener('click', closeCampaignDetailsModal);
+            elements.closeDetailsBtn.addEventListener('click', closeCampaignDetailsModal);
+            elements.editCampaignBtn.addEventListener('click', editCurrentCampaign);
+            elements.archiveCampaignBtn.addEventListener('click', archiveCurrentCampaign);
+            
+            // Filters
+            elements.applyFilters.addEventListener('click', applyCampaignFilters);
+            
+            // Sidebar toggle
+            elements.sidebarToggle.addEventListener('click', toggleSidebar);
 
             
             
-            // State variables
-            let currentCampaigns = [];
-            let currentView = 'grid';
-            let currentFilter = 'all';
-            let currentCampaignDetails = null;
-            let performanceChart = null;
-            let typeChart = null;
-            
-            // API Functions
-            async function fetchCampaigns() {
-                try {
-                    // Get filter values
-                    const statusFilter = elements.statusFilter.value;
-                    const dateFilter = elements.dateFilter.value;
+            // Recipient selection
+            elements.recipientSearch.addEventListener('input', filterRecipients);
+            elements.selectAllBtn.addEventListener('click', selectAllRecipients);
+            elements.deselectAllBtn.addEventListener('click', deselectAllRecipients);
+
+            document.getElementById('emailAudience').addEventListener('change', function() {
+    const customGroup = document.getElementById('customRecipientsGroup');
+    customGroup.style.display = this.value === 'custom' ? 'block' : 'none';
+    
+    if (this.value === 'custom' && !customGroup.querySelector('.recipient-item')) {
+        loadRecipients();
+    }
+});
+        }
+
+
+    
+        // Form navigation setup
+        function setupFormNavigation() {
+            // Next buttons
+            elements.nextBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const currentStep = btn.closest('.form-step');
+                    const nextStepNum = btn.dataset.next;
                     
-                    // Build query params
-                    const params = new URLSearchParams();
-                    if (statusFilter !== 'all') params.append('status', statusFilter);
-                    
-                    
-                    const response = await fetch('http://localhost:8000/api/campaigns');
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                    // Validate current step before proceeding
+                    if (!validateFormStep(currentStep)) {
+                        return;
                     }
-                    const data = await response.json();
-                    currentCampaigns = data;
-                    return data;
-                } catch (error) {
-                    console.error('Error fetching campaigns:', error);
-                    showError('Failed to load campaigns. Please try again.');
-                    return [];
+                    
+                    // Update review section if we're going to the final step
+                    if (nextStepNum === '5') {
+                        updateReviewSection();
+                    }
+                    
+                    navigateToStep(currentStep, nextStepNum);
+                });
+            });
+            
+            // Back buttons
+            elements.backBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const currentStep = btn.closest('.form-step');
+                    const prevStepNum = btn.dataset.back;
+                    navigateToStep(currentStep, prevStepNum);
+                });
+            });
+        }
+    
+        // Navigate between form steps
+        function navigateToStep(currentStep, targetStepNum) {
+            currentStep.classList.remove('active');
+            document.querySelector(`.form-step[data-step="${targetStepNum}"]`).classList.add('active');
+        }
+    
+        // Validate form step
+        function validateFormStep(step) {
+            let isValid = true;
+            const requiredFields = step.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                const formGroup = field.closest('.form-group');
+                formGroup.classList.remove('error', 'success');
+                
+                // Skip validation for hidden fields
+                if (field.offsetParent === null) return;
+                
+                if (field.type === 'checkbox') {
+                    if (!field.checked) {
+                        formGroup.classList.add('error');
+                        isValid = false;
+                    } else {
+                        formGroup.classList.add('success');
+                    }
+                } else if (field.value.trim() === '') {
+                    formGroup.classList.add('error');
+                    isValid = false;
+                } else {
+                    formGroup.classList.add('success');
+                    
+                    // Additional validation for email fields
+                    if (field.type === 'email' && !isValidEmail(field.value)) {
+                        formGroup.classList.add('error');
+                        isValid = false;
+                    }
+                }
+            });
+
+
+            // In the step 2 validation section:
+if (document.getElementById('emailAudience').value === 'custom') {
+    const validCount = parseInt(document.getElementById('selectedRecipientCount').textContent);
+    if (validCount === 0) {
+        document.getElementById('customRecipientsGroup').classList.add('error');
+        isValid = false;
+    }
+}
+            
+            // Special validation for custom recipients
+            if (step.dataset.step === '2' && document.getElementById('emailAudience').value === 'custom') {
+                const recipientGroup = document.getElementById('customRecipientsGroup');
+                const selectedCount = parseInt(document.getElementById('selectedRecipientCount').textContent);
+                
+                if (selectedCount === 0) {
+                    recipientGroup.classList.add('error');
+                    isValid = false;
+                } else {
+                    recipientGroup.classList.remove('error');
                 }
             }
             
-            async function fetchCampaignDetails(id) {
-                try {
-                    const response = await fetch(`http://localhost:8000/api/campaigns/${id}`);
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return await response.json();
-                } catch (error) {
-                    console.error('Error fetching campaign details:', error);
-                    showError('Failed to load campaign details. Please try again.');
-                    return null;
+            // Special validation for email content
+            if (step.dataset.step === '3') {
+                const content = quill.getText().trim();
+                const contentGroup = document.querySelector('#emailEditor').closest('.form-group');
+                
+                if (content === '') {
+                    contentGroup.classList.add('error');
+                    isValid = false;
+                } else {
+                    contentGroup.classList.remove('error');
                 }
             }
             
-            async function createCampaign(campaignData) {
+            return isValid;
+        }
+    
+        // Check if email is valid
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+    
+        // Open new campaign modal
+        function openNewCampaignModal() {
+            elements.newCampaignModal.style.display = 'flex';
+            currentCampaignDetails = null; // Reset in case we're creating a new campaign
+            
+            // Reset forms
+            document.querySelectorAll('.campaign-form').forEach(form => {
+                form.style.display = 'none';
+                form.reset();
+            });
+            
+            // Reset form steps
+            document.querySelectorAll('.form-step').forEach(step => {
+                if (step.dataset.step === '1') {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+            
+            // Reset type options
+            document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('selected'));
+            
+            // Reset Quill editor
+            if (quill) {
+                quill.setContents([]);
+            }
+        }
+    
+        // Close new campaign modal
+        function closeNewCampaignModal() {
+            elements.newCampaignModal.style.display = 'none';
+            
+            // Reset forms
+            document.querySelectorAll('.campaign-form').forEach(form => {
+                form.style.display = 'none';
+                form.reset();
+            });
+            
+            // Reset form steps
+            document.querySelectorAll('.form-step').forEach(step => {
+                if (step.dataset.step === '1') {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+            
+            // Reset type options
+            document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('selected'));
+        }
+    
+        // Select campaign type
+        function selectCampaignType(option) {
+            const type = option.dataset.type;
+            
+            // Hide all forms
+            document.querySelectorAll('.campaign-form').forEach(form => form.style.display = 'none');
+            
+            // Show the correct form based on type
+            let formId;
+            switch (type) {
+                case 'email':
+                    formId = 'emailCampaignForm';
+                    break;
+                case 'social_media':
+                    formId = 'socialCampaignForm';
+                    break;
+                case 'in_app_ad':
+                    formId = 'inAppAdCampaignForm';
+                    break;
+            }
+            
+            if (formId) {
+                document.getElementById(formId).style.display = 'block';
+            }
+            
+            // Highlight selected option
+            elements.campaignTypeOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            // Load recipients if email campaign
+            if (type === 'email') {
+                const audienceSelect = document.getElementById('emailAudience');
+                if (audienceSelect.value === 'custom') {
+                    loadRecipients();
+                }
+            }
+        }
+    
+        // Switch between views (grid, table, analytics)
+        function switchView(view) {
+            currentView = view;
+            
+            // Update active button
+            elements.viewBtns.forEach(b => b.classList.remove('active'));
+            document.querySelector(`.view-btn[data-view="${view}"]`).classList.add('active');
+            
+            // Show selected view
+            elements.gridView.style.display = 'none';
+            elements.tableView.style.display = 'none';
+            elements.analyticsView.style.display = 'none';
+            
+            if (view === 'grid') {
+                elements.gridView.style.display = 'block';
+                renderCampaignGrid(currentFilter);
+            } else if (view === 'table') {
+                elements.tableView.style.display = 'block';
+                renderCampaignTable(currentFilter);
+            } else if (view === 'analytics') {
+                elements.analyticsView.style.display = 'block';
+                renderAnalyticsView(currentFilter);
+            }
+        }
+    
+        // Filter campaigns by type
+        function filterCampaigns(type) {
+            currentFilter = type;
+            currentPage = 1;
+            
+            // Update active tab
+            elements.tabBtns.forEach(b => b.classList.remove('active'));
+            document.querySelector(`.tab-btn[data-type="${type}"]`).classList.add('active');
+            
+            // Refresh view
+            refreshCampaigns();
+        }
+    
+        // Apply campaign filters
+        function applyCampaignFilters() {
+            currentPage = 1;
+            refreshCampaigns();
+        }
+    
+        // Toggle schedule date time field
+        function toggleScheduleDateTime() {
+            elements.scheduleDateTime.style.display = this.value === 'scheduled' ? 'block' : 'none';
+        }
+    
+        // Load recipients from API
+        async function loadRecipients() {
+            const recipientsList = document.querySelector('.recipients-list');
+            recipientsList.innerHTML = '<div class="loading-spinner"></div><p>Loading recipients...</p>';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/marketing');
+                if (!response.ok) {
+                    throw new Error('Failed to load recipients');
+                }
+                const data = await response.json();
+                
+                recipientsList.innerHTML = '';
+                data.forEach((subscriber, index) => {
+                    const checkbox = document.createElement('div');
+                    checkbox.className = 'recipient-item';
+                    checkbox.innerHTML = `
+                        <input type="checkbox" id="recipient-${index}" value="${subscriber.email}">
+                        <label for="recipient-${index}">
+                            ${subscriber.name || 'Subscriber'} (${subscriber.email})
+                        </label>
+                    `;
+                    checkbox.querySelector('input').addEventListener('change', updateRecipientCount);
+                    recipientsList.appendChild(checkbox);
+                });
+            } catch (error) {
+                console.error('Error loading recipients:', error);
+                recipientsList.innerHTML = '<p class="error">Failed to load recipients. Please try again.</p>';
+            }
+        }
+    
+        // Render recipients list
+        function renderRecipients(recipients) {
+            const recipientsList = document.getElementById('recipientsList');
+            recipientsList.innerHTML = '';
+            
+            if (recipients.length === 0) {
+                recipientsList.innerHTML = '<p>No recipients found</p>';
+                return;
+            }
+            
+            recipients.forEach((recipient, index) => {
+                const recipientItem = document.createElement('div');
+                recipientItem.className = 'recipient-item';
+                
+                const email = recipient.email || recipient;
+                const name = recipient.name || email.split('@')[0];
+                const isValid = isValidEmail(email);
+                
+                recipientItem.innerHTML = `
+                    <input type="checkbox" id="recipient-${index}" value="${email}" 
+                           class="recipient-checkbox" ${isValid ? '' : 'disabled'}>
+                    <label for="recipient-${index}" class="${isValid ? '' : 'invalid-email'}">
+                        ${name} (${email}) ${isValid ? '' : '(invalid)'}
+                    </label>
+                `;
+                
+                recipientsList.appendChild(recipientItem);
+            });
+            
+            // Add event listeners to checkboxes
+            document.querySelectorAll('.recipient-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateRecipientCount);
+            });
+            
+            updateRecipientCount();
+        }
+    
+        // Filter recipients by search term
+        function filterRecipients() {
+            const searchTerm = this.value.toLowerCase();
+            document.querySelectorAll('.recipient-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(searchTerm) ? 'flex' : 'none';
+            });
+        }
+    
+        // Select all recipients
+        function selectAllRecipients() {
+            document.querySelectorAll('.recipient-checkbox:not(:disabled)').forEach(checkbox => {
+                checkbox.checked = true;
+                checkbox.dispatchEvent(new Event('change'));
+            });
+        }
+    
+        // Deselect all recipients
+        function deselectAllRecipients() {
+            document.querySelectorAll('.recipient-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.dispatchEvent(new Event('change'));
+            });
+        }
+    
+        function updateRecipientCount() {
+    const validCheckboxes = document.querySelectorAll('.recipient-checkbox:not([data-invalid]):checked');
+    const invalidCheckboxes = document.querySelectorAll('.recipient-checkbox[data-invalid]:checked');
+    
+    document.getElementById('selectedRecipientCount').textContent = validCheckboxes.length;
+    document.getElementById('emailRecipientCount').value = validCheckboxes.length;
+    
+    // Add actual emails to hidden input for preview
+    const selectedEmails = Array.from(validCheckboxes).map(cb => cb.value);
+    document.getElementById('selectedRecipientsHidden').value = selectedEmails.join(',');
+     
+            const invalidCountSpan = document.querySelector('#invalidEmailsCount span');
+            if (invalidEmails > 0) {
+                invalidCountSpan.textContent = invalidEmails;
+                document.getElementById('invalidEmailsCount').style.display = 'inline';
+            } else {
+                document.getElementById('invalidEmailsCount').style.display = 'none';
+            }
+        }
+    
+        // Update the review section before submission
+        function updateReviewSection() {
+            // Campaign details
+            document.getElementById('reviewCampaignName').textContent = 
+                document.getElementById('emailCampaignName').value || '-';
+            document.getElementById('reviewDescription').textContent = 
+                document.getElementById('emailDescription').value || '-';
+            document.getElementById('reviewSubject').textContent = 
+                document.getElementById('emailSubject').value || '-';
+            document.getElementById('reviewSender').textContent = 
+                document.getElementById('emailSenderName').value || '-';
+            
+ // Recipients information
+ const audienceSelect = document.getElementById('emailAudience');
+    const reviewRecipients = document.getElementById('reviewRecipients');
+    
+    if (audienceSelect.value === 'custom') {
+        const selected = Array.from(document.querySelectorAll('.recipient-checkbox:checked'))
+                            .map(checkbox => checkbox.value);
+        reviewRecipients.innerHTML = selected.map(email => 
+            `<span>${email}</span>`
+        ).join('');
+    } else {
+        reviewRecipients.textContent = 
+            `${document.getElementById('emailRecipientCount').value} recipients (${audienceSelect.options[audienceSelect.selectedIndex].text})`;
+    }
+            
+            // Status and schedule
+            document.getElementById('reviewStatus').textContent = 
+                document.getElementById('emailStatus').options[document.getElementById('emailStatus').selectedIndex].text;
+            
+            const scheduleValue = document.getElementById('emailSchedule').value;
+            let scheduleText = '';
+            if (scheduleValue === 'now') {
+                scheduleText = 'Send immediately';
+            } else if (scheduleValue === 'scheduled') {
+                scheduleText = `Schedule for ${document.getElementById('emailSendTime').value}`;
+            } else {
+                scheduleText = 'Save as draft';
+            }
+            document.getElementById('reviewSchedule').textContent = scheduleText;
+            
+            // Update preview
+            document.getElementById('previewSubject').textContent = 
+                document.getElementById('emailSubject').value || 'Your Email Subject Here';
+            document.getElementById('previewSender').textContent = 
+                document.getElementById('emailSenderName').value || 'WFFE Connect';
+        }
+    
+        // Submit email campaign
+        async function submitEmailCampaign() {
+            // Validate the entire form first
+            const formSteps = document.querySelectorAll('#emailCampaignForm .form-step');
+            for (const step of formSteps) {
+                if (!validateFormStep(step)) {
+                    // Show the first invalid step
+                    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+                    step.classList.add('active');
+                    return;
+                }
+            }
+            
+            const sendBtn = document.getElementById('sendEmailCampaign');
+            const btnText = sendBtn.querySelector('.btn-text');
+            const btnLoading = sendBtn.querySelector('.btn-loading');
+            
+            // Show loading state
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-block';
+            sendBtn.disabled = true;
+            
+            try {
+        const emailParams = {
+            subject: document.getElementById('emailSubject').value,
+            sender_name: document.getElementById('emailSenderName').value,
+            to_email: Array.from(document.querySelectorAll('.recipient-checkbox:checked'))
+                         .map(checkbox => checkbox.value),
+            body: quill.root.innerHTML
+        };
+                    // Add this to your emailParams when images are included
+            const images = Array.from(quill.root.querySelectorAll('img'));
+            emailParams.attachments = await Promise.all(images.map(async (img) => {
+                const response = await fetch(img.src);
+                const blob = await response.blob();
+                return {
+                    filename: `image-${Date.now()}.png`,
+                    content: blob
+                };
+            }));
+
+        // Show loading state
+        const sendBtn = document.getElementById('sendEmailCampaign');
+        sendBtn.disabled = true;
+        document.querySelector('.btn-text').style.display = 'none';
+        document.querySelector('.btn-loading').style.display = 'flex';
+
+
+
+        const response = await emailjs.send(
+    'service_s6dfizl', // Replace with actual service ID
+    'template_hmt1dnw', // Replace with actual template ID
+    emailParams
+);
+
+        if (response.status === 200) {
+            showSuccess(`Emails sent successfully to ${emailParams.to_email.length} recipients!`);
+            closeNewCampaignModal();
+            refreshCampaigns();
+        }
+    } catch (error) {
+        console.error('Email sending failed:', error);
+        showError(`Failed to send emails: ${error.text}`);
+    } finally {
+        sendBtn.disabled = false;
+        document.querySelector('.btn-text').style.display = 'flex';
+        document.querySelector('.btn-loading').style.display = 'none';
+    }
+}
+
+    
+// Update the showCampaignDetails function
+async function showCampaignDetails(id) {
+    // Show loading state
+    elements.campaignDetailsModal.style.display = 'flex';
+    document.querySelector('.campaign-details-container').innerHTML = '<div class="loading-spinner"></div><p>Loading campaign details...</p>';
+    
+    try {
+        const response = await fetch(API_ENDPOINTS.CAMPAIGN_DETAILS(id));
+        if (!response.ok) {
+            throw new Error('Failed to fetch campaign details');
+        }
+        
+        const campaign = await response.json();
+        currentCampaignDetails = campaign;
+        
+        // Create the details HTML
+        const detailsHTML = `
+            <div class="details-header">
+                <h2>${campaign.name}</h2>
+                <div class="details-type-badge ${campaign.campaign_type}">
+                    <i class="${getCampaignTypeIcon(campaign.campaign_type)}"></i>
+                    <span>${getCampaignTypeLabel(campaign.campaign_type)}</span>
+                </div>
+                <div class="details-status-badge ${campaign.status}">
+                    ${campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+                </div>
+            </div>
+            
+            <div class="details-content">
+                <div class="details-section">
+                    <h4>Overview</h4>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Start Date</label>
+                            <p>${formatDate(campaign.start_date)}</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>End Date</label>
+                            <p>${campaign.end_date ? formatDate(campaign.end_date) : 'Ongoing'}</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Created At</label>
+                            <p>${formatDate(campaign.created_at)}</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Last Updated</label>
+                            <p>${formatDate(campaign.updated_at)}</p>
+                        </div>
+                        <div class="detail-item full-width">
+                            <label>Description</label>
+                            <p>${campaign.description || 'No description provided'}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                ${campaign.campaign_type === 'email' ? `
+                <div class="details-section" id="emailDetailsSection">
+                    <h4>Email Details</h4>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Subject</label>
+                            <p>${campaign.email_subject || '-'}</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Sender Name</label>
+                            <p>${campaign.sender_name || '-'}</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Recipient Count</label>
+                            <p>${campaign.recipient_count ? formatNumber(campaign.recipient_count) : '-'}</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Template ID</label>
+                            <p>${campaign.template_id || '-'}</p>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div class="details-section">
+                    <h4>Performance</h4>
+                    <div class="performance-stats">
+                        <div class="stat-card">
+                            <div class="stat-value">${formatNumber(campaign.impressions)}</div>
+                            <div class="stat-label">Impressions</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatNumber(campaign.clicks)}</div>
+                            <div class="stat-label">Clicks</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatNumber(campaign.conversions)}</div>
+                            <div class="stat-label">Conversions</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatCurrency(campaign.revenue)}</div>
+                            <div class="stat-label">Revenue</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatPercentage(campaign.ctr || 0)}</div>
+                            <div class="stat-label">CTR</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatPercentage(campaign.conversion_rate || 0)}</div>
+                            <div class="stat-label">Conversion Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Update the modal content
+        document.querySelector('.campaign-details-container').innerHTML = detailsHTML;
+        
+    } catch (error) {
+        console.error('Error loading campaign details:', error);
+        document.querySelector('.campaign-details-container').innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Failed to load campaign details. Please try again.</p>
+                <button class="btn secondary" onclick="showCampaignDetails(${id})">Retry</button>
+            </div>
+        `;
+    }
+}
+
+// Update the updateCampaignDetailsModal function (if you have one)
+function updateCampaignDetailsModal(campaign) {
+    // This is now handled directly in showCampaignDetails
+}
+
+// Make sure your modal HTML has this structure:
+/*
+<div class="modal-overlay" id="campaignDetailsModal" style="display: none;">
+    <div class="modal modal-lg">
+        <div class="modal-header">
+            <h3 id="detailsCampaignName">Campaign Details</h3>
+            <button class="modal-close" id="closeDetailsModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="campaign-details-container">
+                <!-- Content will be inserted here dynamically -->
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn secondary" id="editCampaignBtn">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn danger" id="archiveCampaignBtn">
+                <i class="fas fa-archive"></i> Archive
+            </button>
+            <button class="btn primary" id="closeDetailsBtn">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+*/    
+        // Update campaign details modal with data
+        function updateCampaignDetailsModal(campaign) {
+            document.getElementById('detailsCampaignName').textContent = campaign.name;
+            
+            // Update type badge
+            const typeBadge = document.getElementById('detailsTypeBadge');
+            typeBadge.innerHTML = `
+                <i class="${getCampaignTypeIcon(campaign.campaign_type)}"></i>
+                <span>${getCampaignTypeLabel(campaign.campaign_type)}</span>
+            `;
+            typeBadge.className = `details-type-badge ${campaign.campaign_type}`;
+            
+            // Update status badge
+            const statusBadge = document.getElementById('detailsStatusBadge');
+            statusBadge.textContent = campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1);
+            statusBadge.className = `details-status-badge ${campaign.status}`;
+            
+            // Update overview
+            document.getElementById('detailsStartDate').textContent = formatDate(campaign.start_date);
+            document.getElementById('detailsEndDate').textContent = formatDate(campaign.end_date);
+            document.getElementById('detailsCreatedAt').textContent = formatDate(campaign.created_at);
+            document.getElementById('detailsUpdatedAt').textContent = formatDate(campaign.updated_at);
+            document.getElementById('detailsDescription').textContent = campaign.description || '-';
+            
+            // Hide all type-specific sections
+            document.getElementById('emailDetailsSection').style.display = 'none';
+            document.getElementById('socialDetailsSection').style.display = 'none';
+            document.getElementById('adDetailsSection').style.display = 'none';
+            
+            // Show type-specific details
+            if (campaign.campaign_type === 'email') {
+                document.getElementById('emailDetailsSection').style.display = 'block';
+                document.getElementById('detailsEmailSubject').textContent = campaign.email_subject || '-';
+                document.getElementById('detailsRecipientCount').textContent = formatNumber(campaign.recipient_count);
+                document.getElementById('detailsSenderName').textContent = campaign.sender_name || '-';
+                document.getElementById('detailsTemplateId').textContent = campaign.template_id || '-';
+            }
+            
+            // Update performance stats
+            document.getElementById('detailsImpressions').textContent = formatNumber(campaign.impressions);
+            document.getElementById('detailsClicks').textContent = formatNumber(campaign.clicks);
+            document.getElementById('detailsConversions').textContent = formatNumber(campaign.conversions);
+            document.getElementById('detailsRevenue').textContent = formatCurrency(campaign.revenue);
+            document.getElementById('detailsCTR').textContent = formatPercentage(campaign.ctr || 0);
+            document.getElementById('detailsConversionRate').textContent = formatPercentage(campaign.conversion_rate || 0);
+        }
+    
+        // Close campaign details modal
+        function closeCampaignDetailsModal() {
+            elements.campaignDetailsModal.style.display = 'none';
+            currentCampaignDetails = null;
+        }
+    
+        // Edit current campaign
+        async function editCurrentCampaign() {
+            if (currentCampaignDetails) {
+                closeCampaignDetailsModal();
+                await editCampaign(currentCampaignDetails.campaign_id);
+            }
+        }
+    
+        // Archive current campaign
+        async function archiveCurrentCampaign() {
+            if (currentCampaignDetails && confirm('Are you sure you want to archive this campaign?')) {
                 try {
-                    const response = await fetch('http://localhost:8000/api/campaigns', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(campaignData)
+                    const response = await fetch(API_ENDPOINTS.CAMPAIGN_DETAILS(currentCampaignDetails.campaign_id), {
+                        method: 'DELETE'
                     });
                     
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error('Failed to archive campaign');
                     }
                     
-                    return await response.json();
+                    showSuccess('Campaign archived successfully!');
+                    closeCampaignDetailsModal();
+                    refreshCampaigns();
                 } catch (error) {
-                    console.error('Error creating campaign:', error);
-                    showError('Failed to create campaign. Please try again.');
-                    return null;
+                    console.error('Error archiving campaign:', error);
+                    showError('Failed to archive campaign. Please try again.');
                 }
             }
-            
-            // Helper Functions
-            function formatDate(dateString) {
-                if (!dateString) return '-';
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
+        }
+    
+        // Edit campaign
+        async function editCampaign(id) {
+            try {
+                const response = await fetch(API_ENDPOINTS.CAMPAIGN_DETAILS(id));
+                if (!response.ok) {
+                    throw new Error('Failed to fetch campaign details');
+                }
+                
+                const campaign = await response.json();
+                currentCampaignDetails = campaign;
+                
+                // Open the modal with the campaign data pre-filled
+                elements.newCampaignModal.style.display = 'flex';
+                
+                // Reset forms
+                document.querySelectorAll('.campaign-form').forEach(form => {
+                    form.style.display = 'none';
                 });
-            }
-            
-            function formatCurrency(amount) {
-                if (amount === null || amount === undefined) return '-';
-                return new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD'
-                }).format(amount);
-            }
-            
-            function formatNumber(num) {
-                if (num === null || num === undefined) return '-';
-                return new Intl.NumberFormat('en-US').format(num);
-            }
-            
-            function formatPercentage(num) {
-                if (num === null || num === undefined) return '-';
-                return `${num.toFixed(2)}%`;
-            }
-            
-            function showError(message) {
-                // In a real app, you'd show this in a nice error toast/notification
-                console.error(message);
-                alert(message);
-            }
-            
-            function showSuccess(message) {
-                // In a real app, you'd show this in a nice success toast/notification
-                console.log(message);
-                alert(message);
-            }
-            
-            function getCampaignTypeIcon(type) {
-                switch(type) {
-                    case 'email': return 'fas fa-envelope';
-                    case 'social_media': return 'fas fa-share-alt';
-                    case 'in_app_ad': return 'fas fa-ad';
-                    default: return 'fas fa-bullhorn';
-                }
-            }
-            
-            function getCampaignTypeLabel(type) {
-                switch(type) {
-                    case 'email': return 'Email';
-                    case 'social_media': return 'Social';
-                    case 'in_app_ad': return 'In-App Ad';
-                    default: return type;
-                }
-            }
-            
-            // Rendering Functions
-            async function renderCampaignGrid(filterType = 'all') {
-                const grid = elements.campaignGrid;
-                grid.innerHTML = '<div class="campaign-card loading"><div class="loading-spinner"></div><p>Loading campaigns...</p></div>';
                 
-                const campaigns = await fetchCampaigns();
-                elements.campaignCount.textContent = campaigns.length;
+                // Show email form
+                elements.emailCampaignForm.style.display = 'block';
                 
+                // Fill in the form fields
+                document.getElementById('emailCampaignName').value = campaign.name;
+                document.getElementById('emailDescription').value = campaign.description || '';
+                document.getElementById('emailSubject').value = campaign.email_subject || '';
+                document.getElementById('emailAudience').value = 'all'; // Default, you'd need to map this
+                document.getElementById('emailRecipientCount').value = campaign.recipient_count || '';
+                document.getElementById('emailSenderName').value = campaign.sender_name || '';
+                document.getElementById('emailStatus').value = campaign.status;
+                document.getElementById('emailTemplateId').value = campaign.template_id || '';
+                
+                // Set schedule based on status
+                if (campaign.status === 'scheduled') {
+                    document.getElementById('emailSchedule').value = 'scheduled';
+                    document.getElementById('emailSendTime').value = campaign.start_date.split('T')[0];
+                    elements.scheduleDateTime.style.display = 'block';
+                } else if (campaign.status === 'active') {
+                    document.getElementById('emailSchedule').value = 'now';
+                } else {
+                    document.getElementById('emailSchedule').value = 'draft';
+                }
+                
+                // Highlight email option
+                document.querySelector('.type-option[data-type="email"]').classList.add('selected');
+                
+                // Set content in Quill editor
+                if (quill && campaign.content) {
+                    quill.root.innerHTML = campaign.content;
+                }
+            } catch (error) {
+                console.error('Error loading campaign for editing:', error);
+                showError('Failed to load campaign for editing. Please try again.');
+            }
+        }
+    
+        // Refresh campaigns based on current view and filters
+        function refreshCampaigns() {
+            if (currentView === 'grid') {
+                renderCampaignGrid(currentFilter);
+            } else if (currentView === 'table') {
+                renderCampaignTable(currentFilter);
+            } else if (currentView === 'analytics') {
+                renderAnalyticsView(currentFilter);
+            }
+        }
+    
+        // Render campaign grid view
+        async function renderCampaignGrid(filterType = 'all') {
+            const grid = elements.campaignGrid;
+            grid.innerHTML = '<div class="campaign-card loading"><div class="loading-spinner"></div><p>Loading campaigns...</p></div>';
+            
+            try {
+                const response = await fetch(API_ENDPOINTS.CAMPAIGNS);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch campaigns');
+                }
+                
+                const campaigns = await response.json();
+                
+                // Filter campaigns based on type
                 const filteredCampaigns = filterType === 'all' 
                     ? campaigns 
                     : campaigns.filter(c => {
@@ -1241,14 +1693,23 @@
                         return true;
                     });
                 
+                // Update campaign count
+                elements.campaignCount.textContent = filteredCampaigns.length;
+                
                 if (filteredCampaigns.length === 0) {
                     grid.innerHTML = '<div class="campaign-card empty"><p>No campaigns found</p></div>';
+                    // Clear pagination
+                    document.querySelectorAll('.pagination').forEach(p => p.innerHTML = '');
                     return;
                 }
                 
+                // Apply pagination
+                const paginatedCampaigns = getPaginatedCampaigns(filteredCampaigns, currentPage, campaignsPerPage);
+                renderPagination(filteredCampaigns, currentPage, campaignsPerPage);
+                
                 grid.innerHTML = '';
                 
-                filteredCampaigns.forEach(campaign => {
+                paginatedCampaigns.forEach(campaign => {
                     const card = document.createElement('div');
                     card.className = `campaign-card ${campaign.status}`;
                     card.dataset.id = campaign.campaign_id;
@@ -1359,13 +1820,41 @@
                         await showCampaignDetails(campaignId);
                     });
                 });
+        
+                // Add event listeners to edit/duplicate buttons
+                document.querySelectorAll('.campaign-card .action-btn.edit, .campaign-card .action-btn.duplicate').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const card = e.target.closest('.campaign-card');
+                        const campaignId = card.dataset.id;
+                        const isEdit = btn.classList.contains('edit');
+                        
+                        if (isEdit) {
+                            await editCampaign(campaignId);
+                        } else {
+                            await duplicateCampaign(campaignId);
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error loading campaigns:', error);
+                grid.innerHTML = '<div class="campaign-card empty"><p>Error loading campaigns</p></div>';
             }
+        }
+    
+        // Render campaign table view
+        async function renderCampaignTable(filterType = 'all') {
+            const tableBody = elements.campaignTableBody;
+            tableBody.innerHTML = '<tr><td colspan="8" class="loading-row"><div class="loading-spinner"></div><p>Loading campaigns...</p></td></tr>';
             
-            async function renderCampaignTable(filterType = 'all') {
-                const tableBody = elements.campaignTableBody;
-                tableBody.innerHTML = '<tr><td colspan="8" class="loading-row"><div class="loading-spinner"></div><p>Loading campaigns...</p></td></tr>';
+            try {
+                const response = await fetch(API_ENDPOINTS.CAMPAIGNS);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch campaigns');
+                }
                 
-                const campaigns = await fetchCampaigns();
+                const campaigns = await response.json();
+                
+                // Filter campaigns based on type
                 const filteredCampaigns = filterType === 'all' 
                     ? campaigns 
                     : campaigns.filter(c => {
@@ -1377,12 +1866,18 @@
                 
                 if (filteredCampaigns.length === 0) {
                     tableBody.innerHTML = '<tr><td colspan="8" class="empty-row"><p>No campaigns found</p></td></tr>';
+                    // Clear pagination
+                    document.querySelectorAll('.pagination').forEach(p => p.innerHTML = '');
                     return;
                 }
                 
+                // Apply pagination
+                const paginatedCampaigns = getPaginatedCampaigns(filteredCampaigns, currentPage, campaignsPerPage);
+                renderPagination(filteredCampaigns, currentPage, campaignsPerPage);
+                
                 tableBody.innerHTML = '';
                 
-                filteredCampaigns.forEach(campaign => {
+                paginatedCampaigns.forEach(campaign => {
                     const row = document.createElement('tr');
                     row.dataset.id = campaign.campaign_id;
                     
@@ -1439,20 +1934,56 @@
                         await showCampaignDetails(campaignId);
                     });
                 });
+        
+                // Add event listeners to edit/duplicate buttons
+                document.querySelectorAll('.table-actions .action-btn.edit, .table-actions .action-btn.duplicate').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const row = e.target.closest('tr');
+                        const campaignId = row.dataset.id;
+                        const isEdit = btn.classList.contains('edit');
+                        
+                        if (isEdit) {
+                            await editCampaign(campaignId);
+                        } else {
+                            await duplicateCampaign(campaignId);
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error loading campaigns:', error);
+                tableBody.innerHTML = '<tr><td colspan="8" class="error-row"><p>Error loading campaigns</p></td></tr>';
             }
+        }
+    
+        // Render analytics view
+        async function renderAnalyticsView(filterType = 'all') {
+            // Show loading state
+            elements.statsGrid.innerHTML = '<div class="loading-spinner"></div><p>Loading analytics...</p>';
+            elements.topCampaignsList.innerHTML = '<div class="loading-spinner"></div><p>Loading top campaigns...</p>';
             
-            async function renderAnalyticsView() {
-                // Show loading state
-                elements.statsGrid.innerHTML = '<div class="loading-spinner"></div><p>Loading analytics...</p>';
-                elements.topCampaignsList.innerHTML = '<div class="loading-spinner"></div><p>Loading top campaigns...</p>';
+            try {
+                const response = await fetch(API_ENDPOINTS.CAMPAIGNS);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch campaigns');
+                }
                 
-                const campaigns = await fetchCampaigns();
+                const campaigns = await response.json();
+                
+                // Filter campaigns based on type
+                const filteredCampaigns = filterType === 'all' 
+                    ? campaigns 
+                    : campaigns.filter(c => {
+                        if (filterType === 'email') return c.campaign_type === 'email';
+                        if (filterType === 'social') return c.campaign_type === 'social_media';
+                        if (filterType === 'paid') return c.campaign_type === 'in_app_ad';
+                        return true;
+                    });
                 
                 // Calculate stats
-                const totalCampaigns = campaigns.length;
-                const emailCampaigns = campaigns.filter(c => c.campaign_type === 'email');
-                const socialCampaigns = campaigns.filter(c => c.campaign_type === 'social_media');
-                const adCampaigns = campaigns.filter(c => c.campaign_type === 'in_app_ad');
+                const totalCampaigns = filteredCampaigns.length;
+                const emailCampaigns = filteredCampaigns.filter(c => c.campaign_type === 'email');
+                const socialCampaigns = filteredCampaigns.filter(c => c.campaign_type === 'social_media');
+                const adCampaigns = filteredCampaigns.filter(c => c.campaign_type === 'in_app_ad');
                 
                 // Avg open rate (for email campaigns)
                 const avgOpenRate = emailCampaigns.length > 0 
@@ -1460,12 +1991,12 @@
                     : 0;
                 
                 // Avg click rate (for all campaigns)
-                const avgClickRate = campaigns.length > 0
-                    ? campaigns.reduce((sum, c) => sum + (c.ctr || 0), 0) / campaigns.length
+                const avgClickRate = filteredCampaigns.length > 0
+                    ? filteredCampaigns.reduce((sum, c) => sum + (c.ctr || 0), 0) / filteredCampaigns.length
                     : 0;
                 
                 // Total revenue
-                const totalRevenue = campaigns.reduce((sum, c) => sum + (c.revenue || 0), 0);
+                const totalRevenue = filteredCampaigns.reduce((sum, c) => sum + (c.revenue || 0), 0);
                 
                 // Update stats cards
                 elements.statsGrid.innerHTML = `
@@ -1523,634 +2054,447 @@
                 `;
                 
                 // Render charts
-                initCharts(campaigns);
+                initCharts(filteredCampaigns);
                 
                 // Render top campaigns
-                renderTopCampaigns(campaigns);
+                renderTopCampaigns(filteredCampaigns);
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+                elements.statsGrid.innerHTML = '<p class="error">Failed to load analytics</p>';
+                elements.topCampaignsList.innerHTML = '<p class="error">Failed to load top campaigns</p>';
             }
+        }
+    
+        // Initialize charts
+        function initCharts(campaigns) {
+            // Destroy existing charts if they exist
+            if (performanceChart) performanceChart.destroy();
+            if (typeChart) typeChart.destroy();
             
-            function initCharts(campaigns) {
-                // Destroy existing charts if they exist
-                if (performanceChart) performanceChart.destroy();
-                if (typeChart) typeChart.destroy();
+            // Group campaigns by month for performance chart
+            const monthlyData = {};
+            campaigns.forEach(campaign => {
+                const date = new Date(campaign.start_date);
+                const month = date.toLocaleString('default', { month: 'short' });
+                const year = date.getFullYear();
+                const key = `${month} ${year}`;
                 
-                // Group campaigns by month for performance chart
-                const monthlyData = {};
-                campaigns.forEach(campaign => {
-                    const date = new Date(campaign.start_date);
-                    const month = date.toLocaleString('default', { month: 'short' });
-                    const year = date.getFullYear();
-                    const key = `${month} ${year}`;
-                    
-                    if (!monthlyData[key]) {
-                        monthlyData[key] = {
-                            email: 0,
-                            social_media: 0,
-                            in_app_ad: 0
-                        };
-                    }
-                    
-                    monthlyData[key][campaign.campaign_type]++;
-                });
-                
-                const months = Object.keys(monthlyData);
-                const emailData = months.map(m => monthlyData[m].email || 0);
-                const socialData = months.map(m => monthlyData[m].social_media || 0);
-                const adData = months.map(m => monthlyData[m].in_app_ad || 0);
-                
-                // Performance Chart
-                const performanceCtx = document.getElementById('performanceChart').getContext('2d');
-                performanceChart = new Chart(performanceCtx, {
-                    type: 'line',
-                    data: {
-                        labels: months,
-                        datasets: [
-                            {
-                                label: 'Email Campaigns',
-                                data: emailData,
-                                borderColor: '#9C27B0',
-                                backgroundColor: 'rgba(156, 39, 176, 0.1)',
-                                tension: 0.3,
-                                fill: true
-                            },
-                            {
-                                label: 'Social Campaigns',
-                                data: socialData,
-                                borderColor: '#2196F3',
-                                backgroundColor: 'rgba(33, 150, 243, 0.1)',
-                                tension: 0.3,
-                                fill: true
-                            },
-                            {
-                                label: 'In-App Ads',
-                                data: adData,
-                                borderColor: '#4CAF50',
-                                backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                                tension: 0.3,
-                                fill: true
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-                
-                // Type Chart
-                const emailCount = campaigns.filter(c => c.campaign_type === 'email').length;
-                const socialCount = campaigns.filter(c => c.campaign_type === 'social_media').length;
-                const adCount = campaigns.filter(c => c.campaign_type === 'in_app_ad').length;
-                
-                const typeCtx = document.getElementById('typeChart').getContext('2d');
-                typeChart = new Chart(typeCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Email', 'Social Media', 'In-App Ads'],
-                        datasets: [{
-                            data: [emailCount, socialCount, adCount],
-                            backgroundColor: [
-                                '#9C27B0',
-                                '#2196F3',
-                                '#4CAF50'
-                            ],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'right',
-                            }
-                        },
-                        cutout: '70%'
-                    }
-                });
-            }
-            
-            function renderTopCampaigns(campaigns) {
-                // Sort campaigns by revenue descending
-                const sortedCampaigns = [...campaigns].sort((a, b) => (b.revenue || 0) - (a.revenue || 0));
-                const topCampaigns = sortedCampaigns.slice(0, 3); // Top 3 campaigns
-                
-                if (topCampaigns.length === 0) {
-                    elements.topCampaignsList.innerHTML = '<p>No campaigns found</p>';
-                    return;
+                if (!monthlyData[key]) {
+                    monthlyData[key] = {
+                        email: 0,
+                        social_media: 0,
+                        in_app_ad: 0
+                    };
                 }
                 
-                elements.topCampaignsList.innerHTML = '';
-                
-                topCampaigns.forEach(campaign => {
-                    const item = document.createElement('div');
-                    item.className = 'top-campaign-item';
-                    
-                    const icon = getCampaignTypeIcon(campaign.campaign_type);
-                    const typeLabel = getCampaignTypeLabel(campaign.campaign_type);
-                    const revenue = formatCurrency(campaign.revenue);
-                    const ctr = formatPercentage(campaign.ctr || 0);
-                    const conversionRate = formatPercentage(campaign.conversion_rate || 0);
-                    
-                    // Type-specific stats
-                    let statsHtml = '';
-                    if (campaign.campaign_type === 'email') {
-                        statsHtml = `
-                            <div class="stat">
-                                <div class="value">${ctr}</div>
-                                <div class="label">Open Rate</div>
-                            </div>
-                            <div class="stat">
-                                <div class="value">${conversionRate}</div>
-                                <div class="label">Click Rate</div>
-                            </div>
-                        `;
-                    } else if (campaign.campaign_type === 'social_media') {
-                        statsHtml = `
-                            <div class="stat">
-                                <div class="value">${formatNumber(campaign.impressions)}</div>
-                                <div class="label">Impressions</div>
-                            </div>
-                            <div class="stat">
-                                <div class="value">${formatNumber(campaign.clicks)}</div>
-                                <div class="label">Engagements</div>
-                            </div>
-                        `;
-                    } else {
-                        statsHtml = `
-                            <div class="stat">
-                                <div class="value">${formatNumber(campaign.impressions)}</div>
-                                <div class="label">Impressions</div>
-                            </div>
-                            <div class="stat">
-                                <div class="value">${formatNumber(campaign.clicks)}</div>
-                                <div class="label">Clicks</div>
-                            </div>
-                        `;
+                monthlyData[key][campaign.campaign_type]++;
+            });
+            
+            const months = Object.keys(monthlyData);
+            const emailData = months.map(m => monthlyData[m].email || 0);
+            const socialData = months.map(m => monthlyData[m].social_media || 0);
+            const adData = months.map(m => monthlyData[m].in_app_ad || 0);
+            
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            performanceChart = new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Email Campaigns',
+                            data: emailData,
+                            borderColor: '#9C27B0',
+                            backgroundColor: 'rgba(156, 39, 176, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Social Campaigns',
+                            data: socialData,
+                            borderColor: '#2196F3',
+                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'In-App Ads',
+                            data: adData,
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
-                    
-                    item.innerHTML = `
-                        <div class="campaign-info">
-                            <div class="campaign-type ${campaign.campaign_type}">
-                                <i class="${icon}"></i> ${typeLabel}
-                            </div>
-                            <h4>${campaign.name}</h4>
-                            <div class="campaign-meta">
-                                <span>${formatDate(campaign.start_date)} - ${formatDate(campaign.end_date)}</span>
-                                <span class="status-badge ${campaign.status}">${campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}</span>
-                            </div>
+                }
+            });
+            
+            // Type Chart
+            const emailCount = campaigns.filter(c => c.campaign_type === 'email').length;
+            const socialCount = campaigns.filter(c => c.campaign_type === 'social_media').length;
+            const adCount = campaigns.filter(c => c.campaign_type === 'in_app_ad').length;
+            
+            const typeCtx = document.getElementById('typeChart').getContext('2d');
+            typeChart = new Chart(typeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Email', 'Social Media', 'In-App Ads'],
+                    datasets: [{
+                        data: [emailCount, socialCount, adCount],
+                        backgroundColor: [
+                            '#9C27B0',
+                            '#2196F3',
+                            '#4CAF50'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // Add to setupEventListeners()
+document.getElementById('emailAudience').addEventListener('change', function() {
+    const customGroup = document.getElementById('customRecipientsGroup');
+    customGroup.style.display = this.value === 'custom' ? 'block' : 'none';
+    
+    if (this.value === 'custom') {
+        loadRecipients();
+    }
+});
+
+async function loadRecipients() {
+    const recipientsList = document.getElementById('recipientsList');
+    recipientsList.innerHTML = '<div class="loading-spinner"></div><p>Loading recipients...</p>';
+
+    try {
+        const response = await fetch('http://localhost:8000/api/marketing');
+        if (!response.ok) throw new Error('Failed to load recipients');
+        const data = await response.json();
+
+        recipientsList.innerHTML = '';
+        data.forEach((subscriber) => {
+            const isValid = isValidEmail(subscriber.email);
+            const div = document.createElement('div');
+            div.className = 'recipient-item';
+            div.innerHTML = `
+                <input type="checkbox" 
+                    id="recipient-${subscriber.id}"
+                    value="${subscriber.email}"
+                    class="recipient-checkbox"
+                    ${!isValid ? 'data-invalid disabled' : ''}
+                >
+                <label for="recipient-${subscriber.id}" 
+                    class="${!isValid ? 'invalid-email' : ''}">
+                    ${subscriber.name || subscriber.email.split('@')[0]} (${subscriber.email})
+                    ${!isValid ? ' - Invalid' : ''}
+                </label>
+            `;
+            div.querySelector('input').addEventListener('change', updateRecipientCount);
+            recipientsList.appendChild(div);
+        });
+        updateRecipientCount();
+    } catch (error) {
+        console.error('Error loading recipients:', error);
+        recipientsList.innerHTML = '<p class="error">Failed to load recipients</p>';
+    }
+}
+function updateRecipientCount() {
+    const validCheckboxes = document.querySelectorAll('.recipient-checkbox:not([data-invalid]):checked');
+    const invalidCheckboxes = document.querySelectorAll('.recipient-checkbox[data-invalid]:checked');
+    
+    document.getElementById('selectedRecipientCount').textContent = validCheckboxes.length;
+    document.getElementById('emailRecipientCount').value = validCheckboxes.length;
+    
+    const invalidCount = invalidCheckboxes.length;
+    const invalidCountSpan = document.getElementById('invalidEmailsCount');
+    invalidCountSpan.querySelector('span').textContent = invalidCount;
+    invalidCountSpan.style.display = invalidCount > 0 ? 'inline' : 'none';
+}   
+        // Render top campaigns
+        function renderTopCampaigns(campaigns) {
+            // Sort campaigns by revenue descending
+            const sortedCampaigns = [...campaigns].sort((a, b) => (b.revenue || 0) - (a.revenue || 0));
+            const topCampaigns = sortedCampaigns.slice(0, 3); // Top 3 campaigns
+            
+            if (topCampaigns.length === 0) {
+                elements.topCampaignsList.innerHTML = '<p>No campaigns found</p>';
+                return;
+            }
+            
+            elements.topCampaignsList.innerHTML = '';
+            
+            topCampaigns.forEach(campaign => {
+                const item = document.createElement('div');
+                item.className = 'top-campaign-item';
+                
+                const icon = getCampaignTypeIcon(campaign.campaign_type);
+                const typeLabel = getCampaignTypeLabel(campaign.campaign_type);
+                const revenue = formatCurrency(campaign.revenue);
+                const ctr = formatPercentage(campaign.ctr || 0);
+                const conversionRate = formatPercentage(campaign.conversion_rate || 0);
+                
+                // Type-specific stats
+                let statsHtml = '';
+                if (campaign.campaign_type === 'email') {
+                    statsHtml = `
+                        <div class="stat">
+                            <div class="value">${ctr}</div>
+                            <div class="label">Open Rate</div>
                         </div>
-                        <div class="campaign-stats">
-                            ${statsHtml}
-                            <div class="stat">
-                                <div class="value">${revenue}</div>
-                                <div class="label">Revenue</div>
-                            </div>
-                        </div>
-                        <div class="campaign-actions">
-                            <button class="action-btn view" data-id="${campaign.campaign_id}">
-                                <i class="fas fa-eye"></i> View
-                            </button>
+                        <div class="stat">
+                            <div class="value">${conversionRate}</div>
+                            <div class="label">Click Rate</div>
                         </div>
                     `;
-                    
-                    elements.topCampaignsList.appendChild(item);
-                });
-                
-                // Add event listeners to view buttons
-                document.querySelectorAll('.top-campaign-item .action-btn.view').forEach(btn => {
-                    btn.addEventListener('click', async (e) => {
-                        const campaignId = e.target.closest('button').dataset.id;
-                        await showCampaignDetails(campaignId);
-                    });
-                });
-            }
-            
-            async function showCampaignDetails(id) {
-                // Show loading state
-                elements.campaignDetailsModal.style.display = 'flex';
-                document.getElementById('detailsCampaignName').textContent = 'Loading...';
-                
-                const campaign = await fetchCampaignDetails(id);
-                if (!campaign) {
-                    elements.campaignDetailsModal.style.display = 'none';
-                    return;
+                } else if (campaign.campaign_type === 'social_media') {
+                    statsHtml = `
+                        <div class="stat">
+                            <div class="value">${formatNumber(campaign.impressions)}</div>
+                            <div class="label">Impressions</div>
+                        </div>
+                        <div class="stat">
+                            <div class="value">${formatNumber(campaign.clicks)}</div>
+                            <div class="label">Engagements</div>
+                        </div>
+                    `;
+                } else {
+                    statsHtml = `
+                        <div class="stat">
+                            <div class="value">${formatNumber(campaign.impressions)}</div>
+                            <div class="label">Impressions</div>
+                        </div>
+                        <div class="stat">
+                            <div class="value">${formatNumber(campaign.clicks)}</div>
+                            <div class="label">Clicks</div>
+                        </div>
+                    `;
                 }
                 
-                currentCampaignDetails = campaign;
-                
-                // Update basic info
-                document.getElementById('detailsCampaignName').textContent = campaign.name;
-                document.getElementById('detailsTypeBadge').innerHTML = `
-                    <i class="${getCampaignTypeIcon(campaign.campaign_type)}"></i>
-                    <span>${getCampaignTypeLabel(campaign.campaign_type)}</span>
+                item.innerHTML = `
+                    <div class="campaign-info">
+                        <div class="campaign-type ${campaign.campaign_type}">
+                            <i class="${icon}"></i> ${typeLabel}
+                        </div>
+                        <h4>${campaign.name}</h4>
+                        <div class="campaign-meta">
+                            <span>${formatDate(campaign.start_date)} - ${formatDate(campaign.end_date)}</span>
+                            <span class="status-badge ${campaign.status}">${campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}</span>
+                        </div>
+                    </div>
+                    <div class="campaign-stats">
+                        ${statsHtml}
+                        <div class="stat">
+                            <div class="value">${revenue}</div>
+                            <div class="label">Revenue</div>
+                        </div>
+                    </div>
+                    <div class="campaign-actions">
+                        <button class="action-btn view" data-id="${campaign.campaign_id}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </div>
                 `;
-                document.getElementById('detailsTypeBadge').className = `details-type-badge ${campaign.campaign_type}`;
-                document.getElementById('detailsStatusBadge').textContent = campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1);
-                document.getElementById('detailsStatusBadge').className = `details-status-badge ${campaign.status}`;
                 
-                // Update overview
-                document.getElementById('detailsStartDate').textContent = formatDate(campaign.start_date);
-                document.getElementById('detailsEndDate').textContent = formatDate(campaign.end_date);
-                document.getElementById('detailsCreatedAt').textContent = formatDate(campaign.created_at);
-                document.getElementById('detailsUpdatedAt').textContent = formatDate(campaign.updated_at);
-                document.getElementById('detailsDescription').textContent = campaign.description || '-';
-                
-                // Hide all type-specific sections
-                document.getElementById('emailDetailsSection').style.display = 'none';
-                document.getElementById('socialDetailsSection').style.display = 'none';
-                document.getElementById('adDetailsSection').style.display = 'none';
-                
-                // Show type-specific details
-                if (campaign.campaign_type === 'email') {
-                    document.getElementById('emailDetailsSection').style.display = 'block';
-                    document.getElementById('detailsEmailSubject').textContent = campaign.email_subject || '-';
-                    document.getElementById('detailsRecipientCount').textContent = formatNumber(campaign.recipient_count);
-                    document.getElementById('detailsSenderName').textContent = campaign.sender_name || '-';
-                    document.getElementById('detailsTemplateId').textContent = campaign.template_id || '-';
-                } 
-                else if (campaign.campaign_type === 'social_media') {
-                    document.getElementById('socialDetailsSection').style.display = 'block';
-                    document.getElementById('detailsSocialPlatform').textContent = campaign.social_platform ? 
-                        campaign.social_platform.charAt(0).toUpperCase() + campaign.social_platform.slice(1) : '-';
-                    document.getElementById('detailsPostId').textContent = campaign.post_id || '-';
-                    document.getElementById('detailsAdSpend').textContent = campaign.ad_spend ? 
-                        formatCurrency(campaign.ad_spend) : '-';
-                    
-                    const discountText = campaign.discount_amount ? 
-                        `${campaign.discount_amount}${campaign.discount_type === 'percentage' ? '%' : '$'}` : '-';
-                    document.getElementById('detailsSocialDiscount').textContent = discountText;
-                } 
-                else if (campaign.campaign_type === 'in_app_ad') {
-                    document.getElementById('adDetailsSection').style.display = 'block';
-                    document.getElementById('detailsBannerImageUrl').textContent = campaign.banner_image_url || '-';
-                    document.getElementById('detailsTargetUrl').textContent = campaign.target_url || '-';
-                    document.getElementById('detailsLocations').textContent = campaign.locations ? 
-                        JSON.parse(campaign.locations).join(', ') : '-';
-                    
-                    const discountText = campaign.discount_amount ? 
-                        `${campaign.discount_amount}${campaign.discount_type === 'percentage' ? '%' : '$'}` : '-';
-                    document.getElementById('detailsAdDiscount').textContent = discountText;
-                }
-                
-                // Update performance stats
-                document.getElementById('detailsImpressions').textContent = formatNumber(campaign.impressions);
-                document.getElementById('detailsClicks').textContent = formatNumber(campaign.clicks);
-                document.getElementById('detailsConversions').textContent = formatNumber(campaign.conversions);
-                document.getElementById('detailsRevenue').textContent = formatCurrency(campaign.revenue);
-                document.getElementById('detailsCTR').textContent = formatPercentage(campaign.ctr || 0);
-                document.getElementById('detailsConversionRate').textContent = formatPercentage(campaign.conversion_rate || 0);
-            }
-            
-            // Form Handling
-            function setupFormNavigation() {
-                // Next buttons
-                elements.nextBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const currentStep = btn.closest('.form-step');
-                        const nextStepNum = btn.dataset.next;
-                        
-                        // Validate current step before proceeding
-                        if (!validateFormStep(currentStep)) {
-                            return;
-                        }
-                        
-                        currentStep.classList.remove('active');
-                        document.querySelector(`.form-step[data-step="${nextStepNum}"]`).classList.add('active');
-                        
-                        // Update review section if we're going to the final step
-                        if (nextStepNum === '3') {
-                            updateReviewSection();
-                        }
-                    });
-                });
-                
-                // Back buttons
-                elements.backBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const currentStep = btn.closest('.form-step');
-                        const prevStepNum = btn.dataset.back;
-                        
-                        currentStep.classList.remove('active');
-                        document.querySelector(`.form-step[data-step="${prevStepNum}"]`).classList.add('active');
-                    });
-                });
-            }
-            
-            function validateFormStep(step) {
-                // Basic validation - in a real app you'd want more robust validation
-                const inputs = step.querySelectorAll('input[required], select[required], textarea[required]');
-                let isValid = true;
-                
-                inputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        input.style.borderColor = 'red';
-                        isValid = false;
-                    } else {
-                        input.style.borderColor = '';
-                    }
-                });
-                
-                if (!isValid) {
-                    showError('Please fill in all required fields');
-                }
-                
-                return isValid;
-            }
-            
-            function updateReviewSection() {
-                const activeForm = document.querySelector('.campaign-form[style="display: block;"]');
-                
-                if (activeForm.id === 'emailCampaignForm') {
-                    // Email campaign review
-                    document.getElementById('reviewCampaignName').textContent = 
-                        document.getElementById('emailCampaignName').value || '-';
-                    document.getElementById('reviewDescription').textContent = 
-                        document.getElementById('emailDescription').value || '-';
-                    document.getElementById('reviewSubject').textContent = 
-                        document.getElementById('emailSubject').value || '-';
-                    document.getElementById('reviewAudience').textContent = 
-                        document.getElementById('emailAudience').options[document.getElementById('emailAudience').selectedIndex].text;
-                    document.getElementById('reviewRecipients').textContent = 
-                        document.getElementById('emailRecipientCount').value || '-';
-                    document.getElementById('reviewSender').textContent = 
-                        document.getElementById('emailSenderName').value || '-';
-                    document.getElementById('reviewStatus').textContent = 
-                        document.getElementById('emailStatus').options[document.getElementById('emailStatus').selectedIndex].text;
-                    
-                    const scheduleValue = document.getElementById('emailSchedule').value;
-                    let scheduleText = '';
-                    if (scheduleValue === 'now') {
-                        scheduleText = 'Send immediately';
-                    } else if (scheduleValue === 'scheduled') {
-                        scheduleText = `Schedule for ${document.getElementById('emailSendTime').value}`;
-                    } else {
-                        scheduleText = 'Save as draft';
-                    }
-                    document.getElementById('reviewSchedule').textContent = scheduleText;
-                    
-                    // Update preview
-                    document.getElementById('previewSubject').textContent = 
-                        document.getElementById('emailSubject').value || 'Your Email Subject Here';
-                    document.getElementById('previewSender').textContent = 
-                        document.getElementById('emailSenderName').value || 'WFFE Connect';
-                } 
-                else if (activeForm.id === 'socialCampaignForm') {
-                    // Social campaign review
-                    document.getElementById('reviewSocialCampaignName').textContent = 
-                        document.getElementById('socialCampaignName').value || '-';
-                    document.getElementById('reviewSocialPlatform').textContent = 
-                        document.getElementById('socialPlatform').options[document.getElementById('socialPlatform').selectedIndex].text;
-                    document.getElementById('reviewSocialStatus').textContent = 
-                        document.getElementById('socialStatus').options[document.getElementById('socialStatus').selectedIndex].text;
-                    document.getElementById('reviewSocialStartDate').textContent = 
-                        formatDate(document.getElementById('socialStartDate').value) || '-';
-                    document.getElementById('reviewSocialEndDate').textContent = 
-                        formatDate(document.getElementById('socialEndDate').value) || '-';
-                    
-                    // Update preview
-                    document.getElementById('previewSocialText').textContent = 
-                        document.getElementById('socialPostText').value || 'Your post content will appear here...';
-                } 
-                else if (activeForm.id === 'inAppAdCampaignForm') {
-                    // Ad campaign review
-                    document.getElementById('reviewAdCampaignName').textContent = 
-                        document.getElementById('adCampaignName').value || '-';
-                    document.getElementById('reviewAdStatus').textContent = 
-                        document.getElementById('adStatus').options[document.getElementById('adStatus').selectedIndex].text;
-                    
-                    const discountAmount = document.getElementById('adDiscountAmount').value;
-                    const discountType = document.getElementById('adDiscountType').value;
-                    document.getElementById('reviewAdDiscount').textContent = 
-                        discountAmount ? `${discountAmount}${discountType === 'percentage' ? '%' : '$'}` : '-';
-                    
-                    document.getElementById('reviewAdStartDate').textContent = 
-                        formatDate(document.getElementById('adStartDate').value) || '-';
-                    document.getElementById('reviewAdEndDate').textContent = 
-                        formatDate(document.getElementById('adEndDate').value) || '-';
-                    document.getElementById('reviewAdLocations').textContent = 
-                        document.getElementById('adLocations').value || '-';
-                    
-                    // Update preview
-                    document.getElementById('adPreviewTitle').textContent = 
-                        document.getElementById('adCampaignName').value || 'Campaign Name';
-                    document.getElementById('adPreviewDiscount').textContent = 
-                        discountAmount ? `${discountAmount}${discountType === 'percentage' ? '% OFF' : '$ OFF'}` : 'SPECIAL OFFER';
-                    
-                    const bannerUrl = document.getElementById('adBannerImageUrl').value;
-                    if (bannerUrl) {
-                        document.getElementById('adPreviewImage').src = bannerUrl;
-                    }
-                }
-            }
-            
-            async function submitEmailCampaign() {
-                const campaignData = {
-                    name: document.getElementById('emailCampaignName').value,
-                    description: document.getElementById('emailDescription').value,
-                    campaign_type: 'email',
-                    status: document.getElementById('emailStatus').value,
-                    email_subject: document.getElementById('emailSubject').value,
-                    recipient_count: parseInt(document.getElementById('emailRecipientCount').value) || null,
-                    sender_name: document.getElementById('emailSenderName').value,
-                    template_id: parseInt(document.getElementById('emailTemplateId').value) || null,
-                    start_date: document.getElementById('emailSchedule').value === 'scheduled' ? 
-                        document.getElementById('emailSendTime').value : new Date().toISOString(),
-                    discount_amount: null,
-                    discount_type: null
-                };
-                
-                const result = await createCampaign(campaignData);
-                if (result) {
-                    showSuccess('Email campaign created successfully!');
-                    elements.newCampaignModal.style.display = 'none';
-                    refreshCampaigns();
-                }
-            }
-            
-            async function submitSocialCampaign() {
-                const campaignData = {
-                    name: document.getElementById('socialCampaignName').value,
-                    description: document.getElementById('socialDescription').value,
-                    campaign_type: 'social_media',
-                    status: document.getElementById('socialStatus').value,
-                    social_platform: document.getElementById('socialPlatform').value,
-                    post_id: document.getElementById('socialPostId').value || null,
-                    target_url: document.getElementById('socialTargetUrl').value || null,
-                    start_date: document.getElementById('socialStartDate').value,
-                    end_date: document.getElementById('socialEndDate').value,
-                    ad_spend: parseFloat(document.getElementById('socialAdSpend').value) || null,
-                    discount_amount: parseFloat(document.getElementById('socialDiscountAmount').value) || null,
-                    discount_type: document.getElementById('socialDiscountType').value
-                };
-                
-                const result = await createCampaign(campaignData);
-                if (result) {
-                    showSuccess('Social campaign created successfully!');
-                    elements.newCampaignModal.style.display = 'none';
-                    refreshCampaigns();
-                }
-            }
-            
-            async function submitInAppAdCampaign() {
-                const campaignData = {
-                    name: document.getElementById('adCampaignName').value,
-                    description: document.getElementById('adDescription').value,
-                    campaign_type: 'in_app_ad',
-                    status: document.getElementById('adStatus').value,
-                    banner_image_url: document.getElementById('adBannerImageUrl').value,
-                    target_url: document.getElementById('adTargetUrl').value,
-                    locations: JSON.stringify(document.getElementById('adLocations').value.split(',').map(s => s.trim())),
-                    start_date: document.getElementById('adStartDate').value,
-                    end_date: document.getElementById('adEndDate').value,
-                    ad_spend: parseFloat(document.getElementById('adAdSpend').value) || null,
-                    discount_amount: parseFloat(document.getElementById('adDiscountAmount').value) || null,
-                    discount_type: document.getElementById('adDiscountType').value
-                };
-                
-                const result = await createCampaign(campaignData);
-                if (result) {
-                    showSuccess('In-App Ad campaign created successfully!');
-                    elements.newCampaignModal.style.display = 'none';
-                    refreshCampaigns();
-                }
-            }
-            
-            function refreshCampaigns() {
-                if (currentView === 'grid') {
-                    renderCampaignGrid(currentFilter);
-                } else if (currentView === 'table') {
-                    renderCampaignTable(currentFilter);
-                } else if (currentView === 'analytics') {
-                    renderAnalyticsView();
-                }
-            }
-            
-            // Event Listeners
-            elements.newCampaignBtn.addEventListener('click', () => {
-                elements.newCampaignModal.style.display = 'flex';
+                elements.topCampaignsList.appendChild(item);
             });
             
-            elements.closeModal.addEventListener('click', () => {
-                elements.newCampaignModal.style.display = 'none';
-                // Reset forms
-                document.querySelectorAll('.campaign-form').forEach(form => {
-                    form.style.display = 'none';
+            // Add event listeners to view buttons
+            document.querySelectorAll('.top-campaign-item .action-btn.view').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const campaignId = e.target.closest('button').dataset.id;
+                    await showCampaignDetails(campaignId);
                 });
-                document.querySelectorAll('.form-step').forEach(step => {
-                    if (step.dataset.step === '1') {
-                        step.classList.add('active');
-                    } else {
-                        step.classList.remove('active');
+            });
+        }
+    
+        // Duplicate campaign
+        async function duplicateCampaign(id) {
+            if (confirm('Are you sure you want to duplicate this campaign?')) {
+                try {
+                    const response = await fetch(API_ENDPOINTS.CAMPAIGN_DETAILS(id));
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch campaign details');
                     }
-                });
-            });
-            
-            elements.closeDetailsModal.addEventListener('click', () => {
-                elements.campaignDetailsModal.style.display = 'none';
-            });
-            
-            // Campaign type selection
-            elements.campaignTypeOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    const type = option.dataset.type;
                     
-                    // Hide all forms first
-                    document.querySelectorAll('.campaign-form').forEach(form => {
-                        form.style.display = 'none';
+                    const originalCampaign = await response.json();
+                    
+                    // Create a copy with "Copy of" prefix and draft status
+                    const campaignCopy = {
+                        ...originalCampaign,
+                        name: `Copy of ${originalCampaign.name}`,
+                        status: 'draft',
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                    
+                    delete campaignCopy.campaign_id; // Let the backend generate a new ID
+                    
+                    // Save the duplicate to API
+                    const saveResponse = await fetch(API_ENDPOINTS.CAMPAIGNS, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(campaignCopy)
                     });
                     
-                    // Show selected form
-                    if (type === 'email') {
-                        elements.emailCampaignForm.style.display = 'block';
-                    } else if (type === 'social_media') {
-                        elements.socialCampaignForm.style.display = 'block';
-                    } else if (type === 'in_app_ad') {
-                        elements.inAppAdCampaignForm.style.display = 'block';
+                    if (!saveResponse.ok) {
+                        throw new Error('Failed to save duplicate campaign');
                     }
                     
-                    // Highlight selected option
-                    elements.campaignTypeOptions.forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
+                    showSuccess('Campaign duplicated successfully!');
+                    refreshCampaigns();
+                } catch (error) {
+                    console.error('Error duplicating campaign:', error);
+                    showError('Failed to duplicate campaign. Please try again.');
+                }
+            }
+        }
+    
+        // Toggle sidebar
+        function toggleSidebar() {
+            elements.sidebar.classList.toggle('collapsed');
+        }
+    
+        // Helper functions for formatting
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        function formatCurrency(amount) {
+            if (amount === null || amount === undefined) return '-';
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+        
+        function formatNumber(num) {
+            if (num === null || num === undefined) return '-';
+            return new Intl.NumberFormat('en-US').format(num);
+        }
+        
+        function formatPercentage(num) {
+            if (num === null || num === undefined) return '-';
+            return `${num.toFixed(2)}%`;
+        }
+        
+        function getCampaignTypeIcon(type) {
+            switch(type) {
+                case 'email': return 'fas fa-envelope';
+                case 'social_media': return 'fas fa-share-alt';
+                case 'in_app_ad': return 'fas fa-ad';
+                default: return 'fas fa-bullhorn';
+            }
+        }
+        
+        function getCampaignTypeLabel(type) {
+            switch(type) {
+                case 'email': return 'Email';
+                case 'social_media': return 'Social';
+                case 'in_app_ad': return 'In-App Ad';
+                default: return type;
+            }
+        }
+    
+        // Get paginated campaigns
+        function getPaginatedCampaigns(campaigns, page, perPage) {
+            const startIndex = (page - 1) * perPage;
+            const endIndex = startIndex + perPage;
+            return campaigns.slice(startIndex, endIndex);
+        }
+    
+        // Render pagination
+        function renderPagination(campaigns, page, perPage) {
+            const totalPages = Math.ceil(campaigns.length / perPage);
+            const paginationContainers = document.querySelectorAll('.pagination');
+            
+            paginationContainers.forEach(container => {
+                container.innerHTML = '';
+                
+                // Previous button
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'pagination-btn';
+                prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevBtn.disabled = page === 1;
+                prevBtn.addEventListener('click', () => {
+                    currentPage = page - 1;
+                    refreshCampaigns();
                 });
-            });
-            
-            // View selector
-            elements.viewBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const view = btn.dataset.view;
-                    currentView = view;
-                    
-                    // Update active button
-                    elements.viewBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    
-                    // Show selected view
-                    elements.gridView.style.display = 'none';
-                    elements.tableView.style.display = 'none';
-                    elements.analyticsView.style.display = 'none';
-                    
-                    if (view === 'grid') {
-                        elements.gridView.style.display = 'block';
-                        renderCampaignGrid(currentFilter);
-                    } else if (view === 'table') {
-                        elements.tableView.style.display = 'block';
-                        renderCampaignTable(currentFilter);
-                    } else if (view === 'analytics') {
-                        elements.analyticsView.style.display = 'block';
-                        renderAnalyticsView();
-                    }
+                container.appendChild(prevBtn);
+                
+                // Page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `pagination-btn ${i === page ? 'active' : ''}`;
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentPage = i;
+                        refreshCampaigns();
+                    });
+                    container.appendChild(pageBtn);
+                }
+                
+                // Next button
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'pagination-btn';
+                nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextBtn.disabled = page === totalPages;
+                nextBtn.addEventListener('click', () => {
+                    currentPage = page + 1;
+                    refreshCampaigns();
                 });
+                container.appendChild(nextBtn);
             });
-            
-            // Tab selector
-            elements.tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const type = btn.dataset.type;
-                    currentFilter = type;
-                    
-                    // Update active tab
-                    elements.tabBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    
-                    // Filter campaigns
-                    if (currentView === 'grid') {
-                        renderCampaignGrid(type);
-                    } else if (currentView === 'table') {
-                        renderCampaignTable(type);
-                    }
-                });
-            });
-            
-            // Schedule datetime toggle
-            elements.emailSchedule.addEventListener('change', (e) => {
-                elements.scheduleDateTime.style.display = e.target.value === 'scheduled' ? 'block' : 'none';
-            });
-            
-            // Form submission
-            elements.sendEmailCampaign.addEventListener('click', submitEmailCampaign);
-            elements.publishSocialCampaign.addEventListener('click', submitSocialCampaign);
-            elements.publishAdCampaign.addEventListener('click', submitInAppAdCampaign);
-            
-            // Apply filters
-            elements.applyFilters.addEventListener('click', () => {
-                refreshCampaigns();
-            });
-            
-            // Initialize form navigation
-            setupFormNavigation();
-            
-            // Initialize the page
-            renderCampaignGrid();
-        });
-    </script>
+        }
+    
+        // Show success message
+        function showSuccess(message) {
+            // In a real app, you'd show this in a nice success toast/notification
+            console.log(message);
+            alert(message);
+        }
+        
+        // Show error message
+        function showError(message) {
+            // In a real app, you'd show this in a nice error toast/notification
+            console.error(message);
+            alert(message);
+        }
+    
+        // Initialize the application
+        init();
+    });</script>
 </body>
 </html>

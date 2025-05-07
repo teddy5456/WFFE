@@ -1585,3 +1585,248 @@ body {
       width: 100%;
   }
 }
+
+/* Contact selection styles */
+.contact-selection-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 5px;
+  background: #fff;
+}
+
+.contact-search {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.contact-search input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+}
+
+.contact-search button {
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.contact-list-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.contact-list-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 5px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.contact-item:hover {
+  background-color: #f9f9f9;
+}
+
+.contact-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-email {
+  font-weight: 500;
+  color: #333;
+}
+
+.contact-name {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.contact-list-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 0;
+  margin-top: 5px;
+}
+
+/* Add to your existing CSS */
+.recipients-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.recipient-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+}
+
+.recipient-item:last-child {
+  border-bottom: none;
+}
+
+.recipient-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.recipient-count {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: right;
+}
+
+.recipient-count span {
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.loading-spinner {
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid var(--primary);
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin: 10px auto;
+}
+
+/* Add to your existing styles */
+.recipient-selection {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.recipient-search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.recipient-search input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.recipient-search button {
+  padding: 8px 12px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.recipient-search button:hover {
+  background-color: #e0e0e0;
+}
+
+.recipients-list-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.recipients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.recipient-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.recipients-preview {
+  max-height: 100px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  background: white;
+}
+
+.recipients-preview span {
+  display: block;
+  padding: 2px 0;
+  font-size: 14px;
+}
+
+.recipient-item:hover {
+  background-color: #f0f0f0;
+}
+
+.recipient-item input {
+  margin-right: 10px;
+}
+
+.recipient-count {
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  color: #f44336;
+  text-align: center;
+  padding: 10px;
+}
+.contact-pagination {
+  display: flex;
+  align-items: center;
+}
+
+.contact-pagination button {
+  margin: 0 5px;
+  padding: 2px 8px;
+}
+
+.loading-contacts {
+  text-align: center;
+  padding: 20px;
+}
+
+.loading-contacts .loading-spinner {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto 10px;
+}

@@ -1,14 +1,12 @@
 import mysql.connector
 import bcrypt
-from http.cookies import SimpleCookie
 import uuid
 import time
-
-# Mock database for active sessions (in production, use Redis or database)
-active_sessions = {}
+from datetime import datetime, timedelta
 
 class Login:
     def connect_to_db(self):
+        """Create database connection"""
         return mysql.connector.connect(
             host="localhost",
             user="teddy",
@@ -17,97 +15,125 @@ class Login:
         )
 
     def verify_password(self, stored_hash, provided_password):
-        """Verify a stored password against one provided by user"""
+        """Verify password against stored bcrypt hash"""
         if not stored_hash or not stored_hash.startswith('$2b$'):
             return False
         return bcrypt.checkpw(provided_password.encode('utf-8'), stored_hash.encode('utf-8'))
 
-    def login_user(self, data):
-        """Authenticate user and return session cookie"""
+    def login_user(self, data, remember_me=False):
+        """Authenticate user and return session info with role"""
         conn = self.connect_to_db()
         cursor = conn.cursor(dictionary=True)
         
         try:
-            cursor.execute('SELECT id, email, password, full_name FROM users WHERE email = %s', (data['email'],))
+            # Get user including role from database
+            cursor.execute(
+                'SELECT id, email, password, full_name, role FROM users WHERE email = %s',
+                (data['email'],)
+            )
             user = cursor.fetchone()
 
-            if not user:
-                return {"error": "Invalid email or password"}, None
+            if not user or not self.verify_password(user['password'], data['password']):
+                return {"error": "Invalid email or password"}
 
-            if not self.verify_password(user['password'], data['password']):
-                return {"error": "Invalid email or password"}, None
-
-            # Create session
+            # Session creation
             session_id = str(uuid.uuid4())
-            expires = int(time.time()) + 3600  # 1 hour expiration
             
-            # Store session in memory (replace with database in production)
-            active_sessions[session_id] = {
-                'user_id': user['id'],
+            # Remember me functionality determines session duration
+            if remember_me:
+                # 30 days expiration for persistent sessions
+                expires = int(time.time()) + 30 * 24 * 3600
+            else:
+                # 1 hour expiration for temporary sessions
+                expires = int(time.time()) + 3600
+            
+            # Store session in database
+            cursor.execute(
+                """INSERT INTO user_sessions 
+                   (session_id, user_id, expires_at) 
+                   VALUES (%s, %s, %s)""",
+                (session_id, user['id'], datetime.fromtimestamp(expires))
+            )
+            conn.commit()
+            
+            # Prepare user data without password
+            user_data = {
+                'id': user['id'],
                 'email': user['email'],
-                'expires': expires
+                'full_name': user['full_name'],
+                'role': user['role'] 
             }
             
-            # Create secure cookie
-            cookie = SimpleCookie()
-            cookie['session_id'] = session_id
-            cookie['session_id']['httponly'] = True
-            cookie['session_id']['max-age'] = 3600
-            cookie['session_id']['path'] = '/'
-            # cookie['session_id']['secure'] = True  # Uncomment in production with HTTPS
-            cookie['session_id']['samesite'] = 'Lax'
-            
-            # Remove password before returning
-            user.pop('password', None)
-            
-            return {"success": True, "user": user}, cookie
+            return {
+                "success": True,
+                "user": user_data,
+                "session": {
+                    "session_id": session_id,
+                    "expires_at": expires
+                }
+            }
 
         except mysql.connector.Error as err:
-            return {"error": f"Database error: {err}"}, None
+            return {"error": f"Database error: {err}"}
         finally:
             cursor.close()
             conn.close()
 
-    def check_auth(self, cookie_header):
-        """Verify if user is logged in by checking session cookie"""
-        if not cookie_header:
+    def check_auth(self, session_id):
+        """Verify valid session and return user_id if authenticated"""
+        if not session_id:
             return None
             
-        cookie = SimpleCookie()
         try:
-            cookie.load(cookie_header)
-            session_id = cookie['session_id'].value
+            conn = self.connect_to_db()
+            cursor = conn.cursor(dictionary=True)
             
-            # Check session storage
-            if session_id in active_sessions:
-                session_data = active_sessions[session_id]
-                if session_data['expires'] > time.time():
+            cursor.execute(
+                """SELECT user_id, expires_at 
+                   FROM user_sessions 
+                   WHERE session_id = %s""",
+                (session_id,)
+            )
+            session_data = cursor.fetchone()
+            
+            if session_data:
+                expires_at = session_data['expires_at'].timestamp()
+                if expires_at > time.time():
                     return session_data['user_id']
-                
-                # Session expired
-                del active_sessions[session_id]
-        except:
-            pass
-        
-        return None
-
-    def logout(self, cookie_header):
-        """Invalidate session"""
-        if not cookie_header:
+                else:
+                    # Cleanup expired session
+                    cursor.execute(
+                        "DELETE FROM user_sessions WHERE session_id = %s",
+                        (session_id,)
+                    )
+                    conn.commit()
             return None
             
-        cookie = SimpleCookie()
-        try:
-            cookie.load(cookie_header)
-            session_id = cookie['session_id'].value
-            if session_id in active_sessions:
-                del active_sessions[session_id]
-                
-            # Create expired cookie
-            expired_cookie = SimpleCookie()
-            expired_cookie['session_id'] = ''
-            expired_cookie['session_id']['expires'] = 'Thu, 01 Jan 1970 00:00:00 GMT'
-            expired_cookie['session_id']['path'] = '/'
-            return expired_cookie
-        except:
+        except Exception as e:
+            print(f"Auth check error: {e}")
             return None
+        finally:
+            cursor.close()
+            conn.close()
+
+    def logout(self, session_id):
+        """Invalidate session by ID"""
+        if not session_id:
+            return False
+            
+        try:
+            conn = self.connect_to_db()
+            cursor = conn.cursor()
+            cursor.execute(
+                "DELETE FROM user_sessions WHERE session_id = %s",
+                (session_id,)
+            )
+            conn.commit()
+            return True
+            
+        except Exception as e:
+            print(f"Logout error: {e}")
+            return False
+        finally:
+            cursor.close()
+            conn.close()

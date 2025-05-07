@@ -22,6 +22,18 @@
     margin-bottom: 1.5rem;
 }
 
+
+.input-error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 2px;
+}
+input.error, select.error {
+    border-color: red;
+}
+
+
+
 .auth-left p {
     opacity: 0.9;
     max-width: 500px;

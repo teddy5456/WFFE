@@ -49,6 +49,94 @@
         .password-hints li.valid {
             color: #4CAF50;
         }
+
+        /* Terms Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .terms-content {
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .terms-content h4 {
+            margin-top: 1.5rem;
+            color: var(--dark);
+        }
+
+        .terms-content p {
+            margin-bottom: 1rem;
+        }
+
+        .terms-content ul {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .fineprint {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 2rem;
+            border-top: 1px dashed #ddd;
+            padding-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -109,7 +197,12 @@
                     
                     <div class="form-group" style="margin-top: 1.5rem;">
                         <input type="checkbox" id="terms" required>
-                        <label for="terms" style="display: inline; font-size: 0.9rem;">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                        <label for="terms" style="display: inline; font-size: 0.9rem;">I agree to the <a href="#" id="termsLink">Terms of Service</a> and <a href="#" id="privacyLink">Privacy Policy</a></label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="checkbox" id="marketing">
+                        <label for="marketing" style="display: inline; font-size: 0.9rem;">I want to receive marketing communications from WFFE Connect</label>
                     </div>
                     
                     <button type="submit" class="auth-btn">Create Account</button>
@@ -131,6 +224,93 @@
         </div>
     </div>
 
-    <script src="auth.js"></script>
+    <!-- Terms and Conditions Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Terms of Service</h3>
+                <button class="modal-close" id="closeTermsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="terms-content">
+                    <h4>1. Acceptance of Terms</h4>
+                    <p>By accessing or using the WFFE Connect platform, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree with any part of these terms, you must not use our services.</p>
+                    
+                    <h4>2. Description of Service</h4>
+                    <p>WFFE Connect provides digital marketing tools and services specifically designed for furniture retailers. Our platform includes campaign management, analytics, and customer engagement features.</p>
+                    
+                    <h4>3. User Responsibilities</h4>
+                    <p>As a user of WFFE Connect, you agree to:</p>
+                    <ul>
+                        <li>Provide accurate and complete registration information</li>
+                        <li>Maintain the confidentiality of your account credentials</li>
+                        <li>Use the service only for lawful purposes</li>
+                        <li>Not engage in any activity that interferes with the service</li>
+                    </ul>
+                    
+                    <h4>4. Intellectual Property</h4>
+                    <p>All content and materials available on WFFE Connect, including but not limited to text, graphics, logos, and software, are the property of WFFE Connect or its licensors and are protected by intellectual property laws.</p>
+                    
+                    <h4>5. Limitation of Liability</h4>
+                    <p>WFFE Connect shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the service.</p>
+                    
+                    <div class="fineprint">
+                        <p><strong>Fineprint:</strong> Teddy Wambua retains 60% rights and ownership in WFFE Connect. All decisions regarding platform development, business strategy, and profit distribution must have Teddy Wambua's approval.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn secondary" id="acceptTermsBtn">I Accept</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/auth/auth.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+    
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const marketingOptIn = document.getElementById('marketing').checked;
+    
+            if (marketingOptIn && fullName && email) {
+                fetch('http://localhost:8000/api/marketing', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: fullName,
+                        email: email
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Marketing email submitted:', data);
+                    // Optionally show a confirmation message here
+                    document.getElementById('registerForm').submit(); // Continue form submission
+                })
+                .catch(error => {
+                    console.error('Error submitting marketing email:', error);
+                    document.getElementById('registerForm').submit(); // Still continue form submission
+                });
+            } else {
+                // If not opting into marketing or missing fields, proceed normally
+                document.getElementById('registerForm').submit();
+            }
+        });
+    </script>
+    
+        
+    <div id="toastContainer" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>
+
 </body>
 </html>
